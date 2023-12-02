@@ -948,7 +948,6 @@ private: System::Windows::Forms::Button^ vlisualizeDeleteButton;
 			this->customerMailNameInput->Size = System::Drawing::Size(113, 22);
 			this->customerMailNameInput->TabIndex = 5;
 			this->customerMailNameInput->TabStop = false;
-			this->customerMailNameInput->TextChanged += gcnew System::EventHandler(this, &Root::customerMailNameInput_TextChanged);
 			// 
 			// customerMailLabel
 			// 
@@ -1331,7 +1330,6 @@ private: System::Windows::Forms::Button^ vlisualizeDeleteButton;
 			this->staffAddressCityInput->Name = L"staffAddressCityInput";
 			this->staffAddressCityInput->Size = System::Drawing::Size(115, 24);
 			this->staffAddressCityInput->TabIndex = 8;
-			this->staffAddressCityInput->SelectedIndexChanged += gcnew System::EventHandler(this, &Root::staffAddressCityInput_SelectedIndexChanged);
 			// 
 			// staffAddressCityCodeInput
 			// 
@@ -1641,7 +1639,6 @@ private: System::Windows::Forms::Button^ vlisualizeDeleteButton;
 			this->productUHTPriceCurrencySelector->Size = System::Drawing::Size(55, 24);
 			this->productUHTPriceCurrencySelector->TabIndex = 8;
 			this->productUHTPriceCurrencySelector->Text = L"€";
-			this->productUHTPriceCurrencySelector->SelectedIndexChanged += gcnew System::EventHandler(this, &Root::productUHTPriceCurrencySelector_SelectedIndexChanged);
 			// 
 			// productUHTPriceLabel
 			// 
@@ -1758,27 +1755,7 @@ private: System::Windows::Forms::Button^ vlisualizeDeleteButton;
 
 		}
 #pragma endregion
-	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void textBox5_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void comboBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void Root_Load(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void comboBox1_SelectedIndexChanged_1(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void label24_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void customerMailNameInput_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void productUHTPriceCurrencySelector_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void staffAddressCityInput_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-};
+		private: System::Void Root_Load(System::Object^ sender, System::EventArgs^ e) {
+		}
+	};
 }
