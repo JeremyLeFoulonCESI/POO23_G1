@@ -1,9 +1,11 @@
 #include "pch.h"
+#include "Root.h"
 
 using namespace System;
+using namespace System::Data;
 
 int main(array<System::String ^> ^args)
 {
-    // everything works !!!
-    return 0;
+    A2POOProjet::Root root;
+    root.ShowDialog();
 }
