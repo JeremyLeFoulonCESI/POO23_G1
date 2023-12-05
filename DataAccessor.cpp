@@ -32,7 +32,7 @@ String^ DataAccessor::update(String^ table, array<String^>^ columns, int ID, Str
         query = query->Remove(query->Length - 2);
     };
 
-    query += "WHERE " + primaryKey + " = " + ID + ";";
+    query += " WHERE " + primaryKey + " = " + ID + ";";
     return query;
 }
 
@@ -48,7 +48,10 @@ String^ DataAccessor::select(String^ table, String^ criteria, ... array<String^>
     };
 
     query += ") ";
-    query += "FROM " + table + " WHERE " + criteria + ";";
+    query += "FROM " + table;
+    if (criteria->Length)
+        query += " WHERE " + criteria;
+    query += ";";
     return query;
 }
 
