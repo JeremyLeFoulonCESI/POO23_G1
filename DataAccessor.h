@@ -23,7 +23,7 @@ public:
         return query;
     }
 
-    String^ update(String^ table, array<String^>^ columns, int ID, ... array<Object^>^ values)
+    String^ update(String^ table, array<String^>^ columns, int ID,  String^ primaryKey, ... array<Object^>^ values)
     {
         String^ query = "UPDATE" + table + "SET ";
         for (int i = 0; i < columns->Length; i++) {
@@ -37,7 +37,7 @@ public:
             query = query->Remove(query->Length - 2);
         };
 
-        query += "WHERE ID = " + ID + ";";
+        query += "WHERE" + primaryKey + " = " + ID + ";";
         return query;
     }
 
@@ -59,7 +59,9 @@ public:
 
     String^ remove(String^ table, String^ criteria)
     {
-        return nullptr; 
+        String^ query = "DELETE FROM ";
+        query += table + "WHERE " + criteria + ";";
+        return query;
     }
 };
 
