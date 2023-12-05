@@ -7,6 +7,7 @@ using namespace System;
 using namespace System::Data;
 
 void test_DataAccessor() {
+
     String^ insert = DataAccessor::insert("Client", "(col_a, col_b, col_c)", 1, 2, 3);
     Console::WriteLine(insert);
     // attendu: INSERT INTO Client (col_a, col_b, col_c) VALUES (1, 2, 3)

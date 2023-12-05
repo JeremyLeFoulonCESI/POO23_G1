@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataAccessor.h" />
+    <ClInclude Include="DataBaseWrapper.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Root.h">
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataAccessor.cpp" />
+    <ClCompile Include="DataBaseWrapper.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="pch.cpp">
