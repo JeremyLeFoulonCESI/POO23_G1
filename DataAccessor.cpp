@@ -4,7 +4,7 @@
 
 String^ DataAccessor::insert(String^ table, String^ columns, ... array<Object^>^ values)
 {
-    String^ query = "INSERT INTO" + table + "(" + columns + ") VALUES ";
+    String^ query = "INSERT INTO " + table + " (" + columns + ") VALUES (";
     for each (Object ^ obj in values) {
         String^ suiteQuery = obj->ToString();
         query += "'" + suiteQuery + "', ";
@@ -14,13 +14,13 @@ String^ DataAccessor::insert(String^ table, String^ columns, ... array<Object^>^
         query = query->Remove(query->Length - 2);
     };
 
-    query += ";";
+    query += ");";
     return query;
 }
 
 String^ DataAccessor::update(String^ table, array<String^>^ columns, int ID, String^ primaryKey, ... array<Object^>^ values)
 {
-    String^ query = "UPDATE" + table + "SET ";
+    String^ query = "UPDATE " + table + " SET ";
     for (int i = 0; i < columns->Length; i++) {
         String^ name = columns[i];
         Object^ value = values[i];
@@ -32,7 +32,7 @@ String^ DataAccessor::update(String^ table, array<String^>^ columns, int ID, Str
         query = query->Remove(query->Length - 2);
     };
 
-    query += "WHERE" + primaryKey + " = " + ID + ";";
+    query += "WHERE " + primaryKey + " = " + ID + ";";
     return query;
 }
 
@@ -48,14 +48,14 @@ String^ DataAccessor::select(String^ table, String^ criteria, ... array<String^>
     };
 
     query += ") ";
-    query += "FROM " + table + "WHERE " + criteria + ";";
+    query += "FROM " + table + " WHERE " + criteria + ";";
     return query;
 }
 
 String^ DataAccessor::remove(String^ table, String^ criteria)
 {
     String^ query = "DELETE FROM ";
-    query += table + "WHERE " + criteria + ";";
+    query += table + " WHERE " + criteria + ";";
     return query;
 }
 
