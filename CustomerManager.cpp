@@ -112,4 +112,14 @@ namespace Services {
 		result.invoiceAdresses = invoice_addresses->ToArray();
 		return result;
 	}
+	CustomerData CustomerManager::editCustomer(int id, CustomerData _new) {
+		CustomerData result = CustomerData();
+		return result;
+	}
+	void CustomerManager::removeCustomer(int id) {
+
+	}
+	DataTable^ CustomerManager::getAllCustomers() {
+		return nullptr;
+	}
 }
