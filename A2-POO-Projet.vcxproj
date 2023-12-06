@@ -126,6 +126,7 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Config.h" />
     <ClInclude Include="DataAccessor.h" />
     <ClInclude Include="DataBaseWrapper.h" />
     <ClInclude Include="Manager.h" />
