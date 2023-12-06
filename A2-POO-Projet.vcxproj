@@ -135,6 +135,7 @@
     <ClInclude Include="Root.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="StaffManager.h" />
     <ClInclude Include="SupplyManager.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="Struct.h" />
@@ -152,6 +153,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Root.cpp" />
+    <ClCompile Include="StaffManager.cpp" />
     <ClCompile Include="SupplyManager.cpp" />
     <ClCompile Include="Table.cpp" />
   </ItemGroup>
