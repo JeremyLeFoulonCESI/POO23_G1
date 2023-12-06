@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
 
+using namespace System;
+using namespace MySql::Data::MySqlClient;
+
+
 namespace Components {
 
-    using namespace System;
-    using namespace MySql::Data::MySqlClient;
 
     ref class DataAccessor
     {

@@ -8,19 +8,19 @@ using namespace System::Data;
 
 void test_DataAccessor() {
 
-    String^ insert = DataAccessor::insert("Client", "(col_a, col_b, col_c)", 1, 2, 3);
+    String^ insert = Components::DataAccessor::insert("Client", "(col_a, col_b, col_c)", 1, 2, 3);
     Console::WriteLine(insert);
     // attendu: INSERT INTO Client (col_a, col_b, col_c) VALUES (1, 2, 3)
 
-    String^ update = DataAccessor::update("Client", gcnew array<String^>{ "col_a", "col_b", "col_c" }, 1, "id", 4, 5, 6);
+    String^ update = Components::DataAccessor::update("Client", gcnew array<String^>{ "col_a", "col_b", "col_c" }, 1, "id", 4, 5, 6);
     Console::WriteLine(update);
     // attendu: UPDATE Client SET col_a = 4, col_b = 5, col_c = 6 WHERE id = 1
 
-    String^ select = DataAccessor::select("Client", "col_a = 2, col_b = 3", "col_a", "col_b", "col_c");
+    String^ select = Components::DataAccessor::select("Client", "col_a = 2, col_b = 3", "col_a", "col_b", "col_c");
     Console::WriteLine(select);
     // attendu: SELECT (col_a, col_b, col_c) FROM Client WHERE col_a = 2, col_b = 3
 
-    String^ remove = DataAccessor::remove("Client", "col_c = 6");
+    String^ remove = Components::DataAccessor::remove("Client", "col_c = 6");
     Console::WriteLine(remove);
     // attendu: DELETE FROM Client WHERE col_c = 6
 }
