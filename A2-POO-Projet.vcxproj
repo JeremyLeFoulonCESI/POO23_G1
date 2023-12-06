@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
+    <ClInclude Include="CustomerManager.h" />
     <ClInclude Include="DataAccessor.h" />
     <ClInclude Include="DataBaseWrapper.h" />
     <ClInclude Include="Manager.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Struct.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CustomerManager.cpp" />
     <ClCompile Include="DataAccessor.cpp" />
     <ClCompile Include="DataBaseWrapper.cpp" />
     <ClCompile Include="Main.cpp" />

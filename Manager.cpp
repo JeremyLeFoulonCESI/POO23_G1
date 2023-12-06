@@ -43,6 +43,15 @@ namespace Services {
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		query->ExecuteNonQuery();
 	}
+	DataTable^ Manager::dbSearchRows(Components::Table^ table, array<String^>^ criteria_names, array<Object^>^ criteria_values)
+	{
+		String^ query_str = Components::DataAccessor::select(table->getName(), table->bindKeysForSearch(criteria_names, criteria_values), nullptr);
+		MySqlCommand^ query = this->db->basicQuery(query_str);
+		MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(query);
+		DataTable^ result = gcnew DataTable;
+		adapter->Fill(result);
+		return result;
+	}
 	DataTable^ Manager::readAll(Components::Table^ table) {
 		String^ query_str = Components::DataAccessor::select(table->getName(), "", nullptr);
 		MySqlCommand^ query = this->db->basicQuery(query_str);

@@ -29,6 +29,25 @@ namespace Components {
 		return result;
 	}
 
+	String^ Table::bindKeysForSearch(array<String^>^ key_names, array<Object^>^ key_values) {
+		String^ result = "";
+		
+		if (key_names->Length != key_values->Length) {
+			return result;
+		}
+
+		for (int i = 0; i < key_names->Length; i++) {
+			String^ key_name = key_names[i];
+			Object^ key_value = key_values[i];
+
+			result += key_name + " = " + key_value + ",";
+		}
+		if (result->Length > 0 && result->EndsWith(",")) {
+			result = result->Remove(result->Length - 2);
+		}
+		return result;
+	}
+
 	String^ Table::bindPrimaryKeysForUpdate(... array<Object^>^ values) {
 		String^ result = "";
 
