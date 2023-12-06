@@ -130,6 +130,7 @@
     <ClInclude Include="DataAccessor.h" />
     <ClInclude Include="DataBaseWrapper.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="OrderManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Root.h">
@@ -145,6 +146,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="OrderManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
