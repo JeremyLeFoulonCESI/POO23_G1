@@ -134,6 +134,7 @@
     <ClInclude Include="Root.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataAccessor.cpp" />
@@ -148,6 +149,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Root.cpp" />
+    <ClCompile Include="Table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />
