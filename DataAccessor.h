@@ -11,11 +11,11 @@ namespace Components {
     ref class DataAccessor
     {
     public:
-        static String^ insert(String^ table, String^ columns, ... array<Object^>^ values);
+        static String^ insert(String^ table, String^ keys, ... array<Object^>^ values);
 
-        static String^ update(String^ table, array<String^>^ columns, int ID, String^ primaryKey, ... array<Object^>^ values);
+        static String^ update(String^ table, String^ bound_keys, String^ bound_primary_keys);
 
-        static String^ select(String^ table, String^ criteria, ... array<String^>^ columns);
+        static String^ select(String^ table, String^ criteria, ... array<String^>^ keys);
 
         static String^ remove(String^ table, String^ criteria);
     };
