@@ -57,7 +57,7 @@ namespace Services {
 	CustomerData CustomerManager::getCustomer(int id) {
 
 		DataTable^ found = this->dbSearchRows(Components::Table::getAddressTable(),
-			gcnew array<String^> {"CodeClient_ClientFacture"},
+			gcnew array<String^> {"CodeClient_ClientLivre"},
 			gcnew array<Object^> {Int32(id)}
 		);
 
@@ -78,7 +78,7 @@ namespace Services {
 		}
 
 		found = this->dbSearchRows(Components::Table::getAddressTable(),
-			gcnew array<String^> {"CodeClient_ClientLivre"},
+			gcnew array<String^> {"CodeClient_ClientFacture"},
 			gcnew array<Object^> {Int32(id)}
 		);
 
@@ -106,5 +106,10 @@ namespace Services {
 		result.firstName = Convert::ToString(array_customer[2]);
 		result.birth = safe_cast<MySqlDateTime>(array_customer[3]);
 		result.email = Convert::ToString(array_customer[4]);
+		result.phoneNumber = Convert::ToString(array_customer[5]);
+		result.firstPurchase = safe_cast<MySqlDateTime>(array_customer[6]);
+		result.deliveryAddresses = delivery_addresses->ToArray();
+		result.invoiceAdresses = invoice_addresses->ToArray();
+		return result;
 	}
 }
