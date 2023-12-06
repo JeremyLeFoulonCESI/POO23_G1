@@ -19,7 +19,7 @@ namespace Components {
 		array<String^>^ getPrimaryKeys();
 		array<String^>^ getKeys();
 		String^ getName();
-		
+
 		static Table^ getStaffTable();
 		static Table^ getCityTable();
 		static Table^ getAddressTable();
@@ -29,6 +29,5 @@ namespace Components {
 		static Table^ getProductTable();
 		static Table^ getPaymentTable();
 	};
-
 }
 
