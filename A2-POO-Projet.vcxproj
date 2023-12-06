@@ -133,6 +133,7 @@
     <ClInclude Include="Root.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Struct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataAccessor.cpp" />
