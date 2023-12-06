@@ -21,36 +21,33 @@ namespace Components {
         return query;
     }
 
-    String^ DataAccessor::update(String^ table, array<String^>^ columns, int ID, String^ primaryKey, ... array<Object^>^ values)
+    String^ DataAccessor::update(String^ table, String^ bound_keys, String^ bound_primary_keys)
     {
-        String^ query = "UPDATE " + table + " SET ";
-        for (int i = 0; i < columns->Length; i++) {
-            String^ name = columns[i];
-            Object^ value = values[i];
-            query += name + " = ";
-            query += "'" + value + "', ";
-        };
+        String^ query = "UPDATE " + table + " SET " + bound_keys;
 
-        if (values->Length > 0) {
-            query = query->Remove(query->Length - 2);
-        };
-
-        query += " WHERE " + primaryKey + " = " + ID + ";";
+        if (bound_primary_keys->Length > 1)
+            query += " WHERE " + bound_primary_keys + ";";
         return query;
     }
 
-    String^ DataAccessor::select(String^ table, String^ criteria, ... array<String^>^ columns)
+    String^ DataAccessor::select(String^ table, String^ criteria, ... array<String^>^ keys)
     {
-        String^ query = "SELECT (";
-        for each (String ^ name in columns) {
-            query += name + ", ";
-        };
+        String^ query = "SELECT ";
+        if (keys == nullptr || !keys->Length) {
+            query += "* ";
+        }
+        else {
+            query += "(";
+            for each (String ^ name in keys) {
+                query += name + ", ";
+            };
 
-        if (columns->Length > 0) {
-            query = query->Remove(query->Length - 2);
-        };
+            if (keys->Length > 0) {
+                query = query->Remove(query->Length - 2);
+            }
+            query += ") ";
+        }
 
-        query += ") ";
         query += "FROM " + table;
         if (criteria->Length)
             query += " WHERE " + criteria;
