@@ -13,13 +13,41 @@ namespace Services {
 			data.ref,
 			data.deliveryDate,
 			data.emissionDate,
-			data.items,
-			data.payments,
 			data.customer
 		};
 
 		array<Object^>^ result_array = this->dbCreateRow(Components::Table::getOrderTable(), array_data);
 		data.id = Convert::ToInt32(result_array[0]);
+
+		for each (OrderItem items in data.items) {
+			array<Object^>^ items_array = gcnew array<Object^> {
+				items.product.ref,
+			};
+			DataTable^ found = this->dbSearchRows(Components::Table::getOrderTable(), gcnew array<String^>{"Reference_Article"}, items_array);
+			DataRow^ item_row = found->Rows[0];
+			int id_item = Convert::ToInt32(item_row->ItemArray[0]);
+
+			array<Object^>^ order_array = gcnew array<Object^> {
+				items.product.ref,
+				items.productCount, 
+				items.discountRatio, 
+				items.TaxRatio, 
+				items.UHTPrice, 
+				id_item, 
+				data.id,
+			};
+			this->dbCreateRow(Components::Table::getContainsTable(), order_array);
+		}
+
+		for each (Payment payments in data.payments) {
+			array<Object^>^ paiement_array = gcnew array<Object^> {
+				payments.mean,
+				payments.receptionDate,
+				payments.paymentDate,
+				data.id,
+			};
+			this->dbCreateRow(Components::Table::getPaymentTable(), paiement_array);
+		}
 		return data;
 	}
 
