@@ -90,10 +90,21 @@ namespace structure {
 		String^ ToString() override;
 	};
 
-	String^ structure::Payment::ToString()
+	String^ Payment::ToString()
 	{
+		String^ mean_str;
+		switch (mean) {
+		case PaymentMean::Cash:
+			mean_str = "Espèces";
+			break;
+		case PaymentMean::CreditCard:
+			mean_str = "CB";
+			break;
+		default:
+			mean_str = "<Inconnu>";
+		}
 		String^ ConcatanedString;
-		ConcatanedString += mean;
+		ConcatanedString += mean_str;
 		ConcatanedString += ", ";
 		ConcatanedString += receptionDate;
 		ConcatanedString += ", ";
