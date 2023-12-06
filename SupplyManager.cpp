@@ -55,5 +55,26 @@ namespace Services {
 	void SupplyManager::removeProduct(int id) {
 		this->dbDeleteRow(Components::Table::getProductTable(), id);
 	}
+
+	DataTable^ SupplyManager::getAllProducts() {
+		DataTable^ raw_products = this->readAll(Components::Table::getProductTable());
+
+		DataTable^ result = gcnew DataTable;
+		result->Columns->AddRange(gcnew array<DataColumn^>{
+			gcnew DataColumn("Référence"),
+			gcnew DataColumn("Nom"),
+			gcnew DataColumn("Prix UHT"),
+			gcnew DataColumn("Valeur d'achat"),
+			gcnew DataColumn("Quantité en stock"),
+			gcnew DataColumn("Taux de la TVA"),
+			gcnew DataColumn("Taux de réduction"),
+			gcnew DataColumn("Seuil de réapprovisionnment")
+		});
+
+		for each (DataRow ^ row in raw_products->Rows) {
+			result->Rows->Add(row->ItemArray);
+		}
+		return result;
+	}
 }
 
