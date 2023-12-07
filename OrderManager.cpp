@@ -41,7 +41,7 @@ namespace Services {
 
 		for each (Payment payments in data.payments) {
 			array<Object^>^ paiement_array = gcnew array<Object^> {
-				payments.mean,
+				gcnew Int32((int)payments.mean),
 				payments.receptionDate,
 				payments.paymentDate,
 				data.id,
