@@ -129,8 +129,10 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="CustomerManager.h" />
     <ClInclude Include="DataAccessor.h" />
+    <ClInclude Include="DataAccessor2.h" />
     <ClInclude Include="DataBaseWrapper.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="Manager2.h" />
     <ClInclude Include="OrderManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -141,14 +143,17 @@
     <ClInclude Include="SupplyManager.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="Struct.h" />
+    <ClInclude Include="Table2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CustomerManager.cpp" />
     <ClCompile Include="DataAccessor.cpp" />
+    <ClCompile Include="DataAccessor2.cpp" />
     <ClCompile Include="DataBaseWrapper.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="Manager2.cpp" />
     <ClCompile Include="OrderManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -160,6 +165,7 @@
     <ClCompile Include="StaffManager.cpp" />
     <ClCompile Include="SupplyManager.cpp" />
     <ClCompile Include="Table.cpp" />
+    <ClCompile Include="Table2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />

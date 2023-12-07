@@ -2,7 +2,7 @@
 #include "SupplyManager.h"
 #include "Struct.h"
 
-namespace A2POOProjet {
+namespace HMI {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -16,6 +16,7 @@ namespace A2POOProjet {
 	/// </summary>
 	public ref class Root : public System::Windows::Forms::Form
 	{
+		bool is_editing;
 		Services::SupplyManager^ supply;
 
 	public:
@@ -31,6 +32,20 @@ namespace A2POOProjet {
 			this->statsGroup->Visible = false;
 			this->customerGroup->Visible = false;
 			this->ordersGroup->Visible = false;
+			this->categoriesGroup->Visible = false;
+			this->staffGroup->Visible = false;
+
+			this->is_editing = false;
+
+
+			this->validateButton->Click += gcnew EventHandler(this, &Root::validateButton_Click);
+			this->vlisualizeDeleteButton->Click += gcnew EventHandler(this, &Root::visualizeDeleteButton_Click);
+			this->addRadioButton->Click += gcnew EventHandler(this, &Root::addRadioButton_Selected);
+			this->EditRadioButton->Click += gcnew EventHandler(this, &Root::editRadioButton_Selected);
+			this->refreshGrid();
+		}
+		void refreshGrid() {
+			this->visualizeGrid->DataSource = this->supply->getAllProducts();
 		}
 
 	protected:
@@ -2098,7 +2113,35 @@ private: System::Windows::Forms::Label^ label1;
 			product.discountRatio = (float)this->productBaseDiscountInput->Value;
 			product.restockThreshold = (int)this->productRestockThresholdInput->Value;
 
-			product = this->supply->addProduct(product);
+			if (this->is_editing) {
+				int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+				auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+				//Console::WriteLine(selected_row[0]);
+				int selected_id = Int32::Parse(selected_row[0]->ToString());
+				product = this->supply->editProduct(selected_id, product);
+
+			}
+			else {
+				product = this->supply->addProduct(product);
+			}
+			this->refreshGrid();
+		}
+		void visualizeDeleteButton_Click(Object^ sender, EventArgs^ e) {
+			int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+			auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+			int selected_id = Int32::Parse(selected_row[0]->ToString());
+			this->supply->removeProduct(selected_id);
+			this->refreshGrid();
+		}
+		void addRadioButton_Selected(Object^ sender, EventArgs^ e) {
+			this->EditRadioButton->Checked = false;
+			this->addRadioButton->Checked = true;
+			this->is_editing = false;
+		}
+		void editRadioButton_Selected(Object^ sender, EventArgs^ e) {
+			this->addRadioButton->Checked = false;
+			this->EditRadioButton->Checked = true;
+			this->is_editing = true;
 		}
 	};
 		

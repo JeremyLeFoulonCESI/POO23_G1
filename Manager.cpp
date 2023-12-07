@@ -17,6 +17,7 @@ namespace Services {
 
 	array<Object^>^ Manager::dbCreateRow(Components::Table^ table, ...array<Object^>^ values) {
 		String^ query_str = Components::DataAccessor::insert(table->getName(), table->bundleForInsert(), values);
+		Console::WriteLine(query_str);
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		query->ExecuteNonQuery();
 		return gcnew array<Object^>{ this->db->lastInsertedId() };
@@ -35,11 +36,13 @@ namespace Services {
 	}
 	void Manager::dbUpdateRow(Components::Table^ table, array<Object^>^ values, ...array<Object^>^ primary_keys) {
 		String^ query_str = Components::DataAccessor::update(table->getName(), table->bindKeysForUpdate(values), table->bindPrimaryKeysForUpdate(primary_keys));
+		Console::WriteLine(query_str);
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		query->ExecuteNonQuery();
 	}
 	void Manager::dbDeleteRow(Components::Table^ table, ...array<Object^>^ primary_keys) {
 		String^ query_str = Components::DataAccessor::remove(table->getName(), table->bindPrimaryKeysForUpdate(primary_keys));
+		Console::WriteLine(query_str);
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		query->ExecuteNonQuery();
 	}

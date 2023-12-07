@@ -66,6 +66,11 @@ namespace structure {
 		float TVARatio;
 		float discountRatio;
 		int restockThreshold;
+
+		String^ ToString() override {
+			return "ProductData{ref=" + ref + ";nom=" + name + ";prix_UHT=" + priceNoTax + ";valeur_achat=" + purchaseValue +
+				";qtté=" + amount + ";TVA=" + TVARatio + ";remise=" + discountRatio + ";seuil_reappro=" + restockThreshold + "}";
+		}
 	};
 
 	value struct OrderItem {
