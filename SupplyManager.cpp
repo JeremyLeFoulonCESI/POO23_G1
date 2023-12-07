@@ -80,7 +80,16 @@ namespace Services {
 		});
 
 		for each (DataRow ^ row in raw_products->Rows) {
-			result->Rows->Add(row->ItemArray);
+			result->Rows->Add(
+				row->ItemArray[0], 
+				row->ItemArray[1], 
+				row->ItemArray[2], 
+				row->ItemArray[3], 
+				row->ItemArray[4], 
+				Convert::ToInt32(row->ItemArray[5]) * 100,
+				Convert::ToInt32(row->ItemArray[6]) * 100,
+				row->ItemArray[7]
+			);
 		}
 		this->dbCloseConnection();
 		return result;

@@ -17,6 +17,7 @@ namespace Services {
 			data.customer.id
 		};
 
+		this->dbOpenConnection();
 		array<Object^>^ result_array = this->dbCreateRow(Components::Table::getOrderTable(), array_data);
 		data.id = Convert::ToInt32(result_array[0]);
 
@@ -57,11 +58,13 @@ namespace Services {
 			};
 			this->dbCreateRow(Components::Table::getPaymentTable(), paiement_array);
 		}
+		this->dbCloseConnection();
 		return data;
 	}
 
 	OrderData OrderManager::getOrder(int id)
 	{
+		this->dbOpenConnection();
 		array<Object^>^ order_array = this->dbReadRow(Components::Table::getOrderTable(), id);
 		OrderData result = OrderData();
 		if (order_array->Length != 5)
@@ -97,6 +100,7 @@ namespace Services {
 		DataTable^ found_payments = this->dbSearchRows(Components::Table::getPaymentTable(),
 			gcnew array<String^>{"ID_Commande"}, gcnew array<Object^>{id}
 		);
+		this->dbCloseConnection();
 		List<Payment>^ payments = gcnew List<Payment>();
 		for each (DataRow^ payment_row in found_payments->Rows) {
 			String^ payment_mean = Convert::ToString(payment_row->ItemArray[1]);
@@ -122,7 +126,7 @@ namespace Services {
 
 	OrderData OrderManager::editOrder(int id, OrderData _new)
 	{
-
+		this->dbOpenConnection();
 		DataTable^ found_items = this->dbSearchRows(
 			Components::Table::getContainsTable(),
 			gcnew array<String^>{ "ID_Commande" },
@@ -183,11 +187,14 @@ namespace Services {
 			_new.customer.id
 		};
 		this->dbUpdateRow(Components::Table::getOrderTable(), order_array, id);
-
+		this->dbCloseConnection();
+		_new.id = id;
+		return _new;
 	}
 
 	void OrderManager::removeOrder(int id)
 	{
+		this->dbOpenConnection();
 		DataTable^ found_items = this->dbSearchRows(
 			Components::Table::getContainsTable(),
 			gcnew array<String^>{ "ID_Commande" },
@@ -208,8 +215,8 @@ namespace Services {
 			this->dbDeleteRow(Components::Table::getPaymentTable(), id);
 		}
 
-
 		this->dbDeleteRow(Components::Table::getOrderTable(), id);
+		this->dbCloseConnection();
 	}
 
 	DataTable^ OrderManager::getAllOrders() {
@@ -225,7 +232,7 @@ namespace Services {
 			gcnew DataColumn("Montant total TVA en €"),
 			gcnew DataColumn("Montant total TTC en €")
 		});
-
+		this->dbOpenConnection();
 		DataTable^ all_orders = this->readAll(Components::Table::getOrderTable());
 
 		for each (DataRow^ order_row in all_orders->Rows) {
@@ -303,6 +310,7 @@ namespace Services {
 
 			result->Rows->Add(customer_str, reference, dDate_str, eDate_str, payments_str, items_str, ht_total, tva_total, ttc_total);
 		}
+		this->dbCloseConnection();
 		return result;
 	}
 	

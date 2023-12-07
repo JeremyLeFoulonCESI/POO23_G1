@@ -16,6 +16,7 @@ namespace Services {
 			data.phoneNumber,
 			data.firstPurchase
 		};
+		this->dbOpenConnection();
 
 		array<Object^>^ primary = this->dbCreateRow(Components::Table::getCustomerTable(), customer_array);
 		int id_customer = Convert::ToInt32(primary[0]);
@@ -54,12 +55,13 @@ namespace Services {
 			this->dbCreateRow(Components::Table::getAddressTable(), address_array);
 		}
 
+		this->dbCloseConnection();
 		data.id = id_customer;
 		return data;
 	}
 
 	CustomerData CustomerManager::getCustomer(int id) {
-
+		this->dbOpenConnection();
 		DataTable^ found = this->dbSearchRows(Components::Table::getAddressTable(),
 			gcnew array<String^> {"CodeClient_ClientLivre"},
 			gcnew array<Object^> {Int32(id)}
@@ -103,6 +105,7 @@ namespace Services {
 		}
 
 		array<Object^>^ array_customer = this->dbReadRow(Components::Table::getCustomerTable(), id);
+		this->dbCloseConnection();
 
 		CustomerData result = CustomerData();
 		result.id = id;
@@ -127,6 +130,7 @@ namespace Services {
 			_new.firstPurchase
 		};
 
+		this->dbOpenConnection();
 		this->dbUpdateRow(Components::Table::getCustomerTable(), customer_array, id);
 
 
@@ -182,12 +186,12 @@ namespace Services {
 			int id_address = Convert::ToInt32(row->ItemArray[0]);
 			this->dbDeleteRow(Components::Table::getAddressTable(), id_address);
 		}
+		this->dbCloseConnection();
 		_new.id = id;
 		return _new;
 	}
 	void CustomerManager::removeCustomer(int id) {
-		this->dbDeleteRow(Components::Table::getCustomerTable(), id);
-
+		this->dbOpenConnection();
 		DataTable^ delivery_addresses = this->dbSearchRows(Components::Table::getAddressTable(),
 			gcnew array<String^>{ "CodeClient_ClientLivre" },
 			gcnew array<Object^>{ id }
@@ -204,6 +208,8 @@ namespace Services {
 			int id_address = Convert::ToInt32(row->ItemArray[0]);
 			this->dbDeleteRow(Components::Table::getAddressTable(), id_address);
 		}
+		this->dbDeleteRow(Components::Table::getCustomerTable(), id);
+		this->dbCloseConnection();
 	}
 	DataTable^ CustomerManager::getAllCustomers() {
 		DataTable^ result = gcnew DataTable;
@@ -219,6 +225,7 @@ namespace Services {
 			gcnew DataColumn("Adresses de facturation")
 		});
 
+		this->dbOpenConnection();
 		DataTable^ found = this->readAll(Components::Table::getCustomerTable());
 
 		for each (DataRow ^ customer_row in found->Rows) {
@@ -285,6 +292,7 @@ namespace Services {
 				invoice_addresses_str
 			);
 		}
+		this->dbCloseConnection();
 		return result;
 	}
 }
