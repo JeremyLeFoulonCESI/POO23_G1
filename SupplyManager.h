@@ -15,6 +15,7 @@ namespace Services {
 		ProductData getProduct(int id);
 		ProductData editProduct(int id, ProductData _new);
 		void removeProduct(int id);
+		DataTable^ getAllProducts();
 	};
 }
 

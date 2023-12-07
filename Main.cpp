@@ -5,6 +5,7 @@
 
 using namespace System;
 using namespace System::Data;
+using namespace System::Windows::Forms;
 
 void test_DataAccessor() {
 
@@ -28,5 +29,8 @@ void test_DataAccessor() {
 
 int main(array<System::String ^> ^args)
 {
-    
+    Application::CurrentCulture = gcnew System::Globalization::CultureInfo("en-US");
+    //System::Threading::Thread::CurrentThread->CurrentCulture = gcnew System::Globalization::CultureInfo("en-US");
+    HMI::Root^ root = gcnew HMI::Root();
+    Application::Run(root);
 }

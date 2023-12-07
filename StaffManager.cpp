@@ -19,18 +19,18 @@ namespace Services {
 
     StaffMemberData StaffManager::getStaff(int id){
         array<Object^>^ result_array = this->dbReadRow(Components::Table::getStaffTable(), id);
-        StaffMemberData result;
+        StaffMemberData result = StaffMemberData();
         if (result_array->Length != 5)
             return result;
         result.id = id;
-        result.firstName = Convert::ToString(result_array[0]);
-        result.lastName = Convert::ToString(result_array[1]);
-        result.hireDate = safe_cast<MySqlDateTime>(result_array[2]);
-        result.superior = Convert::ToInt32(result_array[3]);
+        result.firstName = safe_cast<String^>(result_array[0]);
+        result.lastName = safe_cast<String^>(result_array[1]);
+        result.hireDate = *safe_cast<MySqlDateTime^>(result_array[2]);
+        result.superior = *safe_cast<Int32^>(result_array[3]);
         //récupérer l'ID du membre du staff
         //récupérer l'ID de son adresse
         //récupérer l'ID de sa ville
-        result.address = Convert::ToString(result_array[4]);
+        //result.address = {};
         return result;
     }
 

@@ -17,16 +17,19 @@ namespace Services {
 			data.discountRatio,
 			data.restockThreshold
 		};
-
+		this->dbOpenConnection();
 		array<Object^>^ result_array = this->dbCreateRow(Components::Table::getProductTable(), array_data);
 		data.ref = Convert::ToInt32(result_array[0]);
+		this->dbCloseConnection();
 		return data;
 	}
 	ProductData SupplyManager::getProduct(int id) {
+		this->dbOpenConnection();
 		array<Object^>^ result_array = this->dbReadRow(Components::Table::getProductTable(), id);
 		ProductData result;
 		if (result_array->Length != 7)
 			return result;
+		this->dbCloseConnection();
 		result.ref = id;
 		result.name = Convert::ToString(result_array[0]);
 		result.priceNoTax = (float)Convert::ToDecimal(result_array[1]);
@@ -48,12 +51,39 @@ namespace Services {
 			_new.discountRatio,
 			_new.restockThreshold
 		};
+		this->dbOpenConnection();
 		this->dbUpdateRow(Components::Table::getProductTable(), input_array, id);
 		_new.ref = id;
+		this->dbCloseConnection();
 		return _new;
 	}
 	void SupplyManager::removeProduct(int id) {
+		this->dbOpenConnection();
 		this->dbDeleteRow(Components::Table::getProductTable(), id);
+		this->dbCloseConnection();
+	}
+
+	DataTable^ SupplyManager::getAllProducts() {
+		this->dbOpenConnection();
+		DataTable^ raw_products = this->readAll(Components::Table::getProductTable());
+
+		DataTable^ result = gcnew DataTable;
+		result->Columns->AddRange(gcnew array<DataColumn^>{
+			gcnew DataColumn("Référence"),
+			gcnew DataColumn("Nom"),
+			gcnew DataColumn("Prix UHT"),
+			gcnew DataColumn("Valeur d'achat"),
+			gcnew DataColumn("Quantité en stock"),
+			gcnew DataColumn("Taux de la TVA"),
+			gcnew DataColumn("Taux de réduction"),
+			gcnew DataColumn("Seuil de réapprovisionnment")
+		});
+
+		for each (DataRow ^ row in raw_products->Rows) {
+			result->Rows->Add(row->ItemArray);
+		}
+		this->dbCloseConnection();
+		return result;
 	}
 }
 
