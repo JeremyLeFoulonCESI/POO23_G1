@@ -126,7 +126,6 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Config.h" />
     <ClInclude Include="CustomerManager.h" />
     <ClInclude Include="DataAccessor.h" />
     <ClInclude Include="DataAccessor2.h" />
