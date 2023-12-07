@@ -74,20 +74,23 @@ namespace Services {
 			gcnew DataColumn("Prix UHT"),
 			gcnew DataColumn("Valeur d'achat"),
 			gcnew DataColumn("Quantité en stock"),
-			gcnew DataColumn("Taux de la TVA"),
-			gcnew DataColumn("Taux de réduction"),
+			gcnew DataColumn("Taux de la TVA en %"),
+			gcnew DataColumn("Taux de réduction en %"),
 			gcnew DataColumn("Seuil de réapprovisionnment")
 		});
 
 		for each (DataRow ^ row in raw_products->Rows) {
+			if (Convert::ToInt32(row->ItemArray[4]) < 0)
+				continue;
+
 			result->Rows->Add(
 				row->ItemArray[0], 
 				row->ItemArray[1], 
 				row->ItemArray[2], 
 				row->ItemArray[3], 
 				row->ItemArray[4], 
-				Convert::ToInt32(row->ItemArray[5]) * 100,
-				Convert::ToInt32(row->ItemArray[6]) * 100,
+				gcnew Int32((float)Convert::ToDecimal(row->ItemArray[5]) * 100),
+				gcnew Int32((float)Convert::ToDecimal(row->ItemArray[6]) * 100),
 				row->ItemArray[7]
 			);
 		}
