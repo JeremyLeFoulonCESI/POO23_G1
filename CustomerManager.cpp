@@ -30,7 +30,11 @@ namespace Services {
 			int id_city = Convert::ToInt32(city_row->ItemArray[0]);
 
 			array<Object^>^ address_array = gcnew array<Object^> {
-				address.streetNum, address.streetName, id_city, id_customer, gcnew String("NULL")
+				address.streetNum, 
+				address.streetName, 
+				id_city, 
+				id_customer, 
+				gcnew String("NULL")
 			};
 			this->dbCreateRow(Components::Table::getAddressTable(), address_array);
 		}
