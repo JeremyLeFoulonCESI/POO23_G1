@@ -364,3 +364,9 @@ FodyWeavers.xsd
 /packages.config
 /packages.config
 /Config.h
+/Table2.h
+/Manager2.h
+/DataAccessor2.h
+/Manager2.cpp
+/DataAccessor2.cpp
+/Table2.cpp
