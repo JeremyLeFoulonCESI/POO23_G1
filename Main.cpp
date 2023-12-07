@@ -12,7 +12,7 @@ void test_DataAccessor() {
     Console::WriteLine(insert);
     // attendu: INSERT INTO Client (col_a, col_b, col_c) VALUES (1, 2, 3)
 
-    String^ update = Components::DataAccessor::update("Client", gcnew array<String^>{ "col_a", "col_b", "col_c" }, 1, "id", 4, 5, 6);
+    String^ update = Components::DataAccessor::update("Client", "", "");
     Console::WriteLine(update);
     // attendu: UPDATE Client SET col_a = 4, col_b = 5, col_c = 6 WHERE id = 1
 
