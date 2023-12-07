@@ -164,6 +164,7 @@
     </ClCompile>
     <ClCompile Include="Root.cpp" />
     <ClCompile Include="StaffManager.cpp" />
+    <ClCompile Include="Struct.cpp" />
     <ClCompile Include="SupplyManager.cpp" />
     <ClCompile Include="Table.cpp" />
   </ItemGroup>

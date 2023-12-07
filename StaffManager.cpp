@@ -25,7 +25,7 @@ namespace Services {
         result.id = id;
         result.firstName = safe_cast<String^>(result_array[0]);
         result.lastName = safe_cast<String^>(result_array[1]);
-        result.hireDate = *safe_cast<MySqlDateTime^>(result_array[2]);
+        result.hireDate = safe_cast<DateTime^>(result_array[2]);
         result.superior = *safe_cast<Int32^>(result_array[3]);
         //récupérer l'ID du membre du staff
         //récupérer l'ID de son adresse

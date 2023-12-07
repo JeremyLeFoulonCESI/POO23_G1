@@ -13,7 +13,7 @@ namespace Services {
 			data.ref,
 			data.deliveryDate,
 			data.emissionDate,
-			data.customer
+			data.customer.id
 		};
 
 		array<Object^>^ result_array = this->dbCreateRow(Components::Table::getOrderTable(), array_data);
@@ -23,7 +23,7 @@ namespace Services {
 			array<Object^>^ items_array = gcnew array<Object^> {
 				items.product.ref,
 			};
-			DataTable^ found = this->dbSearchRows(Components::Table::getOrderTable(), gcnew array<String^>{"Reference_Article"}, items_array);
+			DataTable^ found = this->dbSearchRows(Components::Table::getProductTable(), gcnew array<String^>{"Reference_Article"}, items_array);
 			DataRow^ item_row = found->Rows[0];
 			int id_item = Convert::ToInt32(item_row->ItemArray[0]);
 
@@ -40,8 +40,18 @@ namespace Services {
 		}
 
 		for each (Payment payments in data.payments) {
+			String^ mean_str = "<Inconnu>";
+			switch (payments.mean) {
+			case PaymentMean::CreditCard:
+				mean_str = "CB";
+				break;
+			case PaymentMean::Cash:
+				mean_str = "Espèces";
+				break;
+			}
+
 			array<Object^>^ paiement_array = gcnew array<Object^> {
-				gcnew Int32((int)payments.mean),
+				mean_str,
 				payments.receptionDate,
 				payments.paymentDate,
 				data.id,
@@ -53,17 +63,61 @@ namespace Services {
 
 	OrderData OrderManager::getOrder(int id)
 	{
-		array<Object^>^ result_array = this->dbReadRow(Components::Table::getOrderTable(), id);
-		OrderData result;
-		if (result_array->Length != 5)
+		array<Object^>^ order_array = this->dbReadRow(Components::Table::getOrderTable(), id);
+		OrderData result = OrderData();
+		if (order_array->Length != 5)
 			return result;
 
+		DataTable^ found_items = this->dbSearchRows(Components::Table::getContainsTable(),
+			gcnew array<String^>{"ID_Commande"}, gcnew array<Object^>{id}
+		);
+		List<OrderItem>^ order_items = gcnew List<OrderItem>();
+		for each (DataRow^ item_row in found_items->Rows) {
+			int product_id = Convert::ToInt32(item_row->ItemArray[1]);
+
+			array<Object^>^ product_array = this->dbReadRow(Components::Table::getProductTable(), product_id);
+
+			OrderItem item = OrderItem();
+			item.product = ProductData();
+			item.product.ref = product_id;
+			item.product.name = Convert::ToString(product_array[1]);
+			item.product.priceNoTax = (float)Convert::ToDecimal(product_array[2]);
+			item.product.purchaseValue = (float)Convert::ToDecimal(product_array[3]);
+			item.product.amount = Convert::ToInt32(product_array[4]);
+			item.product.TVARatio = (float)Convert::ToDecimal(product_array[5]);
+			item.product.discountRatio = (float)Convert::ToDecimal(product_array[6]);
+			item.product.restockThreshold = Convert::ToInt32(product_array[7]);
+
+			item.productCount = Convert::ToInt32(item_row->ItemArray[2]);
+			item.discountRatio = (float)Convert::ToDecimal(item_row->ItemArray[3]);
+			item.TaxRatio = (float)Convert::ToDecimal(item_row->ItemArray[4]);
+			item.UHTPrice = (float)Convert::ToDecimal(item_row->ItemArray[5]);
+
+			order_items->Add(item);
+		}
+		DataTable^ found_payments = this->dbSearchRows(Components::Table::getPaymentTable(),
+			gcnew array<String^>{"ID_Commande"}, gcnew array<Object^>{id}
+		);
+		List<Payment>^ payments = gcnew List<Payment>();
+		for each (DataRow^ payment_row in found_payments->Rows) {
+			String^ payment_mean = Convert::ToString(payment_row->ItemArray[1]);
+
+			Payment payment = Payment();
+			payment.mean = PaymentMean::CreditCard;
+			if (payment_mean->Equals("CB")) {
+				payment.mean = PaymentMean::CreditCard;
+			}
+			payment.receptionDate = safe_cast<DateTime^>(payment_row->ItemArray[2]);
+			payment.paymentDate = safe_cast<DateTime^>(payment_row->ItemArray[3]);
+			payments->Add(payment);
+		}
+
 		result.id = id;
-		result.deliveryDate = safe_cast<MySqlDateTime>(result_array[0]);
-		result.emissionDate = safe_cast<MySqlDateTime>(result_array[1]);
-		result.items =  safe_cast<array<OrderItem>^>(result_array[2]);
-		result.payments = safe_cast<array<Payment>^>(result_array[3]);
-		result.customer = safe_cast<CustomerData>(result_array[4]);
+		result.deliveryDate = safe_cast<DateTime^>(order_array[0]);
+		result.emissionDate = safe_cast<DateTime^>(order_array[1]);
+		result.items = order_items->ToArray();
+		result.payments = payments->ToArray();
+		result.customer = safe_cast<CustomerData>(order_array[4]);
 		return result;
 	}
 
