@@ -1,6 +1,8 @@
 #pragma once
+#include "SupplyManager.h"
+#include "Struct.h"
 
-namespace A2POOProjet {
+namespace HMI {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -14,6 +16,9 @@ namespace A2POOProjet {
 	/// </summary>
 	public ref class Root : public System::Windows::Forms::Form
 	{
+		bool is_editing;
+		Services::SupplyManager^ supply;
+
 	public:
 		Root(void)
 		{
@@ -21,8 +26,26 @@ namespace A2POOProjet {
 			//
 			//TODO: Add the constructor code here
 			//
+			this->supply = gcnew Services::SupplyManager();
 			this->productUHTPriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
 			this->productPurchasePriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
+			this->statsGroup->Visible = false;
+			this->customerGroup->Visible = false;
+			this->ordersGroup->Visible = false;
+			this->categoriesGroup->Visible = false;
+			this->staffGroup->Visible = false;
+
+			this->is_editing = false;
+
+
+			this->validateButton->Click += gcnew EventHandler(this, &Root::validateButton_Click);
+			this->vlisualizeDeleteButton->Click += gcnew EventHandler(this, &Root::visualizeDeleteButton_Click);
+			this->addRadioButton->Click += gcnew EventHandler(this, &Root::addRadioButton_Selected);
+			this->EditRadioButton->Click += gcnew EventHandler(this, &Root::editRadioButton_Selected);
+			this->refreshGrid();
+		}
+		void refreshGrid() {
+			this->visualizeGrid->DataSource = this->supply->getAllProducts();
 		}
 
 	protected:
@@ -72,26 +95,6 @@ namespace A2POOProjet {
 	private: System::Windows::Forms::Button^ validateButton;
 	private: System::Windows::Forms::GroupBox^ customerGroup;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::Label^ label10;
 	private: System::Windows::Forms::TextBox^ textBox9;
 	private: System::Windows::Forms::Label^ customerMailDotLabel;
@@ -114,13 +117,6 @@ namespace A2POOProjet {
 
 
 	private: System::Windows::Forms::Label^ customerFNameLabel;
-
-
-
-
-
-
-
 	private: System::Windows::Forms::Label^ customerLNameLabel;
 	private: System::Windows::Forms::TextBox^ customerFNameInput;
 
@@ -128,40 +124,11 @@ namespace A2POOProjet {
 
 private: System::Windows::Forms::TextBox^ customerLNameInput;
 
-
-
-
-
-
-
-
 	private: System::Windows::Forms::GroupBox^ groupBox7;
 	private: System::Windows::Forms::GroupBox^ ordersGroup;
 private: System::Windows::Forms::ListBox^ ordersClientSelector;
 private: System::Windows::Forms::GroupBox^ ordersPaymentGroup;
 private: System::Windows::Forms::Button^ ordersRemovePayment;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 private: System::Windows::Forms::Button^ ordersNewPayment;
 
@@ -171,45 +138,10 @@ private: System::Windows::Forms::Label^ ordersEmitLabel;
 
 private: System::Windows::Forms::Label^ ordersDeliveryLabel;
 
-
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::Label^ label23;
 	private: System::Windows::Forms::GroupBox^ groupBox11;
 private: System::Windows::Forms::GroupBox^ customerDeliveryGroup;
 private: System::Windows::Forms::Button^ CustomerRemoveDeliveryButton;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 private: System::Windows::Forms::Button^ customerNewDeliveryButton;
 
@@ -228,24 +160,15 @@ private: System::Windows::Forms::GroupBox^ staffGroup;
 private: System::Windows::Forms::Label^ staffSuperiorLabel;
 private: System::Windows::Forms::ListBox^ staffSuperiorSelector;
 
-
-
-
 private: System::Windows::Forms::GroupBox^ staffAddressGroup;
 private: System::Windows::Forms::ComboBox^ staffAddressCityInput;
 private: System::Windows::Forms::TextBox^ staffAddressCityCodeInput;
 private: System::Windows::Forms::Label^ staffAddressCityCodeLabel;
 
-
-
-
-
-
 private: System::Windows::Forms::Label^ staffAddressCityLabel;
 
 private: System::Windows::Forms::Label^ staffAddressStreetLabel;
 private: System::Windows::Forms::TextBox^ staffAddressStreetInput;
-
 
 private: System::Windows::Forms::TextBox^ staffAddressNumberInput;
 
@@ -258,32 +181,11 @@ private: System::Windows::Forms::Label^ staffFNameLabel;
 private: System::Windows::Forms::Label^ staffLNameLabel;
 private: System::Windows::Forms::TextBox^ staffFNameInput;
 
-
-
-
-
-
-
-
-
 private: System::Windows::Forms::TextBox^ staffLNameInput;
 
 
 private: System::Windows::Forms::GroupBox^ groupBox16;
 private: System::Windows::Forms::NumericUpDown^ staffHiredYearInput;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 private: System::Windows::Forms::NumericUpDown^ staffHiredMonthInput;
 
@@ -297,43 +199,12 @@ private: System::Windows::Forms::NumericUpDown^ customerBirthYearInput;
 
 private: System::Windows::Forms::NumericUpDown^ customerBirthMonthInput;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 private: System::Windows::Forms::Label^ customerBirthSlash2;
 
 
 
 private: System::Windows::Forms::Label^ customerBirthSlash1;
 private: System::Windows::Forms::NumericUpDown^ ordersEmitYearInput;
-
-
-
-
-
-
 
 private: System::Windows::Forms::NumericUpDown^ ordersEmitMonthInput;
 
@@ -353,58 +224,6 @@ private: System::Windows::Forms::Label^ ordersDdeliverySlash2;
 
 
 private: System::Windows::Forms::Label^ ordersDeliverySlash1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 private: System::Windows::Forms::Button^ vlisualizeDeleteButton;
 private: System::Windows::Forms::Button^ statsAverageBasketButton;
@@ -488,63 +307,6 @@ private: System::Windows::Forms::Label^ label1;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -572,6 +334,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->addRadioButton = (gcnew System::Windows::Forms::RadioButton());
 			this->validateButton = (gcnew System::Windows::Forms::Button());
 			this->customerGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->customerBirthDayInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->customerBirthYearInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->customerBirthMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->customerBirthSlash2 = (gcnew System::Windows::Forms::Label());
@@ -654,18 +417,31 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsStockPurchaseValueButton = (gcnew System::Windows::Forms::Button());
 			this->statsSimulationButton = (gcnew System::Windows::Forms::Button());
 			this->statsGroup = (gcnew System::Windows::Forms::GroupBox());
-			this->statsUnknownMarkdownPercentLabel = (gcnew System::Windows::Forms::Label());
-			this->statsUnknownMarkdownNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
-			this->statsComDiscountPercentLabel = (gcnew System::Windows::Forms::Label());
-			this->statsComDiscountValueNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
-			this->statsComMarginPercentLabel = (gcnew System::Windows::Forms::Label());
-			this->statsComMarginValueNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
-			this->statsTVAPercentLabel = (gcnew System::Windows::Forms::Label());
-			this->statsTVAValueNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
-			this->statsUnknownMarkdownLabel = (gcnew System::Windows::Forms::Label());
-			this->statsComDiscountValueLabel = (gcnew System::Windows::Forms::Label());
-			this->statsComMarginValueLabel = (gcnew System::Windows::Forms::Label());
+			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
+			this->dataGridView2 = (gcnew System::Windows::Forms::DataGridView());
+			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
+			this->dataGridView3 = (gcnew System::Windows::Forms::DataGridView());
+			this->groupBox5 = (gcnew System::Windows::Forms::GroupBox());
+			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
 			this->statsTVAValueLabel = (gcnew System::Windows::Forms::Label());
+			this->statsComMarginValueLabel = (gcnew System::Windows::Forms::Label());
+			this->statsComDiscountValueLabel = (gcnew System::Windows::Forms::Label());
+			this->statsUnknownMarkdownPercentLabel = (gcnew System::Windows::Forms::Label());
+			this->statsUnknownMarkdownLabel = (gcnew System::Windows::Forms::Label());
+			this->statsComDiscountPercentLabel = (gcnew System::Windows::Forms::Label());
+			this->statsUnknownMarkdownNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
+			this->statsComMarginPercentLabel = (gcnew System::Windows::Forms::Label());
+			this->statsTVAValueNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
+			this->statsTVAPercentLabel = (gcnew System::Windows::Forms::Label());
+			this->statsComMarginValueNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
+			this->statsComDiscountValueNumericUpDown = (gcnew System::Windows::Forms::NumericUpDown());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox19 = (gcnew System::Windows::Forms::GroupBox());
 			this->productNameLabel = (gcnew System::Windows::Forms::Label());
 			this->productNameInput = (gcnew System::Windows::Forms::TextBox());
@@ -681,34 +457,21 @@ private: System::Windows::Forms::Label^ label1;
 			this->productTaxesInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->productTaxesPercent = (gcnew System::Windows::Forms::Label());
 			this->productDiscountGroup = (gcnew System::Windows::Forms::GroupBox());
-			this->productBaseDiscountLabel = (gcnew System::Windows::Forms::Label());
-			this->productCountWeightLabel = (gcnew System::Windows::Forms::Label());
-			this->productBaseDiscountInput = (gcnew System::Windows::Forms::NumericUpDown());
-			this->productCountWeightInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->productBaseDiscountPercent = (gcnew System::Windows::Forms::Label());
+			this->productCountWeightInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->productBaseDiscountInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->productCountWeightLabel = (gcnew System::Windows::Forms::Label());
+			this->productBaseDiscountLabel = (gcnew System::Windows::Forms::Label());
 			this->productRestockThresholdLabel = (gcnew System::Windows::Forms::Label());
 			this->productRestockThresholdInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->productGroup = (gcnew System::Windows::Forms::GroupBox());
-			this->customerBirthDayInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
-			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
-			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
-			this->groupBox5 = (gcnew System::Windows::Forms::GroupBox());
-			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
-			this->dataGridView2 = (gcnew System::Windows::Forms::DataGridView());
-			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
-			this->dataGridView3 = (gcnew System::Windows::Forms::DataGridView());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->categoriesGroup->SuspendLayout();
 			this->visualizeGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->visualizeGrid))->BeginInit();
 			this->validateGroup->SuspendLayout();
 			this->customerGroup->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthDayInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthYearInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthMonthInput))->BeginInit();
 			this->customerInvoiceGroup->SuspendLayout();
@@ -731,30 +494,29 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsMonthChoiceTurnover))->BeginInit();
 			this->statsGroup->SuspendLayout();
+			this->groupBox6->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView2))->BeginInit();
+			this->groupBox8->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView3))->BeginInit();
+			this->groupBox5->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
+			this->groupBox4->SuspendLayout();
+			this->groupBox3->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsUnknownMarkdownNumericUpDown))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComDiscountValueNumericUpDown))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComMarginValueNumericUpDown))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsTVAValueNumericUpDown))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComMarginValueNumericUpDown))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComDiscountValueNumericUpDown))->BeginInit();
+			this->groupBox2->SuspendLayout();
+			this->groupBox1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productUHTPriceInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productPurchasePriceInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productStockInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productTaxesInput))->BeginInit();
 			this->productDiscountGroup->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productBaseDiscountInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productCountWeightInput))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productBaseDiscountInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productRestockThresholdInput))->BeginInit();
 			this->productGroup->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthDayInput))->BeginInit();
-			this->groupBox1->SuspendLayout();
-			this->groupBox2->SuspendLayout();
-			this->groupBox3->SuspendLayout();
-			this->groupBox4->SuspendLayout();
-			this->groupBox5->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
-			this->groupBox6->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView2))->BeginInit();
-			this->groupBox8->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView3))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// categoriesGroup
@@ -826,9 +588,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->visualizeGroup->Controls->Add(this->vlisualizeDeleteButton);
 			this->visualizeGroup->Controls->Add(this->visualizeGrid);
 			this->visualizeGroup->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->visualizeGroup->Location = System::Drawing::Point(554, 576);
+			this->visualizeGroup->Location = System::Drawing::Point(515, 8);
 			this->visualizeGroup->Name = L"visualizeGroup";
-			this->visualizeGroup->Size = System::Drawing::Size(390, 480);
+			this->visualizeGroup->Size = System::Drawing::Size(390, 487);
 			this->visualizeGroup->TabIndex = 2;
 			this->visualizeGroup->TabStop = false;
 			this->visualizeGroup->Text = L"Visualisation des données";
@@ -859,9 +621,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->validateGroup->Controls->Add(this->EditRadioButton);
 			this->validateGroup->Controls->Add(this->addRadioButton);
 			this->validateGroup->Controls->Add(this->validateButton);
-			this->validateGroup->Location = System::Drawing::Point(554, 514);
+			this->validateGroup->Location = System::Drawing::Point(113, 439);
 			this->validateGroup->Name = L"validateGroup";
-			this->validateGroup->Size = System::Drawing::Size(384, 56);
+			this->validateGroup->Size = System::Drawing::Size(396, 56);
 			this->validateGroup->TabIndex = 3;
 			this->validateGroup->TabStop = false;
 			this->validateGroup->Text = L"Validation";
@@ -926,6 +688,16 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->TabIndex = 4;
 			this->customerGroup->TabStop = false;
 			this->customerGroup->Text = L"Edition des données client";
+			// 
+			// customerBirthDayInput
+			// 
+			this->customerBirthDayInput->Location = System::Drawing::Point(199, 84);
+			this->customerBirthDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
+			this->customerBirthDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->customerBirthDayInput->Name = L"customerBirthDayInput";
+			this->customerBirthDayInput->Size = System::Drawing::Size(50, 22);
+			this->customerBirthDayInput->TabIndex = 42;
+			this->customerBirthDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// customerBirthYearInput
 			// 
@@ -1733,99 +1505,144 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsGroup->Controls->Add(this->groupBox3);
 			this->statsGroup->Controls->Add(this->groupBox2);
 			this->statsGroup->Controls->Add(this->groupBox1);
-			this->statsGroup->Location = System::Drawing::Point(12, 2);
+			this->statsGroup->Location = System::Drawing::Point(1522, 498);
 			this->statsGroup->Name = L"statsGroup";
-			this->statsGroup->Size = System::Drawing::Size(926, 494);
+			this->statsGroup->Size = System::Drawing::Size(150, 144);
 			this->statsGroup->TabIndex = 0;
 			this->statsGroup->TabStop = false;
 			this->statsGroup->Text = L"Statistiques";
 			// 
-			// statsUnknownMarkdownPercentLabel
+			// groupBox6
 			// 
-			this->statsUnknownMarkdownPercentLabel->AutoSize = true;
-			this->statsUnknownMarkdownPercentLabel->Location = System::Drawing::Point(209, 137);
-			this->statsUnknownMarkdownPercentLabel->Name = L"statsUnknownMarkdownPercentLabel";
-			this->statsUnknownMarkdownPercentLabel->Size = System::Drawing::Size(19, 16);
-			this->statsUnknownMarkdownPercentLabel->TabIndex = 31;
-			this->statsUnknownMarkdownPercentLabel->Text = L"%";
+			this->groupBox6->Controls->Add(this->dataGridView2);
+			this->groupBox6->Location = System::Drawing::Point(16, 240);
+			this->groupBox6->Name = L"groupBox6";
+			this->groupBox6->Size = System::Drawing::Size(239, 195);
+			this->groupBox6->TabIndex = 36;
+			this->groupBox6->TabStop = false;
+			this->groupBox6->Text = L"10 articles les moins vendus";
 			// 
-			// statsUnknownMarkdownNumericUpDown
+			// dataGridView2
 			// 
-			this->statsUnknownMarkdownNumericUpDown->Location = System::Drawing::Point(150, 133);
-			this->statsUnknownMarkdownNumericUpDown->Name = L"statsUnknownMarkdownNumericUpDown";
-			this->statsUnknownMarkdownNumericUpDown->Size = System::Drawing::Size(53, 22);
-			this->statsUnknownMarkdownNumericUpDown->TabIndex = 30;
-			this->statsUnknownMarkdownNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
+			this->dataGridView2->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView2->Location = System::Drawing::Point(6, 22);
+			this->dataGridView2->Name = L"dataGridView2";
+			this->dataGridView2->RowHeadersWidth = 51;
+			this->dataGridView2->RowTemplate->Height = 24;
+			this->dataGridView2->Size = System::Drawing::Size(227, 167);
+			this->dataGridView2->TabIndex = 0;
 			// 
-			// statsComDiscountPercentLabel
+			// groupBox8
 			// 
-			this->statsComDiscountPercentLabel->AutoSize = true;
-			this->statsComDiscountPercentLabel->Location = System::Drawing::Point(208, 100);
-			this->statsComDiscountPercentLabel->Name = L"statsComDiscountPercentLabel";
-			this->statsComDiscountPercentLabel->Size = System::Drawing::Size(19, 16);
-			this->statsComDiscountPercentLabel->TabIndex = 29;
-			this->statsComDiscountPercentLabel->Text = L"%";
+			this->groupBox8->Controls->Add(this->dataGridView3);
+			this->groupBox8->Location = System::Drawing::Point(506, 240);
+			this->groupBox8->Name = L"groupBox8";
+			this->groupBox8->Size = System::Drawing::Size(395, 195);
+			this->groupBox8->TabIndex = 36;
+			this->groupBox8->TabStop = false;
+			this->groupBox8->Text = L"Produits sous leur seuil de réapprovisionnement";
 			// 
-			// statsComDiscountValueNumericUpDown
+			// dataGridView3
 			// 
-			this->statsComDiscountValueNumericUpDown->Location = System::Drawing::Point(150, 98);
-			this->statsComDiscountValueNumericUpDown->Name = L"statsComDiscountValueNumericUpDown";
-			this->statsComDiscountValueNumericUpDown->Size = System::Drawing::Size(53, 22);
-			this->statsComDiscountValueNumericUpDown->TabIndex = 28;
-			this->statsComDiscountValueNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
+			this->dataGridView3->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView3->Location = System::Drawing::Point(6, 22);
+			this->dataGridView3->Name = L"dataGridView3";
+			this->dataGridView3->RowHeadersWidth = 51;
+			this->dataGridView3->RowTemplate->Height = 24;
+			this->dataGridView3->Size = System::Drawing::Size(389, 167);
+			this->dataGridView3->TabIndex = 0;
 			// 
-			// statsComMarginPercentLabel
+			// groupBox5
 			// 
-			this->statsComMarginPercentLabel->AutoSize = true;
-			this->statsComMarginPercentLabel->Location = System::Drawing::Point(209, 66);
-			this->statsComMarginPercentLabel->Name = L"statsComMarginPercentLabel";
-			this->statsComMarginPercentLabel->Size = System::Drawing::Size(19, 16);
-			this->statsComMarginPercentLabel->TabIndex = 27;
-			this->statsComMarginPercentLabel->Text = L"%";
+			this->groupBox5->Controls->Add(this->dataGridView1);
+			this->groupBox5->Location = System::Drawing::Point(261, 240);
+			this->groupBox5->Name = L"groupBox5";
+			this->groupBox5->Size = System::Drawing::Size(239, 195);
+			this->groupBox5->TabIndex = 36;
+			this->groupBox5->TabStop = false;
+			this->groupBox5->Text = L"10 articles les plus vendus";
 			// 
-			// statsComMarginValueNumericUpDown
+			// dataGridView1
 			// 
-			this->statsComMarginValueNumericUpDown->Location = System::Drawing::Point(150, 64);
-			this->statsComMarginValueNumericUpDown->Name = L"statsComMarginValueNumericUpDown";
-			this->statsComMarginValueNumericUpDown->Size = System::Drawing::Size(53, 22);
-			this->statsComMarginValueNumericUpDown->TabIndex = 26;
-			this->statsComMarginValueNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
+			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView1->Location = System::Drawing::Point(6, 22);
+			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->RowHeadersWidth = 51;
+			this->dataGridView1->RowTemplate->Height = 24;
+			this->dataGridView1->Size = System::Drawing::Size(227, 167);
+			this->dataGridView1->TabIndex = 0;
 			// 
-			// statsTVAPercentLabel
+			// groupBox4
 			// 
-			this->statsTVAPercentLabel->AutoSize = true;
-			this->statsTVAPercentLabel->Location = System::Drawing::Point(209, 36);
-			this->statsTVAPercentLabel->Name = L"statsTVAPercentLabel";
-			this->statsTVAPercentLabel->Size = System::Drawing::Size(19, 16);
-			this->statsTVAPercentLabel->TabIndex = 22;
-			this->statsTVAPercentLabel->Text = L"%";
+			this->groupBox4->Controls->Add(this->label3);
+			this->groupBox4->Controls->Add(this->label2);
+			this->groupBox4->Controls->Add(this->label1);
+			this->groupBox4->Controls->Add(this->statsStockPurchaseValueButton);
+			this->groupBox4->Controls->Add(this->statsAverageBasketButton);
+			this->groupBox4->Controls->Add(this->statsStockMarketingValueButton);
+			this->groupBox4->Location = System::Drawing::Point(261, 21);
+			this->groupBox4->Name = L"groupBox4";
+			this->groupBox4->Size = System::Drawing::Size(379, 213);
+			this->groupBox4->TabIndex = 35;
+			this->groupBox4->TabStop = false;
 			// 
-			// statsTVAValueNumericUpDown
+			// label3
 			// 
-			this->statsTVAValueNumericUpDown->Location = System::Drawing::Point(150, 32);
-			this->statsTVAValueNumericUpDown->Name = L"statsTVAValueNumericUpDown";
-			this->statsTVAValueNumericUpDown->Size = System::Drawing::Size(53, 22);
-			this->statsTVAValueNumericUpDown->TabIndex = 22;
-			this->statsTVAValueNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(149, 171);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(59, 16);
+			this->label3->TabIndex = 19;
+			this->label3->Text = L"Résultat:";
 			// 
-			// statsUnknownMarkdownLabel
+			// label2
 			// 
-			this->statsUnknownMarkdownLabel->AutoSize = true;
-			this->statsUnknownMarkdownLabel->Location = System::Drawing::Point(6, 137);
-			this->statsUnknownMarkdownLabel->Name = L"statsUnknownMarkdownLabel";
-			this->statsUnknownMarkdownLabel->Size = System::Drawing::Size(131, 16);
-			this->statsUnknownMarkdownLabel->TabIndex = 25;
-			this->statsUnknownMarkdownLabel->Text = L"Démarque inconnue:";
-			this->statsUnknownMarkdownLabel->Click += gcnew System::EventHandler(this, &Root::label4_Click);
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(149, 98);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(59, 16);
+			this->label2->TabIndex = 19;
+			this->label2->Text = L"Résultat:";
 			// 
-			// statsComDiscountValueLabel
+			// label1
 			// 
-			this->statsComDiscountValueLabel->AutoSize = true;
-			this->statsComDiscountValueLabel->Location = System::Drawing::Point(6, 100);
-			this->statsComDiscountValueLabel->Name = L"statsComDiscountValueLabel";
-			this->statsComDiscountValueLabel->Size = System::Drawing::Size(138, 16);
-			this->statsComDiscountValueLabel->TabIndex = 24;
-			this->statsComDiscountValueLabel->Text = L"Remise commerciale:";
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(149, 39);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(59, 16);
+			this->label1->TabIndex = 19;
+			this->label1->Text = L"Résultat:";
+			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->statsTVAValueLabel);
+			this->groupBox3->Controls->Add(this->statsComMarginValueLabel);
+			this->groupBox3->Controls->Add(this->statsComDiscountValueLabel);
+			this->groupBox3->Controls->Add(this->statsSimulationButton);
+			this->groupBox3->Controls->Add(this->statsUnknownMarkdownPercentLabel);
+			this->groupBox3->Controls->Add(this->statsUnknownMarkdownLabel);
+			this->groupBox3->Controls->Add(this->statsComDiscountPercentLabel);
+			this->groupBox3->Controls->Add(this->statsUnknownMarkdownNumericUpDown);
+			this->groupBox3->Controls->Add(this->statsComMarginPercentLabel);
+			this->groupBox3->Controls->Add(this->statsTVAValueNumericUpDown);
+			this->groupBox3->Controls->Add(this->statsTVAPercentLabel);
+			this->groupBox3->Controls->Add(this->statsComMarginValueNumericUpDown);
+			this->groupBox3->Controls->Add(this->statsComDiscountValueNumericUpDown);
+			this->groupBox3->Location = System::Drawing::Point(651, 21);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(250, 213);
+			this->groupBox3->TabIndex = 34;
+			this->groupBox3->TabStop = false;
+			// 
+			// statsTVAValueLabel
+			// 
+			this->statsTVAValueLabel->AutoSize = true;
+			this->statsTVAValueLabel->Location = System::Drawing::Point(6, 35);
+			this->statsTVAValueLabel->Name = L"statsTVAValueLabel";
+			this->statsTVAValueLabel->Size = System::Drawing::Size(70, 16);
+			this->statsTVAValueLabel->TabIndex = 22;
+			this->statsTVAValueLabel->Text = L"Taux TVA:";
+			this->statsTVAValueLabel->Click += gcnew System::EventHandler(this, &Root::label1_Click_1);
 			// 
 			// statsComMarginValueLabel
 			// 
@@ -1837,15 +1654,118 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsComMarginValueLabel->Text = L"Marge commerciale:";
 			this->statsComMarginValueLabel->Click += gcnew System::EventHandler(this, &Root::label2_Click);
 			// 
-			// statsTVAValueLabel
+			// statsComDiscountValueLabel
 			// 
-			this->statsTVAValueLabel->AutoSize = true;
-			this->statsTVAValueLabel->Location = System::Drawing::Point(6, 35);
-			this->statsTVAValueLabel->Name = L"statsTVAValueLabel";
-			this->statsTVAValueLabel->Size = System::Drawing::Size(70, 16);
-			this->statsTVAValueLabel->TabIndex = 22;
-			this->statsTVAValueLabel->Text = L"Taux TVA:";
-			this->statsTVAValueLabel->Click += gcnew System::EventHandler(this, &Root::label1_Click_1);
+			this->statsComDiscountValueLabel->AutoSize = true;
+			this->statsComDiscountValueLabel->Location = System::Drawing::Point(6, 100);
+			this->statsComDiscountValueLabel->Name = L"statsComDiscountValueLabel";
+			this->statsComDiscountValueLabel->Size = System::Drawing::Size(138, 16);
+			this->statsComDiscountValueLabel->TabIndex = 24;
+			this->statsComDiscountValueLabel->Text = L"Remise commerciale:";
+			// 
+			// statsUnknownMarkdownPercentLabel
+			// 
+			this->statsUnknownMarkdownPercentLabel->AutoSize = true;
+			this->statsUnknownMarkdownPercentLabel->Location = System::Drawing::Point(209, 137);
+			this->statsUnknownMarkdownPercentLabel->Name = L"statsUnknownMarkdownPercentLabel";
+			this->statsUnknownMarkdownPercentLabel->Size = System::Drawing::Size(19, 16);
+			this->statsUnknownMarkdownPercentLabel->TabIndex = 31;
+			this->statsUnknownMarkdownPercentLabel->Text = L"%";
+			// 
+			// statsUnknownMarkdownLabel
+			// 
+			this->statsUnknownMarkdownLabel->AutoSize = true;
+			this->statsUnknownMarkdownLabel->Location = System::Drawing::Point(6, 137);
+			this->statsUnknownMarkdownLabel->Name = L"statsUnknownMarkdownLabel";
+			this->statsUnknownMarkdownLabel->Size = System::Drawing::Size(131, 16);
+			this->statsUnknownMarkdownLabel->TabIndex = 25;
+			this->statsUnknownMarkdownLabel->Text = L"Démarque inconnue:";
+			this->statsUnknownMarkdownLabel->Click += gcnew System::EventHandler(this, &Root::label4_Click);
+			// 
+			// statsComDiscountPercentLabel
+			// 
+			this->statsComDiscountPercentLabel->AutoSize = true;
+			this->statsComDiscountPercentLabel->Location = System::Drawing::Point(208, 100);
+			this->statsComDiscountPercentLabel->Name = L"statsComDiscountPercentLabel";
+			this->statsComDiscountPercentLabel->Size = System::Drawing::Size(19, 16);
+			this->statsComDiscountPercentLabel->TabIndex = 29;
+			this->statsComDiscountPercentLabel->Text = L"%";
+			// 
+			// statsUnknownMarkdownNumericUpDown
+			// 
+			this->statsUnknownMarkdownNumericUpDown->Location = System::Drawing::Point(150, 133);
+			this->statsUnknownMarkdownNumericUpDown->Name = L"statsUnknownMarkdownNumericUpDown";
+			this->statsUnknownMarkdownNumericUpDown->Size = System::Drawing::Size(53, 22);
+			this->statsUnknownMarkdownNumericUpDown->TabIndex = 30;
+			this->statsUnknownMarkdownNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
+			// 
+			// statsComMarginPercentLabel
+			// 
+			this->statsComMarginPercentLabel->AutoSize = true;
+			this->statsComMarginPercentLabel->Location = System::Drawing::Point(209, 66);
+			this->statsComMarginPercentLabel->Name = L"statsComMarginPercentLabel";
+			this->statsComMarginPercentLabel->Size = System::Drawing::Size(19, 16);
+			this->statsComMarginPercentLabel->TabIndex = 27;
+			this->statsComMarginPercentLabel->Text = L"%";
+			// 
+			// statsTVAValueNumericUpDown
+			// 
+			this->statsTVAValueNumericUpDown->Location = System::Drawing::Point(150, 32);
+			this->statsTVAValueNumericUpDown->Name = L"statsTVAValueNumericUpDown";
+			this->statsTVAValueNumericUpDown->Size = System::Drawing::Size(53, 22);
+			this->statsTVAValueNumericUpDown->TabIndex = 22;
+			this->statsTVAValueNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
+			// 
+			// statsTVAPercentLabel
+			// 
+			this->statsTVAPercentLabel->AutoSize = true;
+			this->statsTVAPercentLabel->Location = System::Drawing::Point(209, 36);
+			this->statsTVAPercentLabel->Name = L"statsTVAPercentLabel";
+			this->statsTVAPercentLabel->Size = System::Drawing::Size(19, 16);
+			this->statsTVAPercentLabel->TabIndex = 22;
+			this->statsTVAPercentLabel->Text = L"%";
+			// 
+			// statsComMarginValueNumericUpDown
+			// 
+			this->statsComMarginValueNumericUpDown->Location = System::Drawing::Point(150, 64);
+			this->statsComMarginValueNumericUpDown->Name = L"statsComMarginValueNumericUpDown";
+			this->statsComMarginValueNumericUpDown->Size = System::Drawing::Size(53, 22);
+			this->statsComMarginValueNumericUpDown->TabIndex = 26;
+			this->statsComMarginValueNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
+			// 
+			// statsComDiscountValueNumericUpDown
+			// 
+			this->statsComDiscountValueNumericUpDown->Location = System::Drawing::Point(150, 98);
+			this->statsComDiscountValueNumericUpDown->Name = L"statsComDiscountValueNumericUpDown";
+			this->statsComDiscountValueNumericUpDown->Size = System::Drawing::Size(53, 22);
+			this->statsComDiscountValueNumericUpDown->TabIndex = 28;
+			this->statsComDiscountValueNumericUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->statsCustomerFirstnameLabel);
+			this->groupBox2->Controls->Add(this->statsCustomerNameLabel);
+			this->groupBox2->Controls->Add(this->statsCustomerNameTextbox);
+			this->groupBox2->Controls->Add(this->statsCustomerFirtsnameTextbox);
+			this->groupBox2->Controls->Add(this->statsTotalAmountButton);
+			this->groupBox2->Location = System::Drawing::Point(16, 112);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(239, 122);
+			this->groupBox2->TabIndex = 33;
+			this->groupBox2->TabStop = false;
+			this->groupBox2->Text = L"Montant total achat client";
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->statsTurnoverButton);
+			this->groupBox1->Controls->Add(this->statsMonthChoiceTurnover);
+			this->groupBox1->Controls->Add(this->statsMonthLabel);
+			this->groupBox1->Location = System::Drawing::Point(16, 21);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(239, 85);
+			this->groupBox1->TabIndex = 32;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Chiffre d\'affaires";
 			// 
 			// groupBox19
 			// 
@@ -1989,31 +1909,14 @@ private: System::Windows::Forms::Label^ label1;
 			this->productDiscountGroup->TabStop = false;
 			this->productDiscountGroup->Text = L"Remise";
 			// 
-			// productBaseDiscountLabel
+			// productBaseDiscountPercent
 			// 
-			this->productBaseDiscountLabel->AutoSize = true;
-			this->productBaseDiscountLabel->Location = System::Drawing::Point(16, 18);
-			this->productBaseDiscountLabel->Name = L"productBaseDiscountLabel";
-			this->productBaseDiscountLabel->Size = System::Drawing::Size(93, 16);
-			this->productBaseDiscountLabel->TabIndex = 0;
-			this->productBaseDiscountLabel->Text = L"Taux de base:";
-			// 
-			// productCountWeightLabel
-			// 
-			this->productCountWeightLabel->AutoSize = true;
-			this->productCountWeightLabel->Location = System::Drawing::Point(16, 44);
-			this->productCountWeightLabel->Name = L"productCountWeightLabel";
-			this->productCountWeightLabel->Size = System::Drawing::Size(220, 16);
-			this->productCountWeightLabel->TabIndex = 1;
-			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetés:";
-			// 
-			// productBaseDiscountInput
-			// 
-			this->productBaseDiscountInput->Location = System::Drawing::Point(197, 16);
-			this->productBaseDiscountInput->Name = L"productBaseDiscountInput";
-			this->productBaseDiscountInput->Size = System::Drawing::Size(56, 22);
-			this->productBaseDiscountInput->TabIndex = 18;
-			this->productBaseDiscountInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
+			this->productBaseDiscountPercent->AutoSize = true;
+			this->productBaseDiscountPercent->Location = System::Drawing::Point(259, 18);
+			this->productBaseDiscountPercent->Name = L"productBaseDiscountPercent";
+			this->productBaseDiscountPercent->Size = System::Drawing::Size(19, 16);
+			this->productBaseDiscountPercent->TabIndex = 20;
+			this->productBaseDiscountPercent->Text = L"%";
 			// 
 			// productCountWeightInput
 			// 
@@ -2025,14 +1928,31 @@ private: System::Windows::Forms::Label^ label1;
 			this->productCountWeightInput->Size = System::Drawing::Size(59, 22);
 			this->productCountWeightInput->TabIndex = 19;
 			// 
-			// productBaseDiscountPercent
+			// productBaseDiscountInput
 			// 
-			this->productBaseDiscountPercent->AutoSize = true;
-			this->productBaseDiscountPercent->Location = System::Drawing::Point(259, 18);
-			this->productBaseDiscountPercent->Name = L"productBaseDiscountPercent";
-			this->productBaseDiscountPercent->Size = System::Drawing::Size(19, 16);
-			this->productBaseDiscountPercent->TabIndex = 20;
-			this->productBaseDiscountPercent->Text = L"%";
+			this->productBaseDiscountInput->Location = System::Drawing::Point(197, 16);
+			this->productBaseDiscountInput->Name = L"productBaseDiscountInput";
+			this->productBaseDiscountInput->Size = System::Drawing::Size(56, 22);
+			this->productBaseDiscountInput->TabIndex = 18;
+			this->productBaseDiscountInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
+			// 
+			// productCountWeightLabel
+			// 
+			this->productCountWeightLabel->AutoSize = true;
+			this->productCountWeightLabel->Location = System::Drawing::Point(16, 44);
+			this->productCountWeightLabel->Name = L"productCountWeightLabel";
+			this->productCountWeightLabel->Size = System::Drawing::Size(220, 16);
+			this->productCountWeightLabel->TabIndex = 1;
+			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetés:";
+			// 
+			// productBaseDiscountLabel
+			// 
+			this->productBaseDiscountLabel->AutoSize = true;
+			this->productBaseDiscountLabel->Location = System::Drawing::Point(16, 18);
+			this->productBaseDiscountLabel->Name = L"productBaseDiscountLabel";
+			this->productBaseDiscountLabel->Size = System::Drawing::Size(93, 16);
+			this->productBaseDiscountLabel->TabIndex = 0;
+			this->productBaseDiscountLabel->Text = L"Taux de base:";
 			// 
 			// productRestockThresholdLabel
 			// 
@@ -2071,22 +1991,12 @@ private: System::Windows::Forms::Label^ label1;
 			this->productGroup->Controls->Add(this->productNameInput);
 			this->productGroup->Controls->Add(this->productNameLabel);
 			this->productGroup->Controls->Add(this->groupBox19);
-			this->productGroup->Location = System::Drawing::Point(1496, 443);
+			this->productGroup->Location = System::Drawing::Point(12, 8);
 			this->productGroup->Name = L"productGroup";
-			this->productGroup->Size = System::Drawing::Size(536, 425);
+			this->productGroup->Size = System::Drawing::Size(497, 429);
 			this->productGroup->TabIndex = 7;
 			this->productGroup->TabStop = false;
 			this->productGroup->Text = L"Edition d\'articles";
-			// 
-			// customerBirthDayInput
-			// 
-			this->customerBirthDayInput->Location = System::Drawing::Point(199, 84);
-			this->customerBirthDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
-			this->customerBirthDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->customerBirthDayInput->Name = L"customerBirthDayInput";
-			this->customerBirthDayInput->Size = System::Drawing::Size(50, 22);
-			this->customerBirthDayInput->TabIndex = 42;
-			this->customerBirthDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// button1
 			// 
@@ -2096,154 +2006,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->button1->TabIndex = 8;
 			this->button1->Text = L"Retour";
 			this->button1->UseVisualStyleBackColor = true;
-			// 
-			// groupBox1
-			// 
-			this->groupBox1->Controls->Add(this->statsTurnoverButton);
-			this->groupBox1->Controls->Add(this->statsMonthChoiceTurnover);
-			this->groupBox1->Controls->Add(this->statsMonthLabel);
-			this->groupBox1->Location = System::Drawing::Point(16, 21);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(239, 85);
-			this->groupBox1->TabIndex = 32;
-			this->groupBox1->TabStop = false;
-			this->groupBox1->Text = L"Chiffre d\'affaires";
-			// 
-			// groupBox2
-			// 
-			this->groupBox2->Controls->Add(this->statsCustomerFirstnameLabel);
-			this->groupBox2->Controls->Add(this->statsCustomerNameLabel);
-			this->groupBox2->Controls->Add(this->statsCustomerNameTextbox);
-			this->groupBox2->Controls->Add(this->statsCustomerFirtsnameTextbox);
-			this->groupBox2->Controls->Add(this->statsTotalAmountButton);
-			this->groupBox2->Location = System::Drawing::Point(16, 112);
-			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(239, 122);
-			this->groupBox2->TabIndex = 33;
-			this->groupBox2->TabStop = false;
-			this->groupBox2->Text = L"Montant total achat client";
-			// 
-			// groupBox3
-			// 
-			this->groupBox3->Controls->Add(this->statsTVAValueLabel);
-			this->groupBox3->Controls->Add(this->statsComMarginValueLabel);
-			this->groupBox3->Controls->Add(this->statsComDiscountValueLabel);
-			this->groupBox3->Controls->Add(this->statsSimulationButton);
-			this->groupBox3->Controls->Add(this->statsUnknownMarkdownPercentLabel);
-			this->groupBox3->Controls->Add(this->statsUnknownMarkdownLabel);
-			this->groupBox3->Controls->Add(this->statsComDiscountPercentLabel);
-			this->groupBox3->Controls->Add(this->statsUnknownMarkdownNumericUpDown);
-			this->groupBox3->Controls->Add(this->statsComMarginPercentLabel);
-			this->groupBox3->Controls->Add(this->statsTVAValueNumericUpDown);
-			this->groupBox3->Controls->Add(this->statsTVAPercentLabel);
-			this->groupBox3->Controls->Add(this->statsComMarginValueNumericUpDown);
-			this->groupBox3->Controls->Add(this->statsComDiscountValueNumericUpDown);
-			this->groupBox3->Location = System::Drawing::Point(651, 21);
-			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(250, 213);
-			this->groupBox3->TabIndex = 34;
-			this->groupBox3->TabStop = false;
-			// 
-			// groupBox4
-			// 
-			this->groupBox4->Controls->Add(this->label3);
-			this->groupBox4->Controls->Add(this->label2);
-			this->groupBox4->Controls->Add(this->label1);
-			this->groupBox4->Controls->Add(this->statsStockPurchaseValueButton);
-			this->groupBox4->Controls->Add(this->statsAverageBasketButton);
-			this->groupBox4->Controls->Add(this->statsStockMarketingValueButton);
-			this->groupBox4->Location = System::Drawing::Point(261, 21);
-			this->groupBox4->Name = L"groupBox4";
-			this->groupBox4->Size = System::Drawing::Size(379, 213);
-			this->groupBox4->TabIndex = 35;
-			this->groupBox4->TabStop = false;
-			// 
-			// groupBox5
-			// 
-			this->groupBox5->Controls->Add(this->dataGridView1);
-			this->groupBox5->Location = System::Drawing::Point(261, 240);
-			this->groupBox5->Name = L"groupBox5";
-			this->groupBox5->Size = System::Drawing::Size(239, 195);
-			this->groupBox5->TabIndex = 36;
-			this->groupBox5->TabStop = false;
-			this->groupBox5->Text = L"10 articles les plus vendus";
-			// 
-			// dataGridView1
-			// 
-			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Location = System::Drawing::Point(6, 22);
-			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->RowHeadersWidth = 51;
-			this->dataGridView1->RowTemplate->Height = 24;
-			this->dataGridView1->Size = System::Drawing::Size(227, 167);
-			this->dataGridView1->TabIndex = 0;
-			// 
-			// groupBox6
-			// 
-			this->groupBox6->Controls->Add(this->dataGridView2);
-			this->groupBox6->Location = System::Drawing::Point(16, 240);
-			this->groupBox6->Name = L"groupBox6";
-			this->groupBox6->Size = System::Drawing::Size(239, 195);
-			this->groupBox6->TabIndex = 36;
-			this->groupBox6->TabStop = false;
-			this->groupBox6->Text = L"10 articles les moins vendus";
-			// 
-			// dataGridView2
-			// 
-			this->dataGridView2->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView2->Location = System::Drawing::Point(6, 22);
-			this->dataGridView2->Name = L"dataGridView2";
-			this->dataGridView2->RowHeadersWidth = 51;
-			this->dataGridView2->RowTemplate->Height = 24;
-			this->dataGridView2->Size = System::Drawing::Size(227, 167);
-			this->dataGridView2->TabIndex = 0;
-			// 
-			// groupBox8
-			// 
-			this->groupBox8->Controls->Add(this->dataGridView3);
-			this->groupBox8->Location = System::Drawing::Point(506, 240);
-			this->groupBox8->Name = L"groupBox8";
-			this->groupBox8->Size = System::Drawing::Size(395, 195);
-			this->groupBox8->TabIndex = 36;
-			this->groupBox8->TabStop = false;
-			this->groupBox8->Text = L"Produits sous leur seuil de réapprovisionnement";
-			// 
-			// dataGridView3
-			// 
-			this->dataGridView3->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView3->Location = System::Drawing::Point(6, 22);
-			this->dataGridView3->Name = L"dataGridView3";
-			this->dataGridView3->RowHeadersWidth = 51;
-			this->dataGridView3->RowTemplate->Height = 24;
-			this->dataGridView3->Size = System::Drawing::Size(389, 167);
-			this->dataGridView3->TabIndex = 0;
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(149, 39);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(59, 16);
-			this->label1->TabIndex = 19;
-			this->label1->Text = L"Résultat:";
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(149, 98);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(59, 16);
-			this->label2->TabIndex = 19;
-			this->label2->Text = L"Résultat:";
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(149, 171);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(59, 16);
-			this->label3->TabIndex = 19;
-			this->label3->Text = L"Résultat:";
 			// 
 			// Root
 			// 
@@ -2270,6 +2032,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->validateGroup->PerformLayout();
 			this->customerGroup->ResumeLayout(false);
 			this->customerGroup->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthDayInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthYearInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthMonthInput))->EndInit();
 			this->customerInvoiceGroup->ResumeLayout(false);
@@ -2295,51 +2058,91 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressGroup->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsMonthChoiceTurnover))->EndInit();
 			this->statsGroup->ResumeLayout(false);
+			this->groupBox6->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView2))->EndInit();
+			this->groupBox8->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView3))->EndInit();
+			this->groupBox5->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
+			this->groupBox4->ResumeLayout(false);
+			this->groupBox4->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsUnknownMarkdownNumericUpDown))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComDiscountValueNumericUpDown))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComMarginValueNumericUpDown))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsTVAValueNumericUpDown))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComMarginValueNumericUpDown))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsComDiscountValueNumericUpDown))->EndInit();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productUHTPriceInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productPurchasePriceInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productStockInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productTaxesInput))->EndInit();
 			this->productDiscountGroup->ResumeLayout(false);
 			this->productDiscountGroup->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productBaseDiscountInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productCountWeightInput))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productBaseDiscountInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productRestockThresholdInput))->EndInit();
 			this->productGroup->ResumeLayout(false);
 			this->productGroup->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthDayInput))->EndInit();
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
-			this->groupBox2->ResumeLayout(false);
-			this->groupBox2->PerformLayout();
-			this->groupBox3->ResumeLayout(false);
-			this->groupBox3->PerformLayout();
-			this->groupBox4->ResumeLayout(false);
-			this->groupBox4->PerformLayout();
-			this->groupBox5->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
-			this->groupBox6->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView2))->EndInit();
-			this->groupBox8->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView3))->EndInit();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 		private: System::Void Root_Load(System::Object^ sender, System::EventArgs^ e) {
 		}
-	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-private: System::Void label1_Click_1(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void label4_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void statsTurnoverButton_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-};
+		private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void label1_Click_1(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void label4_Click(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void statsTurnoverButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		}
+		void validateButton_Click(Object^ sender, EventArgs^ e) {
+			ProductData product = ProductData();
+			product.name = this->productNameInput->Text;
+			product.priceNoTax = (float)this->productUHTPriceInput->Value;
+			product.purchaseValue = (float)this->productPurchasePriceInput->Value;
+			product.amount = (int)this->productStockInput->Value;
+			product.TVARatio = (float)this->productTaxesInput->Value;
+			product.discountRatio = (float)this->productBaseDiscountInput->Value;
+			product.restockThreshold = (int)this->productRestockThresholdInput->Value;
+
+			if (this->is_editing) {
+				int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+				auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+				//Console::WriteLine(selected_row[0]);
+				int selected_id = Int32::Parse(selected_row[0]->ToString());
+				product = this->supply->editProduct(selected_id, product);
+
+			}
+			else {
+				product = this->supply->addProduct(product);
+			}
+			this->refreshGrid();
+		}
+		void visualizeDeleteButton_Click(Object^ sender, EventArgs^ e) {
+			int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+			auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+			int selected_id = Int32::Parse(selected_row[0]->ToString());
+			this->supply->removeProduct(selected_id);
+			this->refreshGrid();
+		}
+		void addRadioButton_Selected(Object^ sender, EventArgs^ e) {
+			this->EditRadioButton->Checked = false;
+			this->addRadioButton->Checked = true;
+			this->is_editing = false;
+		}
+		void editRadioButton_Selected(Object^ sender, EventArgs^ e) {
+			this->addRadioButton->Checked = false;
+			this->EditRadioButton->Checked = true;
+			this->is_editing = true;
+		}
+	};
+		
 }

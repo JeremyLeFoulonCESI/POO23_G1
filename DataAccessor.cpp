@@ -7,10 +7,9 @@ namespace Components {
 
     String^ DataAccessor::insert(String^ table, String^ columns, ... array<Object^>^ values)
     {
-        String^ query = "INSERT INTO " + table + " (" + columns + ") VALUES (";
+        String^ query = "INSERT INTO " + table + " " + columns + " VALUES (";
         for each (Object ^ obj in values) {
-            String^ suiteQuery = obj->ToString();
-            query += "'" + suiteQuery + "', ";
+            query += "'" + obj->ToString()->Replace("'", "\\'") + "', ";
         };
 
         if (values->Length > 0) {
