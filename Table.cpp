@@ -13,19 +13,38 @@ namespace Components {
 		if (values->Length < this->keys->Length) {
 			return result;
 		}
-		result += "(";
+		//result += "(";
 
 		for (int i = 0; i < this->keys->Length; i++) {
 			String^ key = this->keys[i];
 			Object^ value = values[i];
-			result += key + " = " + value + ",";
+			result += "`" + key + "` = '" + value->ToString()->Replace("'", "\\'") + "',";
 		}
 
 		if (keys->Length > 0 && result->EndsWith(",")) {
-			result = result->Remove(result->Length - 2);
+			result = result->Remove(result->Length - 1, 1);
 		}
 
-		result += ")";
+		//result += ")";
+		return result;
+	}
+
+	String^ Table::bindKeysForSearch(array<String^>^ key_names, array<Object^>^ key_values) {
+		String^ result = "";
+		
+		if (key_names->Length != key_values->Length) {
+			return result;
+		}
+
+		for (int i = 0; i < key_names->Length; i++) {
+			String^ key_name = key_names[i];
+			Object^ key_value = key_values[i];
+
+			result += key_name + " = " + key_value + ",";
+		}
+		if (result->Length > 0 && result->EndsWith(",")) {
+			result = result->Remove(result->Length - 1, 1);
+		}
 		return result;
 	}
 
@@ -35,28 +54,28 @@ namespace Components {
 		if (values->Length < this->primary_keys->Length) {
 			return result;
 		}
-		result += "(";
+		//result += "(";
 
 		for (int i = 0; i < this->primary_keys->Length; i++) {
 			String^ key = this->primary_keys[i];
 			Object^ value = values[i];
-			result += key + " = " + value + ",";
+			result += "`" + key + "` = '" + value->ToString()->Replace("'", "\\'") + "',";
 		}
 
-		if (result->Length > 0 && result->EndsWith(",")) {
-			result = result->Remove(result->Length - 2);
+		if (result->EndsWith(",")) {
+			result = result->Remove(result->Length - 1, 1);
 		}
 
-		result += ")";
+		//result += ")";
 		return result;
 	}
 	String^ Table::bundleForInsert() {
 		String^ result = "(";
 		for each (String ^ key in this->keys) {
-			result += key + ",";
+			result += "`" + key + "`,";
 		}
-		if (result->Length > 0 && result->EndsWith(",")) {
-			result = result->Remove(result->Length - 2);
+		if (result->EndsWith(",")) {
+			result = result->Remove(result->Length - 1, 1);
 		}
 		result += ")";
 		return result;
@@ -129,7 +148,7 @@ namespace Components {
 	{
 		String^ name = "Articles";
 		array<String^>^ primaryKeys = gcnew array<String^> { "Reference" };
-		array<String^>^ keys = gcnew array<String^> { "Nom", "PrixUHT", "PrixUA", "Quantité", "TauxTVA", "TauxRemises", "SeuilReapro" };
+		array<String^>^ keys = gcnew array<String^> { "Nom", "PrixUHT", "PrixUA", "Quantite", "TauxTVA", "TauxRemises", "SeuilReapro" };
 
 		return gcnew Table(name, primaryKeys, keys);
 	}

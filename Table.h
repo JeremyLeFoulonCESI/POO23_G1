@@ -14,6 +14,7 @@ namespace Components {
 	public:
 		Table(String^ name, array<String^>^ primary_keys, array<String^>^ keys);
 		String^ bindKeysForUpdate(...array<Object^>^ values);
+		String^ bindKeysForSearch(array<String^>^ key_names, array<Object^>^ key_values);
 		String^ bindPrimaryKeysForUpdate(...array<Object^>^ values);
 		String^ bundleForInsert();
 		array<String^>^ getPrimaryKeys();
