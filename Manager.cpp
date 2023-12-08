@@ -20,6 +20,7 @@ namespace Services {
 		Console::WriteLine(query_str);
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		query->ExecuteNonQuery();
+		query->~MySqlCommand();
 		return gcnew array<Object^>{ this->db->lastInsertedId() };
 	}
 
@@ -29,6 +30,7 @@ namespace Services {
 		MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(query);
 		DataTable^ datatable = gcnew DataTable();
 		adapter->Fill(datatable);
+		query->~MySqlCommand();
 		if (!datatable->Rows->Count) {
 			return gcnew array<Object^>{};
 		}
@@ -39,12 +41,14 @@ namespace Services {
 		Console::WriteLine(query_str);
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		query->ExecuteNonQuery();
+		query->~MySqlCommand();
 	}
 	void Manager::dbDeleteRow(Components::Table^ table, ...array<Object^>^ primary_keys) {
 		String^ query_str = Components::DataAccessor::remove(table->getName(), table->bindPrimaryKeysForUpdate(primary_keys));
 		Console::WriteLine(query_str);
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		query->ExecuteNonQuery();
+		query->~MySqlCommand();
 	}
 	DataTable^ Manager::dbSearchRows(Components::Table^ table, array<String^>^ criteria_names, array<Object^>^ criteria_values)
 	{
@@ -53,13 +57,16 @@ namespace Services {
 		MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(query);
 		DataTable^ result = gcnew DataTable;
 		adapter->Fill(result);
+		query->~MySqlCommand();
 		return result;
 	}
 	int Manager::dbCountRows(Components::Table^ table)
 	{
 		String^ query_str = Components::DataAccessor::count(table->getName());
 		MySqlCommand^ query = this->db->basicQuery(query_str);
-		return Convert::ToInt32(query->ExecuteScalar());
+		int res = Convert::ToInt32(query->ExecuteScalar());
+		query->~MySqlCommand();
+		return res;
 	}
 	DataTable^ Manager::readAll(Components::Table^ table) {
 		String^ query_str = Components::DataAccessor::select(table->getName(), "", nullptr);

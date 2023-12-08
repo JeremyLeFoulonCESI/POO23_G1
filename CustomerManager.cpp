@@ -252,8 +252,8 @@ namespace Services {
 				Address address = Address();
 				address.streetNum = Convert::ToString(row->ItemArray[1]);
 				address.streetName = Convert::ToString(row->ItemArray[2]);
-				address.cityName = Convert::ToString(array_city[1]);
-				address.cityCode = Convert::ToString(array_city[2]);
+				address.cityName = Convert::ToString(array_city[0]);
+				address.cityCode = Convert::ToString(array_city[1]);
 
 				delivery_addresses_str += address.ToString();
 				delivery_addresses_str += ";";
@@ -277,14 +277,14 @@ namespace Services {
 				Address address = Address();
 				address.streetNum = Convert::ToString(row->ItemArray[1]);
 				address.streetName = Convert::ToString(row->ItemArray[2]);
-				address.cityName = Convert::ToString(array_city[1]);
-				address.cityCode = Convert::ToString(array_city[2]);
+				address.cityName = Convert::ToString(array_city[0]);
+				address.cityCode = Convert::ToString(array_city[1]);
 
 				invoice_addresses_str += address.ToString();
 				invoice_addresses_str += ";";
 			}
 			if (invoice_addresses_str->EndsWith(";")) {
-				invoice_addresses_str = delivery_addresses_str->Remove(delivery_addresses_str->Length - 1, 1);
+				invoice_addresses_str = invoice_addresses_str->Remove(invoice_addresses_str->Length - 1);
 			}
 			result->Rows->Add(
 				customer_row[0],
