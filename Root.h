@@ -606,7 +606,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->Controls->Add(this->customersCategoryButton);
 			this->categoriesGroup->Controls->Add(this->stockCategoryButton);
 			this->categoriesGroup->Controls->Add(this->staffCategoryButton);
-			this->categoriesGroup->Location = System::Drawing::Point(14, 10);
+			this->categoriesGroup->Location = System::Drawing::Point(1125, 19);
 			this->categoriesGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->categoriesGroup->Name = L"categoriesGroup";
 			this->categoriesGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
@@ -624,7 +624,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(444, 87);
 			this->label4->TabIndex = 105;
-			this->label4->Text = L"Bienvenue dans votre centre de contrôle\r\n    Veuillez sélectionner une catégorie "
+			this->label4->Text = L"Bienvenue dans votre centre de controle\r\n    Veuillez selectionner une catégorie "
 				L":\r\n\r\n";
 			this->label4->Click += gcnew System::EventHandler(this, &Root::label4_Click_1);
 			// 
@@ -1096,7 +1096,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressCityCodeInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->staffAddressCityCodeInput->MaxLength = 6;
 			this->staffAddressCityCodeInput->Name = L"staffAddressCityCodeInput";
-			this->staffAddressCityCodeInput->Size = System::Drawing::Size(85, 26);
+			this->staffAddressCityCodeInput->Size = System::Drawing::Size(106, 26);
 			this->staffAddressCityCodeInput->TabIndex = 7;
 			// 
 			// staffAddressCityCodeLabel
@@ -1139,7 +1139,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressNumberInput->Location = System::Drawing::Point(136, 31);
 			this->staffAddressNumberInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->staffAddressNumberInput->Name = L"staffAddressNumberInput";
-			this->staffAddressNumberInput->Size = System::Drawing::Size(50, 26);
+			this->staffAddressNumberInput->Size = System::Drawing::Size(62, 26);
 			this->staffAddressNumberInput->TabIndex = 1;
 			// 
 			// staffAddressNumberLabel
@@ -1663,7 +1663,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersGroup->Controls->Add(this->ordersDeliveryLabel);
 			this->ordersGroup->Controls->Add(this->label23);
 			this->ordersGroup->Controls->Add(this->groupBox11);
-			this->ordersGroup->Location = System::Drawing::Point(14, 10);
+			this->ordersGroup->Location = System::Drawing::Point(1545, 649);
 			this->ordersGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->ordersGroup->Name = L"ordersGroup";
 			this->ordersGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
@@ -2345,7 +2345,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1066, 635);
+			this->ClientSize = System::Drawing::Size(2462, 1208);
 			this->Controls->Add(this->categoriesGroup);
 			this->Controls->Add(this->backButton);
 			this->Controls->Add(this->validateGroup);
@@ -2574,6 +2574,10 @@ private: System::Windows::Forms::Label^ label1;
 			this->validateGroup->Visible = true;
 			this->staffGroup->Visible = true;
 			mode = 1;
+			for each(DataRow^ row in this->staff->getAllStaff()->Rows) {
+
+			this->staffSuperiorSelector->Items->Add("nomSup, prenomSup");
+			}
 			this->refreshGrid();
 		}
 
