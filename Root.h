@@ -2531,7 +2531,10 @@ private: System::Windows::Forms::Label^ label1;
 				selectOrderItem->Clear();
 				order.payments = selectPayments->ToArray();
 				selectPayments->Clear();
-				order.customer = this->; // a compléter
+				int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+				auto selected_customer = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+				int customer_id = Int32::Parse(selected_customer[9]->ToString());
+				order.customer = this->customer->getCustomer(customer_id);
 
 				if (this->is_editing) {
 					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;

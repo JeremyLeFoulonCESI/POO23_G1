@@ -228,7 +228,8 @@ namespace Services {
 			gcnew DataColumn("Numéro de téléphone"),
 			gcnew DataColumn("Date de premier achat"),
 			gcnew DataColumn("Adresses de livraison"),
-			gcnew DataColumn("Adresses de facturation")
+			gcnew DataColumn("Adresses de facturation"),
+			gcnew DataColumn("ID")
 		});
 
 		this->dbOpenConnection();
@@ -295,7 +296,8 @@ namespace Services {
 				customer_row[5],
 				customer_row[6],
 				delivery_addresses_str,
-				invoice_addresses_str
+				invoice_addresses_str,
+				id_customer
 			);
 		}
 		this->dbCloseConnection();
