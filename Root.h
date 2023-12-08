@@ -2321,14 +2321,13 @@ private: System::Windows::Forms::Label^ label1;
 			product.priceNoTax = (float)this->productUHTPriceInput->Value;
 			product.purchaseValue = (float)this->productPurchasePriceInput->Value;
 			product.amount = (int)this->productStockInput->Value;
-			product.TVARatio = (float)this->productTaxesInput->Value;
-			product.discountRatio = (float)this->productBaseDiscountInput->Value;
+			product.TVARatio = (float)this->productTaxesInput->Value;  // TODO: change this to convert from % to in range [0, 1]
+			product.discountRatio = (float)this->productBaseDiscountInput->Value;  // TODO: same as above
 			product.restockThreshold = (int)this->productRestockThresholdInput->Value;
 
 			if (this->is_editing) {
 				int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
 				auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
-				//Console::WriteLine(selected_row[0]);
 				int selected_id = Int32::Parse(selected_row[0]->ToString());
 				product = this->supply->editProduct(selected_id, product);
 
