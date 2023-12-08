@@ -20,6 +20,10 @@ namespace Components {
         static String^ remove(String^ table, String^ criteria);
 
         static String^ count(String^ table);
+
+        static String^ best_sellers();
+        
+        static String^ worst_sellers();
     };
 
 }

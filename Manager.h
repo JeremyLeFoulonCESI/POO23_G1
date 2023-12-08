@@ -9,12 +9,12 @@ using namespace System::Collections::Generic;
 namespace Services {
 	ref class Manager
 	{
-		DataBaseWrapper^ db;
-
 	public:
 		Manager();
 
 	protected:
+		DataBaseWrapper^ db;
+
 		array<Object^>^ dbCreateRow(Components::Table^ table, ...array<Object^>^ values);
 		array<Object^>^ dbReadRow(Components::Table^ table, ...array<Object^>^ primary_keys);
 		void dbUpdateRow(Components::Table^ table, array<Object^>^ values, ...array<Object^>^ primary_keys);

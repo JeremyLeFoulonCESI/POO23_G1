@@ -102,10 +102,25 @@ namespace Services {
 	}
 
 	DataTable^ StatsProvider::find10BestSellers() {
-		return nullptr;
+		this->dbOpenConnection();
+		String^ query_str = Components::DataAccessor::best_sellers();
+		MySqlCommand^ cmd = this->db->basicQuery(query_str);
+		MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(cmd);
+		DataTable^ result = gcnew DataTable;
+		adapter->Fill(result);
+		cmd->~MySqlCommand();
+		this->dbCloseConnection();
+		return result;
 	}
 	DataTable^ StatsProvider::find10WorstSellers() {
-		return nullptr;
+		String^ query_str = Components::DataAccessor::worst_sellers();
+		MySqlCommand^ cmd = this->db->basicQuery(query_str);
+		MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(cmd);
+		DataTable^ result = gcnew DataTable;
+		adapter->Fill(result);
+		cmd->~MySqlCommand();
+		this->dbCloseConnection();
+		return result;
 	}
 	float StatsProvider::computeStockCommercialValue() {
 		return 0;

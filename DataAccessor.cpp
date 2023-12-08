@@ -66,6 +66,25 @@ namespace Components {
         String^ query = "SELECT count(*) FROM " + table + ";";
         return query;
     }
+
+    String^ DataAccessor::best_sellers()
+    {
+        return "select Nom, Reference, sum(NbArticles) as total \
+            from articles left join contient \
+            on contient.Reference_Article = articles.Reference \
+            group by Reference \
+            order by total desc \
+            limit 10; ";
+    }
+
+    String^ DataAccessor::worst_sellers() {
+        return "select Nom, Reference, sum(NbArticles) as total \
+            from articles left join contient \
+            on contient.Reference_Article = articles.Reference \
+            group by Reference \
+            order by total \
+            limit 10; ";
+    }
     
 }
 
