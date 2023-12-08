@@ -70,6 +70,7 @@ namespace HMI {
 			this->backButton->Click += gcnew EventHandler(this, &Root::backButton_click);
 		}
 		void refreshGrid() {
+			Console::WriteLine("Refresh");
 			if (mode == 1) {
 				this->visualizeGrid->DataSource = this->staff->getAllStaff();
 			}
@@ -2393,7 +2394,7 @@ private: System::Windows::Forms::Label^ label1;
 				data.birth = gcnew DateTime(Convert::ToInt32(this->customerBirthYearInput->Value), Convert::ToInt32(this->customerBirthMonthInput->Value), Convert::ToInt32(this->customerBirthDayInput->Value));
 				data.email = this->customerMailNameInput->Text + "@" + this->customerMailDomainInput->Text + "." + this->customerMailExtInput->ValueMember;
 				data.phoneNumber = this->customerPhoneNumberInput->Text;
-				data.firstPurchase = DateTime(Convert::ToInt32(this->customer))
+				data.firstPurchase = DateTime(Convert::ToInt32(this->customer));
 
 			}
 		}

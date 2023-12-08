@@ -36,15 +36,15 @@ namespace Components {
             query += "* ";
         }
         else {
-            query += "(";
+            //query += "(";
             for each (String ^ name in keys) {
-                query += name + ", ";
+                query += "`" + name + "`, ";
             };
 
             if (keys->Length > 0) {
                 query = query->Remove(query->Length - 2);
             }
-            query += ") ";
+            query += " ";
         }
 
         query += "FROM " + table;
