@@ -53,6 +53,10 @@ namespace Services {
 	DataTable^ Manager::dbSearchRows(Components::Table^ table, array<String^>^ criteria_names, array<Object^>^ criteria_values)
 	{
 		String^ query_str = Components::DataAccessor::select(table->getName(), table->bindKeysForSearch(criteria_names, criteria_values), nullptr);
+		return this->runRawQuery(query_str);
+	}
+	DataTable^ Manager::runRawQuery(String^ query_str)
+	{
 		MySqlCommand^ query = this->db->basicQuery(query_str);
 		MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(query);
 		DataTable^ result = gcnew DataTable;
@@ -70,11 +74,7 @@ namespace Services {
 	}
 	DataTable^ Manager::readAll(Components::Table^ table) {
 		String^ query_str = Components::DataAccessor::select(table->getName(), "", nullptr);
-		MySqlCommand^ query = this->db->basicQuery(query_str);
-		MySqlDataAdapter^ adapter = gcnew MySqlDataAdapter(query);
-		DataTable^ result = gcnew DataTable;
-		adapter->Fill(result);
-		return result;
+		return this->runRawQuery(query_str);
 	}
 	void Manager::dbOpenConnection() {
 		this->db->open();
