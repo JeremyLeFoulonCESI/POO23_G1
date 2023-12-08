@@ -1,5 +1,8 @@
 #pragma once
 #include "SupplyManager.h"
+#include "StaffManager.h"
+#include "CustomerManager.h"
+#include "OrderManager.h"
 #include "Struct.h"
 
 namespace HMI {
@@ -24,6 +27,10 @@ namespace HMI {
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::DataGridView^ dataGridView4;
 		   Services::SupplyManager^ supply;
+		   Services::StaffManager^ staff;
+		   Services::CustomerManager^ customer;
+		   Services::OrderManager^ order;
+		   int mode = 0;
 
 	public:
 		Root(void)
@@ -33,6 +40,9 @@ namespace HMI {
 			//TODO: Add the constructor code here
 			//
 			this->supply = gcnew Services::SupplyManager();
+			this->staff = gcnew Services::StaffManager();
+			this->customer = gcnew Services::CustomerManager();
+			this->order = gcnew Services::OrderManager();
 			this->productUHTPriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
 			this->productPurchasePriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
 			this->statsGroup->Visible = false;
@@ -58,10 +68,20 @@ namespace HMI {
 			this->ordersCategoryButton->Click += gcnew EventHandler(this, &Root::ordersManagerButton_click);
 			this->statsCategoryButton->Click += gcnew EventHandler(this, &Root::statsManagerButton_click);
 			this->backButton->Click += gcnew EventHandler(this, &Root::backButton_click);
-			this->refreshGrid();
 		}
 		void refreshGrid() {
-			this->visualizeGrid->DataSource = this->supply->getAllProducts();
+			if (mode == 1) {
+				this->visualizeGrid->DataSource = this->staff->getAllStaff();
+			}
+			if (mode == 2) {
+				this->visualizeGrid->DataSource = this->supply->getAllProducts();
+			}
+			if (mode == 3) {
+				this->visualizeGrid->DataSource = this->customer->getAllCustomers();
+			}
+			if (mode == 4) {
+				this->visualizeGrid->DataSource = this->order->getAllOrders();
+			}
 		}
 
 	protected:
@@ -112,7 +132,8 @@ namespace HMI {
 	private: System::Windows::Forms::GroupBox^ customerGroup;
 
 	private: System::Windows::Forms::Label^ label10;
-	private: System::Windows::Forms::TextBox^ textBox9;
+private: System::Windows::Forms::TextBox^ customerPhoneNumberInput;
+
 	private: System::Windows::Forms::Label^ customerMailDotLabel;
 
 	private: System::Windows::Forms::Label^ customerMailAtLabel;
@@ -348,6 +369,29 @@ private: System::Windows::Forms::Label^ label1;
 			this->visualizeGroup = (gcnew System::Windows::Forms::GroupBox());
 			this->visualizeDeleteButton = (gcnew System::Windows::Forms::Button());
 			this->visualizeGrid = (gcnew System::Windows::Forms::DataGridView());
+			this->staffGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->staffHiredYearInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->staffHiredMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->staffHiredDayInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->staffHiredSlash2 = (gcnew System::Windows::Forms::Label());
+			this->staffHiredSlash1 = (gcnew System::Windows::Forms::Label());
+			this->staffSuperiorLabel = (gcnew System::Windows::Forms::Label());
+			this->staffSuperiorSelector = (gcnew System::Windows::Forms::ListBox());
+			this->staffAddressGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->staffAddressCityInput = (gcnew System::Windows::Forms::ComboBox());
+			this->staffAddressCityCodeInput = (gcnew System::Windows::Forms::TextBox());
+			this->staffAddressCityCodeLabel = (gcnew System::Windows::Forms::Label());
+			this->staffAddressCityLabel = (gcnew System::Windows::Forms::Label());
+			this->staffAddressStreetLabel = (gcnew System::Windows::Forms::Label());
+			this->staffAddressStreetInput = (gcnew System::Windows::Forms::TextBox());
+			this->staffAddressNumberInput = (gcnew System::Windows::Forms::TextBox());
+			this->staffAddressNumberLabel = (gcnew System::Windows::Forms::Label());
+			this->staffHiredLabel = (gcnew System::Windows::Forms::Label());
+			this->staffFNameLabel = (gcnew System::Windows::Forms::Label());
+			this->staffLNameLabel = (gcnew System::Windows::Forms::Label());
+			this->staffFNameInput = (gcnew System::Windows::Forms::TextBox());
+			this->staffLNameInput = (gcnew System::Windows::Forms::TextBox());
+			this->groupBox16 = (gcnew System::Windows::Forms::GroupBox());
 			this->validateGroup = (gcnew System::Windows::Forms::GroupBox());
 			this->EditRadioButton = (gcnew System::Windows::Forms::RadioButton());
 			this->addRadioButton = (gcnew System::Windows::Forms::RadioButton());
@@ -367,7 +411,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerNewDeliveryButton = (gcnew System::Windows::Forms::Button());
 			this->customerDeliveryDisplay = (gcnew System::Windows::Forms::DataGridView());
 			this->label10 = (gcnew System::Windows::Forms::Label());
-			this->textBox9 = (gcnew System::Windows::Forms::TextBox());
+			this->customerPhoneNumberInput = (gcnew System::Windows::Forms::TextBox());
 			this->customerMailDotLabel = (gcnew System::Windows::Forms::Label());
 			this->customerMailAtLabel = (gcnew System::Windows::Forms::Label());
 			this->customerMailExtInput = (gcnew System::Windows::Forms::ComboBox());
@@ -404,29 +448,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersDeliveryLabel = (gcnew System::Windows::Forms::Label());
 			this->label23 = (gcnew System::Windows::Forms::Label());
 			this->groupBox11 = (gcnew System::Windows::Forms::GroupBox());
-			this->staffGroup = (gcnew System::Windows::Forms::GroupBox());
-			this->staffHiredYearInput = (gcnew System::Windows::Forms::NumericUpDown());
-			this->staffHiredMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
-			this->staffHiredDayInput = (gcnew System::Windows::Forms::NumericUpDown());
-			this->staffHiredSlash2 = (gcnew System::Windows::Forms::Label());
-			this->staffHiredSlash1 = (gcnew System::Windows::Forms::Label());
-			this->staffSuperiorLabel = (gcnew System::Windows::Forms::Label());
-			this->staffSuperiorSelector = (gcnew System::Windows::Forms::ListBox());
-			this->staffAddressGroup = (gcnew System::Windows::Forms::GroupBox());
-			this->staffAddressCityInput = (gcnew System::Windows::Forms::ComboBox());
-			this->staffAddressCityCodeInput = (gcnew System::Windows::Forms::TextBox());
-			this->staffAddressCityCodeLabel = (gcnew System::Windows::Forms::Label());
-			this->staffAddressCityLabel = (gcnew System::Windows::Forms::Label());
-			this->staffAddressStreetLabel = (gcnew System::Windows::Forms::Label());
-			this->staffAddressStreetInput = (gcnew System::Windows::Forms::TextBox());
-			this->staffAddressNumberInput = (gcnew System::Windows::Forms::TextBox());
-			this->staffAddressNumberLabel = (gcnew System::Windows::Forms::Label());
-			this->staffHiredLabel = (gcnew System::Windows::Forms::Label());
-			this->staffFNameLabel = (gcnew System::Windows::Forms::Label());
-			this->staffLNameLabel = (gcnew System::Windows::Forms::Label());
-			this->staffFNameInput = (gcnew System::Windows::Forms::TextBox());
-			this->staffLNameInput = (gcnew System::Windows::Forms::TextBox());
-			this->groupBox16 = (gcnew System::Windows::Forms::GroupBox());
 			this->statsAverageBasketButton = (gcnew System::Windows::Forms::Button());
 			this->statsTurnoverButton = (gcnew System::Windows::Forms::Button());
 			this->statsMonthLabel = (gcnew System::Windows::Forms::Label());
@@ -493,6 +514,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->SuspendLayout();
 			this->visualizeGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->visualizeGrid))->BeginInit();
+			this->staffGroup->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredYearInput))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredMonthInput))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredDayInput))->BeginInit();
+			this->staffAddressGroup->SuspendLayout();
 			this->validateGroup->SuspendLayout();
 			this->customerGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthDayInput))->BeginInit();
@@ -513,11 +539,6 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersDeliveryDayInput))->BeginInit();
 			this->ordersPaymentGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersPaymentDisplay))->BeginInit();
-			this->staffGroup->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredYearInput))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredMonthInput))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredDayInput))->BeginInit();
-			this->staffAddressGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsMonthChoiceTurnover))->BeginInit();
 			this->statsGroup->SuspendLayout();
 			this->groupBox6->SuspendLayout();
@@ -553,7 +574,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->Controls->Add(this->customersCategoryButton);
 			this->categoriesGroup->Controls->Add(this->stockCategoryButton);
 			this->categoriesGroup->Controls->Add(this->staffCategoryButton);
-			this->categoriesGroup->Location = System::Drawing::Point(14, 10);
+			this->categoriesGroup->Location = System::Drawing::Point(1128, 19);
 			this->categoriesGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->categoriesGroup->Name = L"categoriesGroup";
 			this->categoriesGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
@@ -667,6 +688,247 @@ private: System::Windows::Forms::Label^ label1;
 			this->visualizeGrid->Size = System::Drawing::Size(425, 530);
 			this->visualizeGrid->TabIndex = 9;
 			// 
+			// staffGroup
+			// 
+			this->staffGroup->Controls->Add(this->staffHiredYearInput);
+			this->staffGroup->Controls->Add(this->staffHiredMonthInput);
+			this->staffGroup->Controls->Add(this->staffHiredDayInput);
+			this->staffGroup->Controls->Add(this->staffHiredSlash2);
+			this->staffGroup->Controls->Add(this->staffHiredSlash1);
+			this->staffGroup->Controls->Add(this->staffSuperiorLabel);
+			this->staffGroup->Controls->Add(this->staffSuperiorSelector);
+			this->staffGroup->Controls->Add(this->staffAddressGroup);
+			this->staffGroup->Controls->Add(this->staffHiredLabel);
+			this->staffGroup->Controls->Add(this->staffFNameLabel);
+			this->staffGroup->Controls->Add(this->staffLNameLabel);
+			this->staffGroup->Controls->Add(this->staffFNameInput);
+			this->staffGroup->Controls->Add(this->staffLNameInput);
+			this->staffGroup->Controls->Add(this->groupBox16);
+			this->staffGroup->Location = System::Drawing::Point(14, 648);
+			this->staffGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffGroup->Name = L"staffGroup";
+			this->staffGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffGroup->Size = System::Drawing::Size(585, 531);
+			this->staffGroup->TabIndex = 6;
+			this->staffGroup->TabStop = false;
+			this->staffGroup->Text = L"Edition du personnel";
+			// 
+			// staffHiredYearInput
+			// 
+			this->staffHiredYearInput->Location = System::Drawing::Point(443, 140);
+			this->staffHiredYearInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffHiredYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
+			this->staffHiredYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
+			this->staffHiredYearInput->Name = L"staffHiredYearInput";
+			this->staffHiredYearInput->Size = System::Drawing::Size(79, 26);
+			this->staffHiredYearInput->TabIndex = 33;
+			this->staffHiredYearInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
+			// 
+			// staffHiredMonthInput
+			// 
+			this->staffHiredMonthInput->Location = System::Drawing::Point(361, 140);
+			this->staffHiredMonthInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffHiredMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
+			this->staffHiredMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->staffHiredMonthInput->Name = L"staffHiredMonthInput";
+			this->staffHiredMonthInput->Size = System::Drawing::Size(56, 26);
+			this->staffHiredMonthInput->TabIndex = 32;
+			this->staffHiredMonthInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			// 
+			// staffHiredDayInput
+			// 
+			this->staffHiredDayInput->Location = System::Drawing::Point(279, 140);
+			this->staffHiredDayInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffHiredDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
+			this->staffHiredDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->staffHiredDayInput->Name = L"staffHiredDayInput";
+			this->staffHiredDayInput->Size = System::Drawing::Size(56, 26);
+			this->staffHiredDayInput->TabIndex = 31;
+			this->staffHiredDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			// 
+			// staffHiredSlash2
+			// 
+			this->staffHiredSlash2->AutoSize = true;
+			this->staffHiredSlash2->Location = System::Drawing::Point(424, 144);
+			this->staffHiredSlash2->Name = L"staffHiredSlash2";
+			this->staffHiredSlash2->Size = System::Drawing::Size(13, 20);
+			this->staffHiredSlash2->TabIndex = 30;
+			this->staffHiredSlash2->Text = L"/";
+			// 
+			// staffHiredSlash1
+			// 
+			this->staffHiredSlash1->AutoSize = true;
+			this->staffHiredSlash1->Location = System::Drawing::Point(342, 144);
+			this->staffHiredSlash1->Name = L"staffHiredSlash1";
+			this->staffHiredSlash1->Size = System::Drawing::Size(13, 20);
+			this->staffHiredSlash1->TabIndex = 29;
+			this->staffHiredSlash1->Text = L"/";
+			// 
+			// staffSuperiorLabel
+			// 
+			this->staffSuperiorLabel->AutoSize = true;
+			this->staffSuperiorLabel->Location = System::Drawing::Point(66, 348);
+			this->staffSuperiorLabel->Name = L"staffSuperiorLabel";
+			this->staffSuperiorLabel->Size = System::Drawing::Size(173, 20);
+			this->staffSuperiorLabel->TabIndex = 26;
+			this->staffSuperiorLabel->Text = L"Supérieur hiérarchique:";
+			// 
+			// staffSuperiorSelector
+			// 
+			this->staffSuperiorSelector->FormattingEnabled = true;
+			this->staffSuperiorSelector->ItemHeight = 20;
+			this->staffSuperiorSelector->Location = System::Drawing::Point(70, 382);
+			this->staffSuperiorSelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffSuperiorSelector->Name = L"staffSuperiorSelector";
+			this->staffSuperiorSelector->Size = System::Drawing::Size(457, 104);
+			this->staffSuperiorSelector->TabIndex = 25;
+			// 
+			// staffAddressGroup
+			// 
+			this->staffAddressGroup->Controls->Add(this->staffAddressCityInput);
+			this->staffAddressGroup->Controls->Add(this->staffAddressCityCodeInput);
+			this->staffAddressGroup->Controls->Add(this->staffAddressCityCodeLabel);
+			this->staffAddressGroup->Controls->Add(this->staffAddressCityLabel);
+			this->staffAddressGroup->Controls->Add(this->staffAddressStreetLabel);
+			this->staffAddressGroup->Controls->Add(this->staffAddressStreetInput);
+			this->staffAddressGroup->Controls->Add(this->staffAddressNumberInput);
+			this->staffAddressGroup->Controls->Add(this->staffAddressNumberLabel);
+			this->staffAddressGroup->Location = System::Drawing::Point(60, 198);
+			this->staffAddressGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffAddressGroup->Name = L"staffAddressGroup";
+			this->staffAddressGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffAddressGroup->Size = System::Drawing::Size(465, 125);
+			this->staffAddressGroup->TabIndex = 18;
+			this->staffAddressGroup->TabStop = false;
+			this->staffAddressGroup->Text = L"Adresse";
+			// 
+			// staffAddressCityInput
+			// 
+			this->staffAddressCityInput->FormattingEnabled = true;
+			this->staffAddressCityInput->Location = System::Drawing::Point(69, 71);
+			this->staffAddressCityInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffAddressCityInput->Name = L"staffAddressCityInput";
+			this->staffAddressCityInput->Size = System::Drawing::Size(129, 28);
+			this->staffAddressCityInput->TabIndex = 8;
+			// 
+			// staffAddressCityCodeInput
+			// 
+			this->staffAddressCityCodeInput->Location = System::Drawing::Point(341, 71);
+			this->staffAddressCityCodeInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffAddressCityCodeInput->MaxLength = 6;
+			this->staffAddressCityCodeInput->Name = L"staffAddressCityCodeInput";
+			this->staffAddressCityCodeInput->Size = System::Drawing::Size(85, 26);
+			this->staffAddressCityCodeInput->TabIndex = 7;
+			// 
+			// staffAddressCityCodeLabel
+			// 
+			this->staffAddressCityCodeLabel->AutoSize = true;
+			this->staffAddressCityCodeLabel->Location = System::Drawing::Point(241, 75);
+			this->staffAddressCityCodeLabel->Name = L"staffAddressCityCodeLabel";
+			this->staffAddressCityCodeLabel->Size = System::Drawing::Size(98, 20);
+			this->staffAddressCityCodeLabel->TabIndex = 5;
+			this->staffAddressCityCodeLabel->Text = L"Code postal:";
+			// 
+			// staffAddressCityLabel
+			// 
+			this->staffAddressCityLabel->AutoSize = true;
+			this->staffAddressCityLabel->Location = System::Drawing::Point(20, 75);
+			this->staffAddressCityLabel->Name = L"staffAddressCityLabel";
+			this->staffAddressCityLabel->Size = System::Drawing::Size(42, 20);
+			this->staffAddressCityLabel->TabIndex = 4;
+			this->staffAddressCityLabel->Text = L"Ville:";
+			// 
+			// staffAddressStreetLabel
+			// 
+			this->staffAddressStreetLabel->AutoSize = true;
+			this->staffAddressStreetLabel->Location = System::Drawing::Point(238, 35);
+			this->staffAddressStreetLabel->Name = L"staffAddressStreetLabel";
+			this->staffAddressStreetLabel->Size = System::Drawing::Size(95, 20);
+			this->staffAddressStreetLabel->TabIndex = 3;
+			this->staffAddressStreetLabel->Text = L"Nom de rue:";
+			// 
+			// staffAddressStreetInput
+			// 
+			this->staffAddressStreetInput->Location = System::Drawing::Point(335, 31);
+			this->staffAddressStreetInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffAddressStreetInput->Name = L"staffAddressStreetInput";
+			this->staffAddressStreetInput->Size = System::Drawing::Size(112, 26);
+			this->staffAddressStreetInput->TabIndex = 2;
+			// 
+			// staffAddressNumberInput
+			// 
+			this->staffAddressNumberInput->Location = System::Drawing::Point(136, 31);
+			this->staffAddressNumberInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffAddressNumberInput->Name = L"staffAddressNumberInput";
+			this->staffAddressNumberInput->Size = System::Drawing::Size(50, 26);
+			this->staffAddressNumberInput->TabIndex = 1;
+			// 
+			// staffAddressNumberLabel
+			// 
+			this->staffAddressNumberLabel->AutoSize = true;
+			this->staffAddressNumberLabel->Location = System::Drawing::Point(20, 35);
+			this->staffAddressNumberLabel->Name = L"staffAddressNumberLabel";
+			this->staffAddressNumberLabel->Size = System::Drawing::Size(117, 20);
+			this->staffAddressNumberLabel->TabIndex = 0;
+			this->staffAddressNumberLabel->Text = L"N° de bâtiment:";
+			// 
+			// staffHiredLabel
+			// 
+			this->staffHiredLabel->AutoSize = true;
+			this->staffHiredLabel->Location = System::Drawing::Point(66, 140);
+			this->staffHiredLabel->Name = L"staffHiredLabel";
+			this->staffHiredLabel->Size = System::Drawing::Size(139, 20);
+			this->staffHiredLabel->TabIndex = 17;
+			this->staffHiredLabel->Text = L"Date d\'embauche:";
+			// 
+			// staffFNameLabel
+			// 
+			this->staffFNameLabel->AutoSize = true;
+			this->staffFNameLabel->Location = System::Drawing::Point(320, 66);
+			this->staffFNameLabel->Name = L"staffFNameLabel";
+			this->staffFNameLabel->Size = System::Drawing::Size(68, 20);
+			this->staffFNameLabel->TabIndex = 11;
+			this->staffFNameLabel->Text = L"Prénom:";
+			// 
+			// staffLNameLabel
+			// 
+			this->staffLNameLabel->AutoSize = true;
+			this->staffLNameLabel->Location = System::Drawing::Point(66, 66);
+			this->staffLNameLabel->Name = L"staffLNameLabel";
+			this->staffLNameLabel->Size = System::Drawing::Size(46, 20);
+			this->staffLNameLabel->TabIndex = 10;
+			this->staffLNameLabel->Text = L"Nom:";
+			// 
+			// staffFNameInput
+			// 
+			this->staffFNameInput->AcceptsTab = true;
+			this->staffFNameInput->Location = System::Drawing::Point(386, 62);
+			this->staffFNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffFNameInput->Name = L"staffFNameInput";
+			this->staffFNameInput->Size = System::Drawing::Size(138, 26);
+			this->staffFNameInput->TabIndex = 9;
+			this->staffFNameInput->TabStop = false;
+			// 
+			// staffLNameInput
+			// 
+			this->staffLNameInput->AcceptsTab = true;
+			this->staffLNameInput->Location = System::Drawing::Point(114, 62);
+			this->staffLNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffLNameInput->Name = L"staffLNameInput";
+			this->staffLNameInput->Size = System::Drawing::Size(138, 26);
+			this->staffLNameInput->TabIndex = 8;
+			this->staffLNameInput->TabStop = false;
+			// 
+			// groupBox16
+			// 
+			this->groupBox16->Location = System::Drawing::Point(0, 539);
+			this->groupBox16->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->groupBox16->Name = L"groupBox16";
+			this->groupBox16->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->groupBox16->Size = System::Drawing::Size(439, 61);
+			this->groupBox16->TabIndex = 3;
+			this->groupBox16->TabStop = false;
+			// 
 			// validateGroup
 			// 
 			this->validateGroup->Controls->Add(this->EditRadioButton);
@@ -725,7 +987,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->Controls->Add(this->customerInvoiceGroup);
 			this->customerGroup->Controls->Add(this->customerDeliveryGroup);
 			this->customerGroup->Controls->Add(this->label10);
-			this->customerGroup->Controls->Add(this->textBox9);
+			this->customerGroup->Controls->Add(this->customerPhoneNumberInput);
 			this->customerGroup->Controls->Add(this->customerMailDotLabel);
 			this->customerGroup->Controls->Add(this->customerMailAtLabel);
 			this->customerGroup->Controls->Add(this->customerMailExtInput);
@@ -899,15 +1161,15 @@ private: System::Windows::Forms::Label^ label1;
 			this->label10->TabIndex = 18;
 			this->label10->Text = L"Téléphone:";
 			// 
-			// textBox9
+			// customerPhoneNumberInput
 			// 
-			this->textBox9->AcceptsTab = true;
-			this->textBox9->Location = System::Drawing::Point(241, 224);
-			this->textBox9->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->textBox9->MaxLength = 10;
-			this->textBox9->Name = L"textBox9";
-			this->textBox9->Size = System::Drawing::Size(139, 26);
-			this->textBox9->TabIndex = 8;
+			this->customerPhoneNumberInput->AcceptsTab = true;
+			this->customerPhoneNumberInput->Location = System::Drawing::Point(241, 224);
+			this->customerPhoneNumberInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->customerPhoneNumberInput->MaxLength = 10;
+			this->customerPhoneNumberInput->Name = L"customerPhoneNumberInput";
+			this->customerPhoneNumberInput->Size = System::Drawing::Size(139, 26);
+			this->customerPhoneNumberInput->TabIndex = 8;
 			// 
 			// customerMailDotLabel
 			// 
@@ -1298,247 +1560,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->groupBox11->Size = System::Drawing::Size(439, 61);
 			this->groupBox11->TabIndex = 3;
 			this->groupBox11->TabStop = false;
-			// 
-			// staffGroup
-			// 
-			this->staffGroup->Controls->Add(this->staffHiredYearInput);
-			this->staffGroup->Controls->Add(this->staffHiredMonthInput);
-			this->staffGroup->Controls->Add(this->staffHiredDayInput);
-			this->staffGroup->Controls->Add(this->staffHiredSlash2);
-			this->staffGroup->Controls->Add(this->staffHiredSlash1);
-			this->staffGroup->Controls->Add(this->staffSuperiorLabel);
-			this->staffGroup->Controls->Add(this->staffSuperiorSelector);
-			this->staffGroup->Controls->Add(this->staffAddressGroup);
-			this->staffGroup->Controls->Add(this->staffHiredLabel);
-			this->staffGroup->Controls->Add(this->staffFNameLabel);
-			this->staffGroup->Controls->Add(this->staffLNameLabel);
-			this->staffGroup->Controls->Add(this->staffFNameInput);
-			this->staffGroup->Controls->Add(this->staffLNameInput);
-			this->staffGroup->Controls->Add(this->groupBox16);
-			this->staffGroup->Location = System::Drawing::Point(14, 10);
-			this->staffGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffGroup->Name = L"staffGroup";
-			this->staffGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffGroup->Size = System::Drawing::Size(585, 531);
-			this->staffGroup->TabIndex = 6;
-			this->staffGroup->TabStop = false;
-			this->staffGroup->Text = L"Edition du personnel";
-			// 
-			// staffHiredYearInput
-			// 
-			this->staffHiredYearInput->Location = System::Drawing::Point(443, 140);
-			this->staffHiredYearInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffHiredYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
-			this->staffHiredYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
-			this->staffHiredYearInput->Name = L"staffHiredYearInput";
-			this->staffHiredYearInput->Size = System::Drawing::Size(79, 26);
-			this->staffHiredYearInput->TabIndex = 33;
-			this->staffHiredYearInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
-			// 
-			// staffHiredMonthInput
-			// 
-			this->staffHiredMonthInput->Location = System::Drawing::Point(361, 140);
-			this->staffHiredMonthInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffHiredMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
-			this->staffHiredMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->staffHiredMonthInput->Name = L"staffHiredMonthInput";
-			this->staffHiredMonthInput->Size = System::Drawing::Size(56, 26);
-			this->staffHiredMonthInput->TabIndex = 32;
-			this->staffHiredMonthInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			// 
-			// staffHiredDayInput
-			// 
-			this->staffHiredDayInput->Location = System::Drawing::Point(279, 140);
-			this->staffHiredDayInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffHiredDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
-			this->staffHiredDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->staffHiredDayInput->Name = L"staffHiredDayInput";
-			this->staffHiredDayInput->Size = System::Drawing::Size(56, 26);
-			this->staffHiredDayInput->TabIndex = 31;
-			this->staffHiredDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			// 
-			// staffHiredSlash2
-			// 
-			this->staffHiredSlash2->AutoSize = true;
-			this->staffHiredSlash2->Location = System::Drawing::Point(424, 144);
-			this->staffHiredSlash2->Name = L"staffHiredSlash2";
-			this->staffHiredSlash2->Size = System::Drawing::Size(13, 20);
-			this->staffHiredSlash2->TabIndex = 30;
-			this->staffHiredSlash2->Text = L"/";
-			// 
-			// staffHiredSlash1
-			// 
-			this->staffHiredSlash1->AutoSize = true;
-			this->staffHiredSlash1->Location = System::Drawing::Point(342, 144);
-			this->staffHiredSlash1->Name = L"staffHiredSlash1";
-			this->staffHiredSlash1->Size = System::Drawing::Size(13, 20);
-			this->staffHiredSlash1->TabIndex = 29;
-			this->staffHiredSlash1->Text = L"/";
-			// 
-			// staffSuperiorLabel
-			// 
-			this->staffSuperiorLabel->AutoSize = true;
-			this->staffSuperiorLabel->Location = System::Drawing::Point(86, 346);
-			this->staffSuperiorLabel->Name = L"staffSuperiorLabel";
-			this->staffSuperiorLabel->Size = System::Drawing::Size(173, 20);
-			this->staffSuperiorLabel->TabIndex = 26;
-			this->staffSuperiorLabel->Text = L"Supérieur hiérarchique:";
-			// 
-			// staffSuperiorSelector
-			// 
-			this->staffSuperiorSelector->FormattingEnabled = true;
-			this->staffSuperiorSelector->ItemHeight = 20;
-			this->staffSuperiorSelector->Location = System::Drawing::Point(70, 382);
-			this->staffSuperiorSelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffSuperiorSelector->Name = L"staffSuperiorSelector";
-			this->staffSuperiorSelector->Size = System::Drawing::Size(457, 104);
-			this->staffSuperiorSelector->TabIndex = 25;
-			// 
-			// staffAddressGroup
-			// 
-			this->staffAddressGroup->Controls->Add(this->staffAddressCityInput);
-			this->staffAddressGroup->Controls->Add(this->staffAddressCityCodeInput);
-			this->staffAddressGroup->Controls->Add(this->staffAddressCityCodeLabel);
-			this->staffAddressGroup->Controls->Add(this->staffAddressCityLabel);
-			this->staffAddressGroup->Controls->Add(this->staffAddressStreetLabel);
-			this->staffAddressGroup->Controls->Add(this->staffAddressStreetInput);
-			this->staffAddressGroup->Controls->Add(this->staffAddressNumberInput);
-			this->staffAddressGroup->Controls->Add(this->staffAddressNumberLabel);
-			this->staffAddressGroup->Location = System::Drawing::Point(60, 198);
-			this->staffAddressGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffAddressGroup->Name = L"staffAddressGroup";
-			this->staffAddressGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffAddressGroup->Size = System::Drawing::Size(465, 125);
-			this->staffAddressGroup->TabIndex = 18;
-			this->staffAddressGroup->TabStop = false;
-			this->staffAddressGroup->Text = L"Adresse";
-			// 
-			// staffAddressCityInput
-			// 
-			this->staffAddressCityInput->FormattingEnabled = true;
-			this->staffAddressCityInput->Location = System::Drawing::Point(69, 71);
-			this->staffAddressCityInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffAddressCityInput->Name = L"staffAddressCityInput";
-			this->staffAddressCityInput->Size = System::Drawing::Size(129, 28);
-			this->staffAddressCityInput->TabIndex = 8;
-			// 
-			// staffAddressCityCodeInput
-			// 
-			this->staffAddressCityCodeInput->Location = System::Drawing::Point(341, 71);
-			this->staffAddressCityCodeInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffAddressCityCodeInput->MaxLength = 6;
-			this->staffAddressCityCodeInput->Name = L"staffAddressCityCodeInput";
-			this->staffAddressCityCodeInput->Size = System::Drawing::Size(85, 26);
-			this->staffAddressCityCodeInput->TabIndex = 7;
-			// 
-			// staffAddressCityCodeLabel
-			// 
-			this->staffAddressCityCodeLabel->AutoSize = true;
-			this->staffAddressCityCodeLabel->Location = System::Drawing::Point(241, 75);
-			this->staffAddressCityCodeLabel->Name = L"staffAddressCityCodeLabel";
-			this->staffAddressCityCodeLabel->Size = System::Drawing::Size(98, 20);
-			this->staffAddressCityCodeLabel->TabIndex = 5;
-			this->staffAddressCityCodeLabel->Text = L"Code postal:";
-			// 
-			// staffAddressCityLabel
-			// 
-			this->staffAddressCityLabel->AutoSize = true;
-			this->staffAddressCityLabel->Location = System::Drawing::Point(20, 75);
-			this->staffAddressCityLabel->Name = L"staffAddressCityLabel";
-			this->staffAddressCityLabel->Size = System::Drawing::Size(42, 20);
-			this->staffAddressCityLabel->TabIndex = 4;
-			this->staffAddressCityLabel->Text = L"Ville:";
-			// 
-			// staffAddressStreetLabel
-			// 
-			this->staffAddressStreetLabel->AutoSize = true;
-			this->staffAddressStreetLabel->Location = System::Drawing::Point(238, 35);
-			this->staffAddressStreetLabel->Name = L"staffAddressStreetLabel";
-			this->staffAddressStreetLabel->Size = System::Drawing::Size(95, 20);
-			this->staffAddressStreetLabel->TabIndex = 3;
-			this->staffAddressStreetLabel->Text = L"Nom de rue:";
-			// 
-			// staffAddressStreetInput
-			// 
-			this->staffAddressStreetInput->Location = System::Drawing::Point(335, 31);
-			this->staffAddressStreetInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffAddressStreetInput->Name = L"staffAddressStreetInput";
-			this->staffAddressStreetInput->Size = System::Drawing::Size(112, 26);
-			this->staffAddressStreetInput->TabIndex = 2;
-			// 
-			// staffAddressNumberInput
-			// 
-			this->staffAddressNumberInput->Location = System::Drawing::Point(136, 31);
-			this->staffAddressNumberInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffAddressNumberInput->Name = L"staffAddressNumberInput";
-			this->staffAddressNumberInput->Size = System::Drawing::Size(50, 26);
-			this->staffAddressNumberInput->TabIndex = 1;
-			// 
-			// staffAddressNumberLabel
-			// 
-			this->staffAddressNumberLabel->AutoSize = true;
-			this->staffAddressNumberLabel->Location = System::Drawing::Point(20, 35);
-			this->staffAddressNumberLabel->Name = L"staffAddressNumberLabel";
-			this->staffAddressNumberLabel->Size = System::Drawing::Size(117, 20);
-			this->staffAddressNumberLabel->TabIndex = 0;
-			this->staffAddressNumberLabel->Text = L"N° de bâtiment:";
-			// 
-			// staffHiredLabel
-			// 
-			this->staffHiredLabel->AutoSize = true;
-			this->staffHiredLabel->Location = System::Drawing::Point(66, 140);
-			this->staffHiredLabel->Name = L"staffHiredLabel";
-			this->staffHiredLabel->Size = System::Drawing::Size(139, 20);
-			this->staffHiredLabel->TabIndex = 17;
-			this->staffHiredLabel->Text = L"Date d\'embauche:";
-			// 
-			// staffFNameLabel
-			// 
-			this->staffFNameLabel->AutoSize = true;
-			this->staffFNameLabel->Location = System::Drawing::Point(320, 66);
-			this->staffFNameLabel->Name = L"staffFNameLabel";
-			this->staffFNameLabel->Size = System::Drawing::Size(68, 20);
-			this->staffFNameLabel->TabIndex = 11;
-			this->staffFNameLabel->Text = L"Prénom:";
-			// 
-			// staffLNameLabel
-			// 
-			this->staffLNameLabel->AutoSize = true;
-			this->staffLNameLabel->Location = System::Drawing::Point(66, 66);
-			this->staffLNameLabel->Name = L"staffLNameLabel";
-			this->staffLNameLabel->Size = System::Drawing::Size(46, 20);
-			this->staffLNameLabel->TabIndex = 10;
-			this->staffLNameLabel->Text = L"Nom:";
-			// 
-			// staffFNameInput
-			// 
-			this->staffFNameInput->AcceptsTab = true;
-			this->staffFNameInput->Location = System::Drawing::Point(386, 62);
-			this->staffFNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffFNameInput->Name = L"staffFNameInput";
-			this->staffFNameInput->Size = System::Drawing::Size(138, 26);
-			this->staffFNameInput->TabIndex = 9;
-			this->staffFNameInput->TabStop = false;
-			// 
-			// staffLNameInput
-			// 
-			this->staffLNameInput->AcceptsTab = true;
-			this->staffLNameInput->Location = System::Drawing::Point(114, 62);
-			this->staffLNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->staffLNameInput->Name = L"staffLNameInput";
-			this->staffLNameInput->Size = System::Drawing::Size(138, 26);
-			this->staffLNameInput->TabIndex = 8;
-			this->staffLNameInput->TabStop = false;
-			// 
-			// groupBox16
-			// 
-			this->groupBox16->Location = System::Drawing::Point(0, 539);
-			this->groupBox16->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->groupBox16->Name = L"groupBox16";
-			this->groupBox16->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->groupBox16->Size = System::Drawing::Size(439, 61);
-			this->groupBox16->TabIndex = 3;
-			this->groupBox16->TabStop = false;
 			// 
 			// statsAverageBasketButton
 			// 
@@ -2219,16 +2240,16 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(2026, 999);
+			this->ClientSize = System::Drawing::Size(2026, 1284);
 			this->Controls->Add(this->categoriesGroup);
 			this->Controls->Add(this->backButton);
 			this->Controls->Add(this->validateGroup);
 			this->Controls->Add(this->visualizeGroup);
-			this->Controls->Add(this->ordersGroup);
 			this->Controls->Add(this->customerGroup);
-			this->Controls->Add(this->productGroup);
-			this->Controls->Add(this->staffGroup);
 			this->Controls->Add(this->statsGroup);
+			this->Controls->Add(this->productGroup);
+			this->Controls->Add(this->ordersGroup);
+			this->Controls->Add(this->staffGroup);
 			this->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->Name = L"Root";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -2238,6 +2259,13 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->PerformLayout();
 			this->visualizeGroup->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->visualizeGrid))->EndInit();
+			this->staffGroup->ResumeLayout(false);
+			this->staffGroup->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredYearInput))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredMonthInput))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredDayInput))->EndInit();
+			this->staffAddressGroup->ResumeLayout(false);
+			this->staffAddressGroup->PerformLayout();
 			this->validateGroup->ResumeLayout(false);
 			this->validateGroup->PerformLayout();
 			this->customerGroup->ResumeLayout(false);
@@ -2261,13 +2289,6 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersDeliveryDayInput))->EndInit();
 			this->ordersPaymentGroup->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersPaymentDisplay))->EndInit();
-			this->staffGroup->ResumeLayout(false);
-			this->staffGroup->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredYearInput))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredMonthInput))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->staffHiredDayInput))->EndInit();
-			this->staffAddressGroup->ResumeLayout(false);
-			this->staffAddressGroup->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsMonthChoiceTurnover))->EndInit();
 			this->statsGroup->ResumeLayout(false);
 			this->groupBox6->ResumeLayout(false);
@@ -2316,27 +2337,67 @@ private: System::Windows::Forms::Label^ label1;
 		private: System::Void statsTurnoverButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		}
 		void validateButton_Click(Object^ sender, EventArgs^ e) {
-			ProductData product = ProductData();
-			product.name = this->productNameInput->Text;
-			product.priceNoTax = (float)this->productUHTPriceInput->Value;
-			product.purchaseValue = (float)this->productPurchasePriceInput->Value;
-			product.amount = (int)this->productStockInput->Value;
-			product.TVARatio = (float)this->productTaxesInput->Value;  // TODO: change this to convert from % to in range [0, 1]
-			product.discountRatio = (float)this->productBaseDiscountInput->Value;  // TODO: same as above
-			product.restockThreshold = (int)this->productRestockThresholdInput->Value;
+			if (mode == 2) {
+				ProductData product = ProductData();
+				product.name = this->productNameInput->Text;
+				product.priceNoTax = (float)this->productUHTPriceInput->Value;
+				product.purchaseValue = (float)this->productPurchasePriceInput->Value;
+				product.amount = (int)this->productStockInput->Value;
+				product.TVARatio = (float)this->productTaxesInput->Value;  // TODO: change this to convert from % to in range [0, 1]
+				product.discountRatio = (float)this->productBaseDiscountInput->Value;  // TODO: same as above
+				product.restockThreshold = (int)this->productRestockThresholdInput->Value;
 
-			if (this->is_editing) {
+				if (this->is_editing) {
+					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+					int selected_id = Int32::Parse(selected_row[0]->ToString());
+					product = this->supply->editProduct(selected_id, product);
+
+				}
+				else {
+					product = this->supply->addProduct(product);
+				}
+				this->refreshGrid();
+			}
+
+			if (mode == 1) {
+				StaffMemberData infos = StaffMemberData();
+				infos.firstName = this->staffFNameInput->Text;
+				infos.lastName = this->staffLNameInput->Text;
+				infos.hireDate = gcnew DateTime(Convert::ToInt32(this->staffHiredYearInput->Value), Convert::ToInt32(this->staffHiredMonthInput->Value), Convert::ToInt32(this->staffHiredDayInput->Value));
 				int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
 				auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
 				int selected_id = Int32::Parse(selected_row[0]->ToString());
-				product = this->supply->editProduct(selected_id, product);
+				infos.superior = selected_id;
+				infos.address.streetNum = this->staffAddressNumberInput->Text;
+				infos.address.streetName = this->staffAddressStreetInput->Text;
+				infos.address.cityName = this->staffAddressCityInput->Text;
+				infos.address.cityCode = this->staffAddressCityCodeInput->Text;
+
+				if (this->is_editing) {
+					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+					int selected_id = Int32::Parse(selected_row[0]->ToString());
+					infos = this->staff->editStaff(selected_id, infos);
+				}
+				else {
+					infos = this->staff->addStaff(infos);
+				}
+				this->refreshGrid();
+			}
+
+			if (mode == 3) {
+				CustomerData data = CustomerData();
+				data.firstName = this->customerFNameInput->Text;
+				data.lastName = this->customerLNameInput->Text;
+				data.birth = gcnew DateTime(Convert::ToInt32(this->customerBirthYearInput->Value), Convert::ToInt32(this->customerBirthMonthInput->Value), Convert::ToInt32(this->customerBirthDayInput->Value));
+				data.email = this->customerMailNameInput->Text + "@" + this->customerMailDomainInput->Text + "." + this->customerMailExtInput->ValueMember;
+				data.phoneNumber = this->customerPhoneNumberInput->Text;
+				data.firstPurchase = DateTime(Convert::ToInt32(this->customer))
 
 			}
-			else {
-				product = this->supply->addProduct(product);
-			}
-			this->refreshGrid();
 		}
+
 		void visualizeDeleteButton_Click(Object^ sender, EventArgs^ e) {
 			int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
 			auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
@@ -2361,6 +2422,8 @@ private: System::Windows::Forms::Label^ label1;
 			this->backButton->Visible = true;
 			this->validateGroup->Visible = true;
 			this->staffGroup->Visible = true;
+			mode = 1;
+			this->refreshGrid();
 		}
 
 		void supplyManagerButton_click(Object^ sender, EventArgs^ e) {
@@ -2369,6 +2432,8 @@ private: System::Windows::Forms::Label^ label1;
 			this->backButton->Visible = true;
 			this->validateGroup->Visible = true;
 			this->productGroup->Visible = true;
+			mode = 2;
+			this->refreshGrid();
 		}
 
 		void customerManagerButton_click(Object^ sender, EventArgs^ e) {
@@ -2377,6 +2442,8 @@ private: System::Windows::Forms::Label^ label1;
 			this->backButton->Visible = true;
 			this->validateGroup->Visible = true;
 			this->customerGroup->Visible = true;
+			mode = 3;
+			this->refreshGrid();
 		}
 
 		void ordersManagerButton_click(Object^ sender, EventArgs^ e) {
@@ -2385,6 +2452,8 @@ private: System::Windows::Forms::Label^ label1;
 			this->backButton->Visible = true;
 			this->validateGroup->Visible = true;
 			this->ordersGroup->Visible = true;
+			mode = 4;
+			this->refreshGrid();
 		}
 
 		void statsManagerButton_click(Object^ sender, EventArgs^ e) {
