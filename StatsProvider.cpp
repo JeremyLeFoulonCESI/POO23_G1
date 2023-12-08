@@ -143,7 +143,7 @@ namespace Services {
 		int count = Convert::ToInt32(product_row->ItemArray[4]);
 		return UAprice * (float)count;
 	}
-	float StatsProvider::simulateCommercialValue(float TVA, float commercialMargin, float commercialDiscount, float unknownMark) {
+	float StatsProvider::simulateCommercialValue(float TVA, float commercialMargin, float commercialDiscount, float shrink) {
 		float result = 0;
 		
 		this->dbOpenConnection();
@@ -151,7 +151,7 @@ namespace Services {
 			float UHTprice = (float)Convert::ToDecimal(product_row->ItemArray[2]);
 			int count = Convert::ToInt32(product_row->ItemArray[4]);
 
-			int real_count = count * (1 - unknownMark);
+			int real_count = count * (1 - shrink);
 
 			float real_value = UHTprice * (1 + TVA) * (1 + commercialMargin) * (1 - commercialDiscount);
 			result += real_value;
