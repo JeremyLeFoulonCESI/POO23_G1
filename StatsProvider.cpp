@@ -123,10 +123,34 @@ namespace Services {
 		return result;
 	}
 	float StatsProvider::computeStockCommercialValue() {
-		return 0;
+		return this->computeForAllProducts(&StatsProvider::getProductCommercialValue);
 	}
 	float StatsProvider::computeStockPurchaseValue() {
-		return 0;
+		return this->computeForAllProducts(&StatsProvider::getProductPurchaseValue);
+	}
+	float StatsProvider::computeForAllProducts(float (*operation) (DataRow^)) {
+		float total;
+		this->dbOpenConnection();
+		for each (DataRow^ product_row in this->readAll(Components::Table::getProductTable())->Rows) {
+			if (operation) {
+				float value = (*operation)(product_row);
+				total += value;
+			}
+		}
+		this->dbCloseConnection();
+		return total;
+	}
+	float StatsProvider::getProductCommercialValue(DataRow^ product_row) {
+		float UHTprice = (float)Convert::ToDecimal(product_row->ItemArray[2]);
+		int count = Convert::ToInt32(product_row->ItemArray[4]);
+		float TVA = (float)Convert::ToDecimal(product_row->ItemArray[5]);
+		float discount = (float)Convert::ToDecimal(product_row->ItemArray[6]);
+		return UHTprice * (1 + TVA) * (1 - discount) * (float)count;
+	}
+	float StatsProvider::getProductPurchaseValue(DataRow^ product_row) {
+		float UAprice = (float)Convert::ToDecimal(product_row->ItemArray[3]);
+		int count = Convert::ToInt32(product_row->ItemArray[4]);
+		return UAprice * (float)count;
 	}
 	float StatsProvider::simulateCommercialValue(float TVA, float commercialMargin, float commercialDiscount, float unknownMark) {
 		return 0;
