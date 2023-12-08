@@ -92,6 +92,7 @@ namespace HMI {
 		}
 
 		void refreshGrid() {
+			Console::WriteLine("Refresh");
 			if (mode == 1) {
 				this->visualizeGrid->DataSource = this->staff->getAllStaff();
 			}
@@ -624,7 +625,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(444, 87);
 			this->label4->TabIndex = 105;
-			this->label4->Text = L"Bienvenue dans votre centre de contrôle\r\n    Veuillez sélectionner une catégorie "
+			this->label4->Text = L"Bienvenue dans votre centre de contrÃ´le\r\n    Veuillez sÃ©lectionner une catÃ©gorie "
 				L":\r\n\r\n";
 			this->label4->Click += gcnew System::EventHandler(this, &Root::label4_Click_1);
 			// 
@@ -695,7 +696,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->visualizeGroup->Size = System::Drawing::Size(439, 609);
 			this->visualizeGroup->TabIndex = 2;
 			this->visualizeGroup->TabStop = false;
-			this->visualizeGroup->Text = L"Visualisation des données";
+			this->visualizeGroup->Text = L"Visualisation des donnÃ©es";
 			// 
 			// visualizeDeleteButton
 			// 
@@ -803,7 +804,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffSuperiorLabel->Name = L"staffSuperiorLabel";
 			this->staffSuperiorLabel->Size = System::Drawing::Size(173, 20);
 			this->staffSuperiorLabel->TabIndex = 26;
-			this->staffSuperiorLabel->Text = L"Supérieur hiérarchique:";
+			this->staffSuperiorLabel->Text = L"SupÃ©rieur hiÃ©rarchique:";
 			// 
 			// staffSuperiorSelector
 			// 
@@ -902,7 +903,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressNumberLabel->Name = L"staffAddressNumberLabel";
 			this->staffAddressNumberLabel->Size = System::Drawing::Size(117, 20);
 			this->staffAddressNumberLabel->TabIndex = 0;
-			this->staffAddressNumberLabel->Text = L"N° de bâtiment:";
+			this->staffAddressNumberLabel->Text = L"NÂ° de bÃ¢timent:";
 			// 
 			// staffHiredLabel
 			// 
@@ -920,7 +921,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffFNameLabel->Name = L"staffFNameLabel";
 			this->staffFNameLabel->Size = System::Drawing::Size(68, 20);
 			this->staffFNameLabel->TabIndex = 11;
-			this->staffFNameLabel->Text = L"Prénom:";
+			this->staffFNameLabel->Text = L"PrÃ©nom:";
 			// 
 			// staffLNameLabel
 			// 
@@ -1045,7 +1046,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->Size = System::Drawing::Size(585, 531);
 			this->customerGroup->TabIndex = 4;
 			this->customerGroup->TabStop = false;
-			this->customerGroup->Text = L"Edition des données client";
+			this->customerGroup->Text = L"Edition des donnÃ©es client";
 			this->customerGroup->Enter += gcnew System::EventHandler(this, &Root::customerGroup_Enter);
 			// 
 			// customerFPDayInput
@@ -1264,7 +1265,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(88, 20);
 			this->label10->TabIndex = 18;
-			this->label10->Text = L"Téléphone:";
+			this->label10->Text = L"TÃ©lÃ©phone:";
 			// 
 			// customerPhoneNumberInput
 			// 
@@ -1347,7 +1348,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthLabel->Name = L"customerBirthLabel";
 			this->customerBirthLabel->Size = System::Drawing::Size(68, 20);
 			this->customerBirthLabel->TabIndex = 8;
-			this->customerBirthLabel->Text = L"Né(e) le:";
+			this->customerBirthLabel->Text = L"NÃ©(e) le:";
 			// 
 			// customerFNameLabel
 			// 
@@ -1356,7 +1357,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerFNameLabel->Name = L"customerFNameLabel";
 			this->customerFNameLabel->Size = System::Drawing::Size(68, 20);
 			this->customerFNameLabel->TabIndex = 7;
-			this->customerFNameLabel->Text = L"Prénom:";
+			this->customerFNameLabel->Text = L"PrÃ©nom:";
 			// 
 			// customerLNameLabel
 			// 
@@ -1636,7 +1637,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersEmitLabel->Name = L"ordersEmitLabel";
 			this->ordersEmitLabel->Size = System::Drawing::Size(126, 20);
 			this->ordersEmitLabel->TabIndex = 22;
-			this->ordersEmitLabel->Text = L"Date d\'émission:";
+			this->ordersEmitLabel->Text = L"Date d\'Ã©mission:";
 			// 
 			// ordersDeliveryLabel
 			// 
@@ -1645,7 +1646,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersDeliveryLabel->Name = L"ordersDeliveryLabel";
 			this->ordersDeliveryLabel->Size = System::Drawing::Size(182, 20);
 			this->ordersDeliveryLabel->TabIndex = 16;
-			this->ordersDeliveryLabel->Text = L"Date prévue de livraison:";
+			this->ordersDeliveryLabel->Text = L"Date prÃ©vue de livraison:";
 			// 
 			// label23
 			// 
@@ -1831,7 +1832,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->groupBox8->Size = System::Drawing::Size(453, 244);
 			this->groupBox8->TabIndex = 36;
 			this->groupBox8->TabStop = false;
-			this->groupBox8->Text = L"Produits sous leur seuil de réapprovisionnement";
+			this->groupBox8->Text = L"Produits sous leur seuil de rÃ©approvisionnement";
 			// 
 			// dataGridView3
 			// 
@@ -1890,7 +1891,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(73, 20);
 			this->label3->TabIndex = 19;
-			this->label3->Text = L"Résultat:";
+			this->label3->Text = L"RÃ©sultat:";
 			// 
 			// label2
 			// 
@@ -1899,7 +1900,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(73, 20);
 			this->label2->TabIndex = 19;
-			this->label2->Text = L"Résultat:";
+			this->label2->Text = L"RÃ©sultat:";
 			// 
 			// label1
 			// 
@@ -1908,7 +1909,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(73, 20);
 			this->label1->TabIndex = 19;
-			this->label1->Text = L"Résultat:";
+			this->label1->Text = L"RÃ©sultat:";
 			// 
 			// groupBox3
 			// 
@@ -1941,7 +1942,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(73, 20);
 			this->label5->TabIndex = 20;
-			this->label5->Text = L"Résultat:";
+			this->label5->Text = L"RÃ©sultat:";
 			// 
 			// statsTVAValueLabel
 			// 
@@ -1988,7 +1989,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsUnknownMarkdownLabel->Name = L"statsUnknownMarkdownLabel";
 			this->statsUnknownMarkdownLabel->Size = System::Drawing::Size(157, 20);
 			this->statsUnknownMarkdownLabel->TabIndex = 25;
-			this->statsUnknownMarkdownLabel->Text = L"Démarque inconnue:";
+			this->statsUnknownMarkdownLabel->Text = L"DÃ©marque inconnue:";
 			this->statsUnknownMarkdownLabel->Click += gcnew System::EventHandler(this, &Root::label4_Click);
 			// 
 			// statsComDiscountPercentLabel
@@ -2124,13 +2125,13 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productUHTPriceCurrencySelector->FormattingEnabled = true;
 			this->productUHTPriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productUHTPriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"€", L"$" });
+			this->productUHTPriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Â€", L"$" });
 			this->productUHTPriceCurrencySelector->Location = System::Drawing::Point(412, 101);
 			this->productUHTPriceCurrencySelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productUHTPriceCurrencySelector->Name = L"productUHTPriceCurrencySelector";
 			this->productUHTPriceCurrencySelector->Size = System::Drawing::Size(61, 28);
 			this->productUHTPriceCurrencySelector->TabIndex = 8;
-			this->productUHTPriceCurrencySelector->Text = L"€";
+			this->productUHTPriceCurrencySelector->Text = L"Â€";
 			// 
 			// productPurchasePriceLabel
 			// 
@@ -2145,13 +2146,13 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productPurchasePriceCurrencySelector->FormattingEnabled = true;
 			this->productPurchasePriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productPurchasePriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"€", L"$" });
+			this->productPurchasePriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Â€", L"$" });
 			this->productPurchasePriceCurrencySelector->Location = System::Drawing::Point(412, 168);
 			this->productPurchasePriceCurrencySelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productPurchasePriceCurrencySelector->Name = L"productPurchasePriceCurrencySelector";
 			this->productPurchasePriceCurrencySelector->Size = System::Drawing::Size(61, 28);
 			this->productPurchasePriceCurrencySelector->TabIndex = 11;
-			this->productPurchasePriceCurrencySelector->Text = L"€";
+			this->productPurchasePriceCurrencySelector->Text = L"Â€";
 			// 
 			// productUHTPriceInput
 			// 
@@ -2192,7 +2193,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productStockLabel->Name = L"productStockLabel";
 			this->productStockLabel->Size = System::Drawing::Size(138, 20);
 			this->productStockLabel->TabIndex = 15;
-			this->productStockLabel->Text = L"Quantité en stock:";
+			this->productStockLabel->Text = L"QuantitÃ© en stock:";
 			// 
 			// productTaxesLabel
 			// 
@@ -2273,7 +2274,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productCountWeightLabel->Name = L"productCountWeightLabel";
 			this->productCountWeightLabel->Size = System::Drawing::Size(259, 20);
 			this->productCountWeightLabel->TabIndex = 1;
-			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetés:";
+			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetÃ©s:";
 			// 
 			// productBaseDiscountLabel
 			// 
@@ -2291,7 +2292,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productRestockThresholdLabel->Name = L"productRestockThresholdLabel";
 			this->productRestockThresholdLabel->Size = System::Drawing::Size(222, 20);
 			this->productRestockThresholdLabel->TabIndex = 20;
-			this->productRestockThresholdLabel->Text = L"Seuil de réapprovisionnement:";
+			this->productRestockThresholdLabel->Text = L"Seuil de rÃ©approvisionnement:";
 			// 
 			// productRestockThresholdInput
 			// 
@@ -2530,7 +2531,7 @@ private: System::Windows::Forms::Label^ label1;
 				selectOrderItem->Clear();
 				order.payments = selectPayments->ToArray();
 				selectPayments->Clear();
-				order.customer = this->; // a compléter
+				order.customer = this->; // a complÃ©ter
 
 				if (this->is_editing) {
 					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;

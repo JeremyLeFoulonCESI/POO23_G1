@@ -218,7 +218,12 @@ namespace Services {
 		this->dbDeleteRow(Components::Table::getOrderTable(), id);
 		this->dbCloseConnection();
 	}
-
+	int OrderManager::count() {
+		this->dbOpenConnection();
+		int result = this->dbCountRows(Components::Table::getOrderTable());
+		this->dbCloseConnection();
+		return result;
+	}
 	DataTable^ OrderManager::getAllOrders() {
 		DataTable^ result = gcnew DataTable;
 		result->Columns->AddRange(gcnew array<DataColumn^>{
@@ -266,13 +271,13 @@ namespace Services {
 				float priceUHT = (float)Convert::ToDecimal(item_row->ItemArray[5]);
 
 				array<Object^>^ product_array = this->dbReadRow(Components::Table::getProductTable(), product_id);
-				String^ product_name = Convert::ToString(product_array[1]);
+				String^ product_name = Convert::ToString(product_array[0]);
 
 				ht_total += priceUHT * product_count;
 				tva_total += tvaRatio * priceUHT * product_count;
 				ttc_total += priceUHT * (1 + tvaRatio) * product_count;
 
-				items_str += product_count + "x " + product_name + ": " + (priceUHT * product_count) + ";";
+				items_str += product_count + "x " + product_name + ": " + (priceUHT * product_count) + "€" + ";";
 			}
 			if (items_str->EndsWith(";")) {
 				items_str = items_str->Remove(items_str->Length - 1, 1);
@@ -285,8 +290,8 @@ namespace Services {
 				DateTime^ receptionDate = safe_cast<DateTime^>(payment_row->ItemArray[2]);
 				DateTime^ paymentDate = safe_cast<DateTime^>(payment_row->ItemArray[3]);
 
-				payments_str += mean_str + "-" + receptionDate->Day + "." + receptionDate->Month + "." + receptionDate->Year;
-				payments_str += "-" + paymentDate->Day + "." + paymentDate->Month + "." + paymentDate->Year + ";";
+				payments_str += mean_str + "-" + receptionDate->Day + "/" + receptionDate->Month + "/" + receptionDate->Year;
+				payments_str += "-" + paymentDate->Day + "/" + paymentDate->Month + "/" + paymentDate->Year + ";";
 			}
 			if (payments_str->EndsWith(";")) {
 				payments_str = payments_str->Remove(payments_str->Length - 1, 1);
@@ -296,15 +301,15 @@ namespace Services {
 			DateTime^ deliveryDate = safe_cast<DateTime^>(order_array[2]);
 			DateTime^ emissionDate = safe_cast<DateTime^>(order_array[3]);
 
-			String^ dDate_str = deliveryDate->Day + "." + deliveryDate->Month + "." + deliveryDate->Year;
-			String^ eDate_str = emissionDate->Day + "." + emissionDate->Month + "." + emissionDate->Year;
+			String^ dDate_str = deliveryDate->Day + "/" + deliveryDate->Month + "/" + deliveryDate->Year;
+			String^ eDate_str = emissionDate->Day + "/" + emissionDate->Month + "/" + emissionDate->Year;
 
 			array<Object^>^ array_customer = this->dbReadRow(
 				Components::Table::getCustomerTable(), customer_code
 			);
-			String^ customer_lname = Convert::ToString(array_customer[1]);
-			String^ customer_fname = Convert::ToString(array_customer[2]);
-			String^ customer_phone = Convert::ToString(array_customer[5]);
+			String^ customer_lname = Convert::ToString(array_customer[0]);
+			String^ customer_fname = Convert::ToString(array_customer[1]);
+			String^ customer_phone = Convert::ToString(array_customer[4]);
 
 			String^ customer_str = customer_lname + " " + customer_fname + " - " + customer_phone;
 

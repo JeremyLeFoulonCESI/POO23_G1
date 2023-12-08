@@ -63,6 +63,13 @@ namespace Services {
 		this->dbCloseConnection();
 	}
 
+	int SupplyManager::count() {
+		this->dbOpenConnection();
+		int result = this->dbCountRows(Components::Table::getProductTable());
+		this->dbCloseConnection();
+		return result;
+	}
+
 	DataTable^ SupplyManager::getAllProducts() {
 		this->dbOpenConnection();
 		DataTable^ raw_products = this->readAll(Components::Table::getProductTable());
@@ -89,8 +96,8 @@ namespace Services {
 				row->ItemArray[2], 
 				row->ItemArray[3], 
 				row->ItemArray[4], 
-				gcnew Int32((int)(float)Convert::ToDecimal(row->ItemArray[5]) * 100),
-				gcnew Int32((int)(float)Convert::ToDecimal(row->ItemArray[6]) * 100),
+				gcnew Int32((int)((float)Convert::ToDecimal(row->ItemArray[5]) * 100)),
+				gcnew Int32((int)((float)Convert::ToDecimal(row->ItemArray[6]) * 100)),
 				row->ItemArray[7]
 			);
 		}

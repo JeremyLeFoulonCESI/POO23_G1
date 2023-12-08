@@ -25,6 +25,7 @@ Object^ DataBaseWrapper::lastInsertedId()
 {
     MySqlCommand^ command = this->basicQuery("SELECT LAST_INSERT_ID();");
     Object^ result = command->ExecuteScalar();
+    command->~MySqlCommand();
     return result;
 }
 

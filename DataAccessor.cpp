@@ -36,15 +36,15 @@ namespace Components {
             query += "* ";
         }
         else {
-            query += "(";
+            //query += "(";
             for each (String ^ name in keys) {
-                query += name + ", ";
+                query += "`" + name + "`, ";
             };
 
             if (keys->Length > 0) {
                 query = query->Remove(query->Length - 2);
             }
-            query += ") ";
+            query += " ";
         }
 
         query += "FROM " + table;
@@ -59,6 +59,31 @@ namespace Components {
         String^ query = "DELETE FROM ";
         query += table + " WHERE " + criteria + ";";
         return query;
+    }
+
+    String^ DataAccessor::count(String^ table)
+    {
+        String^ query = "SELECT count(*) FROM " + table + ";";
+        return query;
+    }
+
+    String^ DataAccessor::best_sellers()
+    {
+        return "select Nom, Reference, sum(NbArticles) as total \
+            from articles left join contient \
+            on contient.Reference_Article = articles.Reference \
+            group by Reference \
+            order by total desc \
+            limit 10; ";
+    }
+
+    String^ DataAccessor::worst_sellers() {
+        return "select Nom, Reference, sum(NbArticles) as total \
+            from articles left join contient \
+            on contient.Reference_Article = articles.Reference \
+            group by Reference \
+            order by total \
+            limit 10; ";
     }
     
 }

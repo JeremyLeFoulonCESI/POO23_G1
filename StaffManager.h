@@ -12,6 +12,7 @@ namespace Services {
 		StaffMemberData getStaff(int id);
 		StaffMemberData editStaff(int id, StaffMemberData _new);
 		void removeStaff(int id);
+		int count();
 		DataTable^ getAllStaff();
 };
 }

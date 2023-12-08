@@ -2,7 +2,7 @@
 #include "StaffManager.h"
 
 namespace Services {
-    StaffManager::StaffManager():Manager(){}
+    StaffManager::StaffManager() : Manager() {}
 
     StaffMemberData StaffManager::addStaff(StaffMemberData data){
         this->dbOpenConnection();
@@ -95,6 +95,13 @@ namespace Services {
         this->dbDeleteRow(Components::Table::getStaffTable(), id);
         this->dbDeleteRow(Components::Table::getAddressTable(), address_id);
         this->dbCloseConnection();
+    }
+
+    int StaffManager::count() {
+        this->dbOpenConnection();
+        int result = this->dbCountRows(Components::Table::getStaffTable());
+        this->dbCloseConnection();
+        return result;
     }
 
     DataTable^ StaffManager::getAllStaff(){ 
