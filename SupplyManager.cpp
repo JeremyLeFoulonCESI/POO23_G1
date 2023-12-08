@@ -89,8 +89,8 @@ namespace Services {
 				row->ItemArray[2], 
 				row->ItemArray[3], 
 				row->ItemArray[4], 
-				gcnew Int32((float)Convert::ToDecimal(row->ItemArray[5]) * 100),
-				gcnew Int32((float)Convert::ToDecimal(row->ItemArray[6]) * 100),
+				gcnew Int32((int)(float)Convert::ToDecimal(row->ItemArray[5]) * 100),
+				gcnew Int32((int)(float)Convert::ToDecimal(row->ItemArray[6]) * 100),
 				row->ItemArray[7]
 			);
 		}
