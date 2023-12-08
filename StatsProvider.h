@@ -1,26 +1,19 @@
 #pragma once
-#include "SupplyManager.h"
-#include "CustomerManager.h"
-#include "OrderManager.h"
-#include "StaffManager.h"
+#include "Manager.h"
 
 namespace Services {
 
-	ref class StatsProvider
+	ref class StatsProvider : public Manager
 	{
-		SupplyManager^ supply;
-		CustomerManager^ customers;
-		OrderManager^ orders;
-		StaffManager^ staff;
 
 	public:
-		StatsProvider(SupplyManager^ supply, CustomerManager^ customers, OrderManager^ orders, StaffManager^ staff);
+		StatsProvider();
 		float computeAvgBasket();
-		float computeMonthlySales();
-		array<ProductData>^ findProductsThatNeedRestock();
+		float computeMonthlySales(int* count);
+		DataTable^ findProductsThatNeedRestock();
 		float computeClientTotalPurchase(CustomerData customer);
-		array<ProductData>^ find10BestSellers();
-		array<ProductData>^ find10WorstSellers();
+		DataTable^ find10BestSellers();
+		DataTable^ find10WorstSellers();
 		float computeStockCommercialValue();
 		float computeStockPurchaseValue();
 		float simulateCommercialValue(float TVA, float commercialMargin, float commercialDiscount, float unknownMark);

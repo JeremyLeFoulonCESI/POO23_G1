@@ -17,6 +17,7 @@ namespace Services {
 		CustomerData getCustomer(int id);
 		CustomerData editCustomer(int id, CustomerData _new);
 		void removeCustomer(int id);
+		int count();
 		DataTable^ getAllCustomers();
 	};
 

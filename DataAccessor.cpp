@@ -60,6 +60,12 @@ namespace Components {
         query += table + " WHERE " + criteria + ";";
         return query;
     }
+
+    String^ DataAccessor::count(String^ table)
+    {
+        String^ query = "SELECT count(*) FROM " + table + ";";
+        return query;
+    }
     
 }
 
