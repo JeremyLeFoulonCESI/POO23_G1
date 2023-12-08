@@ -30,7 +30,24 @@ namespace HMI {
 		   Services::StaffManager^ staff;
 		   Services::CustomerManager^ customer;
 		   Services::OrderManager^ order;
+	private: System::Windows::Forms::Label^ customerFirstPurchaseDate;
+	private: System::Windows::Forms::NumericUpDown^ customerFPDayInput;
+	private: System::Windows::Forms::NumericUpDown^ customerFPYearInput;
+
+
+	private: System::Windows::Forms::NumericUpDown^ customerFPMonthInput;
+
+
+
+
+	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Label^ label8;
+
 		   int mode = 0;
+		   List <Address>^ selectInvoiceAddress;
+		   List <Address>^ selectDeliveryAddress;
+		   List <OrderItem>^ selectOrderItem;
+		   List <Payment>^ selectPayments;
 
 	public:
 		Root(void)
@@ -68,7 +85,12 @@ namespace HMI {
 			this->ordersCategoryButton->Click += gcnew EventHandler(this, &Root::ordersManagerButton_click);
 			this->statsCategoryButton->Click += gcnew EventHandler(this, &Root::statsManagerButton_click);
 			this->backButton->Click += gcnew EventHandler(this, &Root::backButton_click);
+			this->selectInvoiceAddress = gcnew List<Address>;
+			this->selectDeliveryAddress = gcnew List<Address>;
+			this->selectOrderItem = gcnew List<OrderItem>;
+			this->selectPayments = gcnew List<Payment>;
 		}
+
 		void refreshGrid() {
 			Console::WriteLine("Refresh");
 			if (mode == 1) {
@@ -398,6 +420,12 @@ private: System::Windows::Forms::Label^ label1;
 			this->addRadioButton = (gcnew System::Windows::Forms::RadioButton());
 			this->validateButton = (gcnew System::Windows::Forms::Button());
 			this->customerGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->customerFPDayInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->customerFPYearInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->customerFPMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->customerFirstPurchaseDate = (gcnew System::Windows::Forms::Label());
 			this->customerBirthDayInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->customerBirthYearInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->customerBirthMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
@@ -522,6 +550,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressGroup->SuspendLayout();
 			this->validateGroup->SuspendLayout();
 			this->customerGroup->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerFPDayInput))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerFPYearInput))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerFPMonthInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthDayInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthYearInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthMonthInput))->BeginInit();
@@ -575,6 +606,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->Controls->Add(this->customersCategoryButton);
 			this->categoriesGroup->Controls->Add(this->stockCategoryButton);
 			this->categoriesGroup->Controls->Add(this->staffCategoryButton);
+			this->categoriesGroup->Controls->Add(this->productGroup);
 			this->categoriesGroup->Location = System::Drawing::Point(1128, 19);
 			this->categoriesGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->categoriesGroup->Name = L"categoriesGroup";
@@ -593,7 +625,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(444, 87);
 			this->label4->TabIndex = 105;
-			this->label4->Text = L"Bienvenue dans votre centre de contrôle\r\n    Veuillez sélectionner une catégorie "
+			this->label4->Text = L"Bienvenue dans votre centre de contrÃ´le\r\n    Veuillez sÃ©lectionner une catÃ©gorie "
 				L":\r\n\r\n";
 			this->label4->Click += gcnew System::EventHandler(this, &Root::label4_Click_1);
 			// 
@@ -664,7 +696,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->visualizeGroup->Size = System::Drawing::Size(439, 609);
 			this->visualizeGroup->TabIndex = 2;
 			this->visualizeGroup->TabStop = false;
-			this->visualizeGroup->Text = L"Visualisation des données";
+			this->visualizeGroup->Text = L"Visualisation des donnÃ©es";
 			// 
 			// visualizeDeleteButton
 			// 
@@ -772,7 +804,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffSuperiorLabel->Name = L"staffSuperiorLabel";
 			this->staffSuperiorLabel->Size = System::Drawing::Size(173, 20);
 			this->staffSuperiorLabel->TabIndex = 26;
-			this->staffSuperiorLabel->Text = L"Supérieur hiérarchique:";
+			this->staffSuperiorLabel->Text = L"SupÃ©rieur hiÃ©rarchique:";
 			// 
 			// staffSuperiorSelector
 			// 
@@ -871,7 +903,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressNumberLabel->Name = L"staffAddressNumberLabel";
 			this->staffAddressNumberLabel->Size = System::Drawing::Size(117, 20);
 			this->staffAddressNumberLabel->TabIndex = 0;
-			this->staffAddressNumberLabel->Text = L"N° de bâtiment:";
+			this->staffAddressNumberLabel->Text = L"NÂ° de bÃ¢timent:";
 			// 
 			// staffHiredLabel
 			// 
@@ -889,7 +921,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffFNameLabel->Name = L"staffFNameLabel";
 			this->staffFNameLabel->Size = System::Drawing::Size(68, 20);
 			this->staffFNameLabel->TabIndex = 11;
-			this->staffFNameLabel->Text = L"Prénom:";
+			this->staffFNameLabel->Text = L"PrÃ©nom:";
 			// 
 			// staffLNameLabel
 			// 
@@ -980,6 +1012,12 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// customerGroup
 			// 
+			this->customerGroup->Controls->Add(this->customerFPDayInput);
+			this->customerGroup->Controls->Add(this->customerFPYearInput);
+			this->customerGroup->Controls->Add(this->customerFPMonthInput);
+			this->customerGroup->Controls->Add(this->label7);
+			this->customerGroup->Controls->Add(this->label8);
+			this->customerGroup->Controls->Add(this->customerFirstPurchaseDate);
 			this->customerGroup->Controls->Add(this->customerBirthDayInput);
 			this->customerGroup->Controls->Add(this->customerBirthYearInput);
 			this->customerGroup->Controls->Add(this->customerBirthMonthInput);
@@ -1001,18 +1039,80 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->Controls->Add(this->customerFNameInput);
 			this->customerGroup->Controls->Add(this->customerLNameInput);
 			this->customerGroup->Controls->Add(this->groupBox7);
-			this->customerGroup->Location = System::Drawing::Point(14, 10);
+			this->customerGroup->Location = System::Drawing::Point(664, 668);
 			this->customerGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerGroup->Name = L"customerGroup";
 			this->customerGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerGroup->Size = System::Drawing::Size(585, 531);
 			this->customerGroup->TabIndex = 4;
 			this->customerGroup->TabStop = false;
-			this->customerGroup->Text = L"Edition des données client";
+			this->customerGroup->Text = L"Edition des donnÃ©es client";
+			this->customerGroup->Enter += gcnew System::EventHandler(this, &Root::customerGroup_Enter);
+			// 
+			// customerFPDayInput
+			// 
+			this->customerFPDayInput->Location = System::Drawing::Point(224, 238);
+			this->customerFPDayInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->customerFPDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
+			this->customerFPDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->customerFPDayInput->Name = L"customerFPDayInput";
+			this->customerFPDayInput->Size = System::Drawing::Size(56, 26);
+			this->customerFPDayInput->TabIndex = 48;
+			this->customerFPDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			// 
+			// customerFPYearInput
+			// 
+			this->customerFPYearInput->Location = System::Drawing::Point(386, 238);
+			this->customerFPYearInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->customerFPYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
+			this->customerFPYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
+			this->customerFPYearInput->Name = L"customerFPYearInput";
+			this->customerFPYearInput->Size = System::Drawing::Size(79, 26);
+			this->customerFPYearInput->TabIndex = 47;
+			this->customerFPYearInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
+			// 
+			// customerFPMonthInput
+			// 
+			this->customerFPMonthInput->Location = System::Drawing::Point(305, 238);
+			this->customerFPMonthInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->customerFPMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
+			this->customerFPMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->customerFPMonthInput->Name = L"customerFPMonthInput";
+			this->customerFPMonthInput->Size = System::Drawing::Size(56, 26);
+			this->customerFPMonthInput->TabIndex = 46;
+			this->customerFPMonthInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(367, 240);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(13, 20);
+			this->label7->TabIndex = 45;
+			this->label7->Text = L"/";
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(286, 240);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(13, 20);
+			this->label8->TabIndex = 44;
+			this->label8->Text = L"/";
+			// 
+			// customerFirstPurchaseDate
+			// 
+			this->customerFirstPurchaseDate->AutoSize = true;
+			this->customerFirstPurchaseDate->Location = System::Drawing::Point(69, 240);
+			this->customerFirstPurchaseDate->Name = L"customerFirstPurchaseDate";
+			this->customerFirstPurchaseDate->Size = System::Drawing::Size(123, 20);
+			this->customerFirstPurchaseDate->TabIndex = 43;
+			this->customerFirstPurchaseDate->Text = L"Date 1er achat :";
+			this->customerFirstPurchaseDate->Click += gcnew System::EventHandler(this, &Root::label6_Click);
 			// 
 			// customerBirthDayInput
 			// 
-			this->customerBirthDayInput->Location = System::Drawing::Point(224, 105);
+			this->customerBirthDayInput->Location = System::Drawing::Point(224, 86);
 			this->customerBirthDayInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerBirthDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
 			this->customerBirthDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
@@ -1020,10 +1120,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthDayInput->Size = System::Drawing::Size(56, 26);
 			this->customerBirthDayInput->TabIndex = 42;
 			this->customerBirthDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->customerBirthDayInput->ValueChanged += gcnew System::EventHandler(this, &Root::customerBirthDayInput_ValueChanged);
 			// 
 			// customerBirthYearInput
 			// 
-			this->customerBirthYearInput->Location = System::Drawing::Point(387, 105);
+			this->customerBirthYearInput->Location = System::Drawing::Point(386, 86);
 			this->customerBirthYearInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerBirthYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
 			this->customerBirthYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
@@ -1031,10 +1132,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthYearInput->Size = System::Drawing::Size(79, 26);
 			this->customerBirthYearInput->TabIndex = 38;
 			this->customerBirthYearInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
+			this->customerBirthYearInput->ValueChanged += gcnew System::EventHandler(this, &Root::customerBirthYearInput_ValueChanged);
 			// 
 			// customerBirthMonthInput
 			// 
-			this->customerBirthMonthInput->Location = System::Drawing::Point(305, 105);
+			this->customerBirthMonthInput->Location = System::Drawing::Point(305, 86);
 			this->customerBirthMonthInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerBirthMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
 			this->customerBirthMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
@@ -1042,24 +1144,27 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthMonthInput->Size = System::Drawing::Size(56, 26);
 			this->customerBirthMonthInput->TabIndex = 37;
 			this->customerBirthMonthInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->customerBirthMonthInput->ValueChanged += gcnew System::EventHandler(this, &Root::customerBirthMonthInput_ValueChanged);
 			// 
 			// customerBirthSlash2
 			// 
 			this->customerBirthSlash2->AutoSize = true;
-			this->customerBirthSlash2->Location = System::Drawing::Point(368, 109);
+			this->customerBirthSlash2->Location = System::Drawing::Point(367, 88);
 			this->customerBirthSlash2->Name = L"customerBirthSlash2";
 			this->customerBirthSlash2->Size = System::Drawing::Size(13, 20);
 			this->customerBirthSlash2->TabIndex = 35;
 			this->customerBirthSlash2->Text = L"/";
+			this->customerBirthSlash2->Click += gcnew System::EventHandler(this, &Root::customerBirthSlash2_Click);
 			// 
 			// customerBirthSlash1
 			// 
 			this->customerBirthSlash1->AutoSize = true;
-			this->customerBirthSlash1->Location = System::Drawing::Point(286, 109);
+			this->customerBirthSlash1->Location = System::Drawing::Point(286, 88);
 			this->customerBirthSlash1->Name = L"customerBirthSlash1";
 			this->customerBirthSlash1->Size = System::Drawing::Size(13, 20);
 			this->customerBirthSlash1->TabIndex = 34;
 			this->customerBirthSlash1->Text = L"/";
+			this->customerBirthSlash1->Click += gcnew System::EventHandler(this, &Root::customerBirthSlash1_Click);
 			// 
 			// customerInvoiceGroup
 			// 
@@ -1156,20 +1261,20 @@ private: System::Windows::Forms::Label^ label1;
 			// label10
 			// 
 			this->label10->AutoSize = true;
-			this->label10->Location = System::Drawing::Point(66, 228);
+			this->label10->Location = System::Drawing::Point(69, 189);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(88, 20);
 			this->label10->TabIndex = 18;
-			this->label10->Text = L"Téléphone:";
+			this->label10->Text = L"TÃ©lÃ©phone:";
 			// 
 			// customerPhoneNumberInput
 			// 
 			this->customerPhoneNumberInput->AcceptsTab = true;
-			this->customerPhoneNumberInput->Location = System::Drawing::Point(241, 224);
+			this->customerPhoneNumberInput->Location = System::Drawing::Point(174, 186);
 			this->customerPhoneNumberInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerPhoneNumberInput->MaxLength = 10;
 			this->customerPhoneNumberInput->Name = L"customerPhoneNumberInput";
-			this->customerPhoneNumberInput->Size = System::Drawing::Size(139, 26);
+			this->customerPhoneNumberInput->Size = System::Drawing::Size(325, 26);
 			this->customerPhoneNumberInput->TabIndex = 8;
 			// 
 			// customerMailDotLabel
@@ -1186,7 +1291,7 @@ private: System::Windows::Forms::Label^ label1;
 			// customerMailAtLabel
 			// 
 			this->customerMailAtLabel->AutoSize = true;
-			this->customerMailAtLabel->Location = System::Drawing::Point(279, 166);
+			this->customerMailAtLabel->Location = System::Drawing::Point(284, 137);
 			this->customerMailAtLabel->Name = L"customerMailAtLabel";
 			this->customerMailAtLabel->Size = System::Drawing::Size(25, 20);
 			this->customerMailAtLabel->TabIndex = 15;
@@ -1199,7 +1304,7 @@ private: System::Windows::Forms::Label^ label1;
 				L"be", L"com", L"de", L"en", L"eu",
 					L"fr", L"ie", L"it", L"net", L"tv", L"us"
 			});
-			this->customerMailExtInput->Location = System::Drawing::Point(438, 162);
+			this->customerMailExtInput->Location = System::Drawing::Point(438, 134);
 			this->customerMailExtInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerMailExtInput->MaxLength = 3;
 			this->customerMailExtInput->Name = L"customerMailExtInput";
@@ -1210,7 +1315,7 @@ private: System::Windows::Forms::Label^ label1;
 			// customerMailDomainInput
 			// 
 			this->customerMailDomainInput->AcceptsTab = true;
-			this->customerMailDomainInput->Location = System::Drawing::Point(305, 162);
+			this->customerMailDomainInput->Location = System::Drawing::Point(315, 134);
 			this->customerMailDomainInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerMailDomainInput->MaxLength = 4;
 			this->customerMailDomainInput->Name = L"customerMailDomainInput";
@@ -1220,7 +1325,7 @@ private: System::Windows::Forms::Label^ label1;
 			// customerMailNameInput
 			// 
 			this->customerMailNameInput->AcceptsTab = true;
-			this->customerMailNameInput->Location = System::Drawing::Point(151, 162);
+			this->customerMailNameInput->Location = System::Drawing::Point(151, 134);
 			this->customerMailNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerMailNameInput->Name = L"customerMailNameInput";
 			this->customerMailNameInput->Size = System::Drawing::Size(127, 26);
@@ -1230,7 +1335,7 @@ private: System::Windows::Forms::Label^ label1;
 			// customerMailLabel
 			// 
 			this->customerMailLabel->AutoSize = true;
-			this->customerMailLabel->Location = System::Drawing::Point(66, 166);
+			this->customerMailLabel->Location = System::Drawing::Point(69, 137);
 			this->customerMailLabel->Name = L"customerMailLabel";
 			this->customerMailLabel->Size = System::Drawing::Size(41, 20);
 			this->customerMailLabel->TabIndex = 11;
@@ -1239,25 +1344,25 @@ private: System::Windows::Forms::Label^ label1;
 			// customerBirthLabel
 			// 
 			this->customerBirthLabel->AutoSize = true;
-			this->customerBirthLabel->Location = System::Drawing::Point(66, 105);
+			this->customerBirthLabel->Location = System::Drawing::Point(69, 88);
 			this->customerBirthLabel->Name = L"customerBirthLabel";
 			this->customerBirthLabel->Size = System::Drawing::Size(68, 20);
 			this->customerBirthLabel->TabIndex = 8;
-			this->customerBirthLabel->Text = L"Né(e) le:";
+			this->customerBirthLabel->Text = L"NÃ©(e) le:";
 			// 
 			// customerFNameLabel
 			// 
 			this->customerFNameLabel->AutoSize = true;
-			this->customerFNameLabel->Location = System::Drawing::Point(326, 46);
+			this->customerFNameLabel->Location = System::Drawing::Point(275, 46);
 			this->customerFNameLabel->Name = L"customerFNameLabel";
 			this->customerFNameLabel->Size = System::Drawing::Size(68, 20);
 			this->customerFNameLabel->TabIndex = 7;
-			this->customerFNameLabel->Text = L"Prénom:";
+			this->customerFNameLabel->Text = L"PrÃ©nom:";
 			// 
 			// customerLNameLabel
 			// 
 			this->customerLNameLabel->AutoSize = true;
-			this->customerLNameLabel->Location = System::Drawing::Point(66, 46);
+			this->customerLNameLabel->Location = System::Drawing::Point(69, 46);
 			this->customerLNameLabel->Name = L"customerLNameLabel";
 			this->customerLNameLabel->Size = System::Drawing::Size(46, 20);
 			this->customerLNameLabel->TabIndex = 6;
@@ -1266,20 +1371,20 @@ private: System::Windows::Forms::Label^ label1;
 			// customerFNameInput
 			// 
 			this->customerFNameInput->AcceptsTab = true;
-			this->customerFNameInput->Location = System::Drawing::Point(393, 42);
+			this->customerFNameInput->Location = System::Drawing::Point(346, 43);
 			this->customerFNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerFNameInput->Name = L"customerFNameInput";
-			this->customerFNameInput->Size = System::Drawing::Size(138, 26);
+			this->customerFNameInput->Size = System::Drawing::Size(153, 26);
 			this->customerFNameInput->TabIndex = 1;
 			this->customerFNameInput->TabStop = false;
 			// 
 			// customerLNameInput
 			// 
 			this->customerLNameInput->AcceptsTab = true;
-			this->customerLNameInput->Location = System::Drawing::Point(114, 42);
+			this->customerLNameInput->Location = System::Drawing::Point(118, 43);
 			this->customerLNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerLNameInput->Name = L"customerLNameInput";
-			this->customerLNameInput->Size = System::Drawing::Size(138, 26);
+			this->customerLNameInput->Size = System::Drawing::Size(140, 26);
 			this->customerLNameInput->TabIndex = 0;
 			this->customerLNameInput->TabStop = false;
 			// 
@@ -1532,7 +1637,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersEmitLabel->Name = L"ordersEmitLabel";
 			this->ordersEmitLabel->Size = System::Drawing::Size(126, 20);
 			this->ordersEmitLabel->TabIndex = 22;
-			this->ordersEmitLabel->Text = L"Date d\'émission:";
+			this->ordersEmitLabel->Text = L"Date d\'Ã©mission:";
 			// 
 			// ordersDeliveryLabel
 			// 
@@ -1541,7 +1646,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersDeliveryLabel->Name = L"ordersDeliveryLabel";
 			this->ordersDeliveryLabel->Size = System::Drawing::Size(182, 20);
 			this->ordersDeliveryLabel->TabIndex = 16;
-			this->ordersDeliveryLabel->Text = L"Date prévue de livraison:";
+			this->ordersDeliveryLabel->Text = L"Date prÃ©vue de livraison:";
 			// 
 			// label23
 			// 
@@ -1685,7 +1790,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsGroup->Controls->Add(this->groupBox3);
 			this->statsGroup->Controls->Add(this->groupBox2);
 			this->statsGroup->Controls->Add(this->groupBox1);
-			this->statsGroup->Location = System::Drawing::Point(14, 10);
+			this->statsGroup->Location = System::Drawing::Point(1316, 668);
 			this->statsGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->statsGroup->Name = L"statsGroup";
 			this->statsGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
@@ -1727,7 +1832,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->groupBox8->Size = System::Drawing::Size(453, 244);
 			this->groupBox8->TabIndex = 36;
 			this->groupBox8->TabStop = false;
-			this->groupBox8->Text = L"Produits sous leur seuil de réapprovisionnement";
+			this->groupBox8->Text = L"Produits sous leur seuil de rÃ©approvisionnement";
 			// 
 			// dataGridView3
 			// 
@@ -1786,7 +1891,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(73, 20);
 			this->label3->TabIndex = 19;
-			this->label3->Text = L"Résultat:";
+			this->label3->Text = L"RÃ©sultat:";
 			// 
 			// label2
 			// 
@@ -1795,7 +1900,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(73, 20);
 			this->label2->TabIndex = 19;
-			this->label2->Text = L"Résultat:";
+			this->label2->Text = L"RÃ©sultat:";
 			// 
 			// label1
 			// 
@@ -1804,7 +1909,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(73, 20);
 			this->label1->TabIndex = 19;
-			this->label1->Text = L"Résultat:";
+			this->label1->Text = L"RÃ©sultat:";
 			// 
 			// groupBox3
 			// 
@@ -1837,7 +1942,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(73, 20);
 			this->label5->TabIndex = 20;
-			this->label5->Text = L"Résultat:";
+			this->label5->Text = L"RÃ©sultat:";
 			// 
 			// statsTVAValueLabel
 			// 
@@ -1884,7 +1989,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsUnknownMarkdownLabel->Name = L"statsUnknownMarkdownLabel";
 			this->statsUnknownMarkdownLabel->Size = System::Drawing::Size(157, 20);
 			this->statsUnknownMarkdownLabel->TabIndex = 25;
-			this->statsUnknownMarkdownLabel->Text = L"Démarque inconnue:";
+			this->statsUnknownMarkdownLabel->Text = L"DÃ©marque inconnue:";
 			this->statsUnknownMarkdownLabel->Click += gcnew System::EventHandler(this, &Root::label4_Click);
 			// 
 			// statsComDiscountPercentLabel
@@ -2020,13 +2125,13 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productUHTPriceCurrencySelector->FormattingEnabled = true;
 			this->productUHTPriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productUHTPriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"€", L"$" });
+			this->productUHTPriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Â€", L"$" });
 			this->productUHTPriceCurrencySelector->Location = System::Drawing::Point(412, 101);
 			this->productUHTPriceCurrencySelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productUHTPriceCurrencySelector->Name = L"productUHTPriceCurrencySelector";
 			this->productUHTPriceCurrencySelector->Size = System::Drawing::Size(61, 28);
 			this->productUHTPriceCurrencySelector->TabIndex = 8;
-			this->productUHTPriceCurrencySelector->Text = L"€";
+			this->productUHTPriceCurrencySelector->Text = L"Â€";
 			// 
 			// productPurchasePriceLabel
 			// 
@@ -2041,13 +2146,13 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productPurchasePriceCurrencySelector->FormattingEnabled = true;
 			this->productPurchasePriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productPurchasePriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"€", L"$" });
+			this->productPurchasePriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Â€", L"$" });
 			this->productPurchasePriceCurrencySelector->Location = System::Drawing::Point(412, 168);
 			this->productPurchasePriceCurrencySelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productPurchasePriceCurrencySelector->Name = L"productPurchasePriceCurrencySelector";
 			this->productPurchasePriceCurrencySelector->Size = System::Drawing::Size(61, 28);
 			this->productPurchasePriceCurrencySelector->TabIndex = 11;
-			this->productPurchasePriceCurrencySelector->Text = L"€";
+			this->productPurchasePriceCurrencySelector->Text = L"Â€";
 			// 
 			// productUHTPriceInput
 			// 
@@ -2088,7 +2193,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productStockLabel->Name = L"productStockLabel";
 			this->productStockLabel->Size = System::Drawing::Size(138, 20);
 			this->productStockLabel->TabIndex = 15;
-			this->productStockLabel->Text = L"Quantité en stock:";
+			this->productStockLabel->Text = L"QuantitÃ© en stock:";
 			// 
 			// productTaxesLabel
 			// 
@@ -2169,7 +2274,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productCountWeightLabel->Name = L"productCountWeightLabel";
 			this->productCountWeightLabel->Size = System::Drawing::Size(259, 20);
 			this->productCountWeightLabel->TabIndex = 1;
-			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetés:";
+			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetÃ©s:";
 			// 
 			// productBaseDiscountLabel
 			// 
@@ -2187,7 +2292,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productRestockThresholdLabel->Name = L"productRestockThresholdLabel";
 			this->productRestockThresholdLabel->Size = System::Drawing::Size(222, 20);
 			this->productRestockThresholdLabel->TabIndex = 20;
-			this->productRestockThresholdLabel->Text = L"Seuil de réapprovisionnement:";
+			this->productRestockThresholdLabel->Text = L"Seuil de rÃ©approvisionnement:";
 			// 
 			// productRestockThresholdInput
 			// 
@@ -2218,7 +2323,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productGroup->Controls->Add(this->productNameInput);
 			this->productGroup->Controls->Add(this->productNameLabel);
 			this->productGroup->Controls->Add(this->groupBox19);
-			this->productGroup->Location = System::Drawing::Point(14, 10);
+			this->productGroup->Location = System::Drawing::Point(852, 324);
 			this->productGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productGroup->Name = L"productGroup";
 			this->productGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
@@ -2248,7 +2353,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->Controls->Add(this->visualizeGroup);
 			this->Controls->Add(this->customerGroup);
 			this->Controls->Add(this->statsGroup);
-			this->Controls->Add(this->productGroup);
 			this->Controls->Add(this->ordersGroup);
 			this->Controls->Add(this->staffGroup);
 			this->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
@@ -2271,6 +2375,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->validateGroup->PerformLayout();
 			this->customerGroup->ResumeLayout(false);
 			this->customerGroup->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerFPDayInput))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerFPYearInput))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerFPMonthInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthDayInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthYearInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthMonthInput))->EndInit();
@@ -2394,8 +2501,48 @@ private: System::Windows::Forms::Label^ label1;
 				data.birth = gcnew DateTime(Convert::ToInt32(this->customerBirthYearInput->Value), Convert::ToInt32(this->customerBirthMonthInput->Value), Convert::ToInt32(this->customerBirthDayInput->Value));
 				data.email = this->customerMailNameInput->Text + "@" + this->customerMailDomainInput->Text + "." + this->customerMailExtInput->ValueMember;
 				data.phoneNumber = this->customerPhoneNumberInput->Text;
-				data.firstPurchase = DateTime(Convert::ToInt32(this->customer));
+				data.firstPurchase = DateTime(Convert::ToInt32(this->customerFPDayInput->Value), Convert::ToInt32(this->customerFPMonthInput->Value), Convert::ToInt32(this->customerFPYearInput->Value));
+				data.invoiceAdresses = selectInvoiceAddress->ToArray();
+				selectInvoiceAddress->Clear();
+				data.deliveryAddresses = selectDeliveryAddress->ToArray();
+				selectDeliveryAddress->Clear();
 
+				if (this->is_editing) {
+					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+					int selected_id = Int32::Parse(selected_row[0]->ToString());
+					data = this->customer->editCustomer(selected_id, data);
+				}
+				else {
+					data = this->customer->addCustomer(data);
+				}
+				this->refreshGrid();
+			}
+
+			if (mode == 4) {
+				OrderData order = OrderData();
+				int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+				auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+				String^ selected_ref = Convert::ToString(selected_row[1]);
+				order.ref = selected_ref;
+				order.deliveryDate = gcnew DateTime(Convert::ToInt32(this->ordersDeliveryDayInput->Value), Convert::ToInt32(this->ordersDeliveryMonthInput->Value), Convert::ToInt32(this->ordersDeliveryYearInput->Value));
+				order.emissionDate = gcnew DateTime(Convert::ToInt32(this->ordersEmitDayInput->Value), Convert::ToInt32(this->ordersEmitMonthInput->Value), Convert::ToInt32(this->ordersEmitYearInput->Value));
+				order.items = selectOrderItem->ToArray();
+				selectOrderItem->Clear();
+				order.payments = selectPayments->ToArray();
+				selectPayments->Clear();
+				order.customer = this->; // a complÃ©ter
+
+				if (this->is_editing) {
+					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
+					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
+					int selected_id = Int32::Parse(selected_row[0]->ToString());
+					order = this->order->editOrder(selected_id, order);
+				}
+				else {
+					order = this->order->addOrder(order);
+				}
+				this->refreshGrid();
 			}
 		}
 
@@ -2476,6 +2623,20 @@ private: System::Windows::Forms::Label^ label1;
 		}
 	private: System::Void label4_Click_1(System::Object^ sender, System::EventArgs^ e) {
 	}
+private: System::Void customerGroup_Enter(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void customerBirthDayInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void label6_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void customerBirthSlash2_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void customerBirthSlash1_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void customerBirthMonthInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void customerBirthYearInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+}
 };
 		
 }
