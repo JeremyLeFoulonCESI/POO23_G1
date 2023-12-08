@@ -381,6 +381,10 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerLNameInput = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
 			this->ordersGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox9 = (gcnew System::Windows::Forms::GroupBox());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->dataGridView4 = (gcnew System::Windows::Forms::DataGridView());
 			this->ordersEmitYearInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->ordersEmitMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->ordersEmitDayInput = (gcnew System::Windows::Forms::NumericUpDown());
@@ -486,10 +490,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->productRestockThresholdInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->productGroup = (gcnew System::Windows::Forms::GroupBox());
 			this->backButton = (gcnew System::Windows::Forms::Button());
-			this->groupBox9 = (gcnew System::Windows::Forms::GroupBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
-			this->dataGridView4 = (gcnew System::Windows::Forms::DataGridView());
 			this->categoriesGroup->SuspendLayout();
 			this->visualizeGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->visualizeGrid))->BeginInit();
@@ -503,6 +503,8 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerDeliveryGroup->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerDeliveryDisplay))->BeginInit();
 			this->ordersGroup->SuspendLayout();
+			this->groupBox9->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView4))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitYearInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitMonthInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitDayInput))->BeginInit();
@@ -541,8 +543,6 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productBaseDiscountInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productRestockThresholdInput))->BeginInit();
 			this->productGroup->SuspendLayout();
-			this->groupBox9->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView4))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// categoriesGroup
@@ -1057,6 +1057,52 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersGroup->TabIndex = 5;
 			this->ordersGroup->TabStop = false;
 			this->ordersGroup->Text = L"Edition de commandes";
+			// 
+			// groupBox9
+			// 
+			this->groupBox9->Controls->Add(this->button1);
+			this->groupBox9->Controls->Add(this->button2);
+			this->groupBox9->Controls->Add(this->dataGridView4);
+			this->groupBox9->Location = System::Drawing::Point(294, 166);
+			this->groupBox9->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->groupBox9->Name = L"groupBox9";
+			this->groupBox9->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->groupBox9->Size = System::Drawing::Size(237, 218);
+			this->groupBox9->TabIndex = 24;
+			this->groupBox9->TabStop = false;
+			this->groupBox9->Text = L"Articles";
+			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(117, 179);
+			this->button1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(110, 29);
+			this->button1->TabIndex = 2;
+			this->button1->Text = L"Retirer";
+			this->button1->UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(7, 179);
+			this->button2->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(104, 29);
+			this->button2->TabIndex = 1;
+			this->button2->Text = L"Nouveau";
+			this->button2->UseVisualStyleBackColor = true;
+			// 
+			// dataGridView4
+			// 
+			this->dataGridView4->BackgroundColor = System::Drawing::SystemColors::Control;
+			this->dataGridView4->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView4->Location = System::Drawing::Point(7, 26);
+			this->dataGridView4->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->dataGridView4->Name = L"dataGridView4";
+			this->dataGridView4->RowHeadersWidth = 51;
+			this->dataGridView4->RowTemplate->Height = 24;
+			this->dataGridView4->Size = System::Drawing::Size(220, 150);
+			this->dataGridView4->TabIndex = 0;
 			// 
 			// ordersEmitYearInput
 			// 
@@ -2169,57 +2215,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->backButton->Text = L"Retour";
 			this->backButton->UseVisualStyleBackColor = true;
 			// 
-			// groupBox9
-			// 
-			this->groupBox9->Controls->Add(this->button1);
-			this->groupBox9->Controls->Add(this->button2);
-			this->groupBox9->Controls->Add(this->dataGridView4);
-			this->groupBox9->Location = System::Drawing::Point(294, 166);
-			this->groupBox9->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->groupBox9->Name = L"groupBox9";
-			this->groupBox9->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->groupBox9->Size = System::Drawing::Size(237, 218);
-			this->groupBox9->TabIndex = 24;
-			this->groupBox9->TabStop = false;
-			this->groupBox9->Text = L"Articles";
-			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(117, 179);
-			this->button1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(110, 29);
-			this->button1->TabIndex = 2;
-			this->button1->Text = L"Retirer";
-			this->button1->UseVisualStyleBackColor = true;
-			// 
-			// button2
-			// 
-			this->button2->Location = System::Drawing::Point(7, 179);
-			this->button2->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(104, 29);
-			this->button2->TabIndex = 1;
-			this->button2->Text = L"Nouveau";
-			this->button2->UseVisualStyleBackColor = true;
-			// 
-			// dataGridView4
-			// 
-			this->dataGridView4->BackgroundColor = System::Drawing::SystemColors::Control;
-			this->dataGridView4->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView4->Location = System::Drawing::Point(7, 26);
-			this->dataGridView4->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->dataGridView4->Name = L"dataGridView4";
-			this->dataGridView4->RowHeadersWidth = 51;
-			this->dataGridView4->RowTemplate->Height = 24;
-			this->dataGridView4->Size = System::Drawing::Size(220, 150);
-			this->dataGridView4->TabIndex = 0;
-			// 
 			// Root
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1062, 631);
+			this->ClientSize = System::Drawing::Size(2026, 999);
 			this->Controls->Add(this->categoriesGroup);
 			this->Controls->Add(this->backButton);
 			this->Controls->Add(this->validateGroup);
@@ -2251,6 +2251,8 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerDeliveryDisplay))->EndInit();
 			this->ordersGroup->ResumeLayout(false);
 			this->ordersGroup->PerformLayout();
+			this->groupBox9->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView4))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitYearInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitMonthInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitDayInput))->EndInit();
@@ -2297,8 +2299,6 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->productRestockThresholdInput))->EndInit();
 			this->productGroup->ResumeLayout(false);
 			this->productGroup->PerformLayout();
-			this->groupBox9->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView4))->EndInit();
 			this->ResumeLayout(false);
 
 		}
