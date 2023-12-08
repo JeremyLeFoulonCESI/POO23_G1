@@ -63,6 +63,13 @@ namespace Services {
 		this->dbCloseConnection();
 	}
 
+	int SupplyManager::count() {
+		this->dbOpenConnection();
+		int result = this->dbCountRows(Components::Table::getProductTable());
+		this->dbCloseConnection();
+		return result;
+	}
+
 	DataTable^ SupplyManager::getAllProducts() {
 		this->dbOpenConnection();
 		DataTable^ raw_products = this->readAll(Components::Table::getProductTable());

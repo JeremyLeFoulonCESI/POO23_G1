@@ -55,6 +55,12 @@ namespace Services {
 		adapter->Fill(result);
 		return result;
 	}
+	int Manager::dbCountRows(Components::Table^ table)
+	{
+		String^ query_str = Components::DataAccessor::count(table->getName());
+		MySqlCommand^ query = this->db->basicQuery(query_str);
+		return Convert::ToInt32(query->ExecuteScalar());
+	}
 	DataTable^ Manager::readAll(Components::Table^ table) {
 		String^ query_str = Components::DataAccessor::select(table->getName(), "", nullptr);
 		MySqlCommand^ query = this->db->basicQuery(query_str);

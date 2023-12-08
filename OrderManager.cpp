@@ -218,7 +218,12 @@ namespace Services {
 		this->dbDeleteRow(Components::Table::getOrderTable(), id);
 		this->dbCloseConnection();
 	}
-
+	int OrderManager::count() {
+		this->dbOpenConnection();
+		int result = this->dbCountRows(Components::Table::getOrderTable());
+		this->dbCloseConnection();
+		return result;
+	}
 	DataTable^ OrderManager::getAllOrders() {
 		DataTable^ result = gcnew DataTable;
 		result->Columns->AddRange(gcnew array<DataColumn^>{

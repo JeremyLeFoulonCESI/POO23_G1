@@ -211,6 +211,12 @@ namespace Services {
 		this->dbDeleteRow(Components::Table::getCustomerTable(), id);
 		this->dbCloseConnection();
 	}
+	int CustomerManager::count() {
+		this->dbOpenConnection();
+		int result = this->dbCountRows(Components::Table::getCustomerTable());
+		this->dbCloseConnection();
+		return result;
+	}
 	DataTable^ CustomerManager::getAllCustomers() {
 		DataTable^ result = gcnew DataTable;
 		result->Columns->AddRange(gcnew array<DataColumn^>{
