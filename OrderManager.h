@@ -14,5 +14,6 @@ namespace Services {
 		OrderData getOrder(int id);
 		OrderData editOrder(int id, OrderData _new);
 		void removeOrder(int id);
+		DataTable^ getAllOrders();
 	};
 }
