@@ -2501,7 +2501,7 @@ private: System::Windows::Forms::Label^ label1;
 				data.birth = gcnew DateTime(Convert::ToInt32(this->customerBirthYearInput->Value), Convert::ToInt32(this->customerBirthMonthInput->Value), Convert::ToInt32(this->customerBirthDayInput->Value));
 				data.email = this->customerMailNameInput->Text + "@" + this->customerMailDomainInput->Text + "." + this->customerMailExtInput->ValueMember;
 				data.phoneNumber = this->customerPhoneNumberInput->Text;
-				data.firstPurchase = DateTime(Convert::ToInt32(this->customerFPDayInput->Value), Convert::ToInt32(this->customerFPMonthInput->Value), Convert::ToInt32(this->customerFPYearInput->Value));
+				data.firstPurchase = DateTime(Convert::ToInt32(this->customerFPYearInput->Value), Convert::ToInt32(this->customerFPMonthInput->Value), Convert::ToInt32(this->customerFPDayInput->Value));
 				data.invoiceAdresses = selectInvoiceAddress->ToArray();
 				selectInvoiceAddress->Clear();
 				data.deliveryAddresses = selectDeliveryAddress->ToArray();
