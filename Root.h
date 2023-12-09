@@ -606,7 +606,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->Controls->Add(this->customersCategoryButton);
 			this->categoriesGroup->Controls->Add(this->stockCategoryButton);
 			this->categoriesGroup->Controls->Add(this->staffCategoryButton);
-			this->categoriesGroup->Controls->Add(this->productGroup);
 			this->categoriesGroup->Location = System::Drawing::Point(1125, 19);
 			this->categoriesGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->categoriesGroup->Name = L"categoriesGroup";
@@ -679,7 +678,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffCategoryButton->UseVisualStyleBackColor = true;
 			// 
 			// productGroup
-      // 
+			// 
 			this->productGroup->Controls->Add(this->productRestockThresholdInput);
 			this->productGroup->Controls->Add(this->productRestockThresholdLabel);
 			this->productGroup->Controls->Add(this->productDiscountGroup);
@@ -708,17 +707,18 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// productRestockThresholdInput
 			// 
-			this->productRestockThresholdInput->Location = System::Drawing::Point(274, 240);
+			this->productRestockThresholdInput->Location = System::Drawing::Point(308, 300);
+			this->productRestockThresholdInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productRestockThresholdInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
 			this->productRestockThresholdInput->Name = L"productRestockThresholdInput";
-			this->productRestockThresholdInput->Size = System::Drawing::Size(84, 22);
+			this->productRestockThresholdInput->Size = System::Drawing::Size(94, 22);
 			this->productRestockThresholdInput->TabIndex = 21;
 			this->productRestockThresholdInput->ThousandsSeparator = true;
 			// 
 			// productRestockThresholdLabel
 			// 
 			this->productRestockThresholdLabel->AutoSize = true;
-			this->productRestockThresholdLabel->Location = System::Drawing::Point(59, 245);
+			this->productRestockThresholdLabel->Location = System::Drawing::Point(66, 306);
 			this->productRestockThresholdLabel->Name = L"productRestockThresholdLabel";
 			this->productRestockThresholdLabel->Size = System::Drawing::Size(189, 16);
 			this->productRestockThresholdLabel->TabIndex = 20;
@@ -731,9 +731,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->productDiscountGroup->Controls->Add(this->productBaseDiscountInput);
 			this->productDiscountGroup->Controls->Add(this->productCountWeightLabel);
 			this->productDiscountGroup->Controls->Add(this->productBaseDiscountLabel);
-			this->productDiscountGroup->Location = System::Drawing::Point(62, 332);
+			this->productDiscountGroup->Location = System::Drawing::Point(70, 415);
+			this->productDiscountGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productDiscountGroup->Name = L"productDiscountGroup";
-			this->productDiscountGroup->Size = System::Drawing::Size(414, 72);
+			this->productDiscountGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->productDiscountGroup->Size = System::Drawing::Size(466, 90);
 			this->productDiscountGroup->TabIndex = 19;
 			this->productDiscountGroup->TabStop = false;
 			this->productDiscountGroup->Text = L"Remise";
@@ -741,7 +743,7 @@ private: System::Windows::Forms::Label^ label1;
 			// productBaseDiscountPercent
 			// 
 			this->productBaseDiscountPercent->AutoSize = true;
-			this->productBaseDiscountPercent->Location = System::Drawing::Point(270, 18);
+			this->productBaseDiscountPercent->Location = System::Drawing::Point(304, 22);
 			this->productBaseDiscountPercent->Name = L"productBaseDiscountPercent";
 			this->productBaseDiscountPercent->Size = System::Drawing::Size(19, 16);
 			this->productBaseDiscountPercent->TabIndex = 20;
@@ -751,24 +753,26 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productCountWeightInput->DecimalPlaces = 2;
 			this->productCountWeightInput->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 131072 });
-			this->productCountWeightInput->Location = System::Drawing::Point(283, 44);
+			this->productCountWeightInput->Location = System::Drawing::Point(318, 55);
+			this->productCountWeightInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productCountWeightInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->productCountWeightInput->Name = L"productCountWeightInput";
-			this->productCountWeightInput->Size = System::Drawing::Size(59, 22);
+			this->productCountWeightInput->Size = System::Drawing::Size(66, 22);
 			this->productCountWeightInput->TabIndex = 19;
 			// 
 			// productBaseDiscountInput
 			// 
-			this->productBaseDiscountInput->Location = System::Drawing::Point(212, 16);
+			this->productBaseDiscountInput->Location = System::Drawing::Point(238, 20);
+			this->productBaseDiscountInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productBaseDiscountInput->Name = L"productBaseDiscountInput";
-			this->productBaseDiscountInput->Size = System::Drawing::Size(56, 22);
+			this->productBaseDiscountInput->Size = System::Drawing::Size(63, 22);
 			this->productBaseDiscountInput->TabIndex = 18;
 			this->productBaseDiscountInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
 			// 
 			// productCountWeightLabel
 			// 
 			this->productCountWeightLabel->AutoSize = true;
-			this->productCountWeightLabel->Location = System::Drawing::Point(16, 44);
+			this->productCountWeightLabel->Location = System::Drawing::Point(18, 55);
 			this->productCountWeightLabel->Name = L"productCountWeightLabel";
 			this->productCountWeightLabel->Size = System::Drawing::Size(220, 16);
 			this->productCountWeightLabel->TabIndex = 1;
@@ -777,7 +781,7 @@ private: System::Windows::Forms::Label^ label1;
 			// productBaseDiscountLabel
 			// 
 			this->productBaseDiscountLabel->AutoSize = true;
-			this->productBaseDiscountLabel->Location = System::Drawing::Point(16, 18);
+			this->productBaseDiscountLabel->Location = System::Drawing::Point(18, 22);
 			this->productBaseDiscountLabel->Name = L"productBaseDiscountLabel";
 			this->productBaseDiscountLabel->Size = System::Drawing::Size(93, 16);
 			this->productBaseDiscountLabel->TabIndex = 0;
@@ -786,305 +790,9 @@ private: System::Windows::Forms::Label^ label1;
 			// productTaxesPercent
 			// 
 			this->productTaxesPercent->AutoSize = true;
-			this->productTaxesPercent->Location = System::Drawing::Point(332, 291);
-			this->productTaxesPercent->Name = L"productTaxesPercent";
-			this->productTaxesPercent->Size = System::Drawing::Size(19, 16);
-			this->productTaxesPercent->TabIndex = 18;
-			this->productTaxesPercent->Text = L"%";
-			// 
-			// productTaxesInput
-			// 
-			this->productTaxesInput->Location = System::Drawing::Point(274, 290);
-			this->productTaxesInput->Name = L"productTaxesInput";
-			this->productTaxesInput->Size = System::Drawing::Size(53, 22);
-			this->productTaxesInput->TabIndex = 17;
-			this->productTaxesInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
-			// 
-			// productTaxesLabel
-			// 
-			this->productTaxesLabel->AutoSize = true;
-			this->productTaxesLabel->Location = System::Drawing::Point(59, 291);
-			this->productTaxesLabel->Name = L"productTaxesLabel";
-			this->productTaxesLabel->Size = System::Drawing::Size(89, 16);
-			this->productTaxesLabel->TabIndex = 16;
-			this->productTaxesLabel->Text = L"Taux de TVA:";
-			// 
-			// productStockLabel
-			// 
-			this->productStockLabel->AutoSize = true;
-			this->productStockLabel->Location = System::Drawing::Point(59, 188);
-			this->productStockLabel->Name = L"productStockLabel";
-			this->productStockLabel->Size = System::Drawing::Size(112, 16);
-			this->productStockLabel->TabIndex = 15;
-			this->productStockLabel->Text = L"Quantité en stock:";
-			// 
-			// productStockInput
-			// 
-			this->productStockInput->Location = System::Drawing::Point(274, 190);
-			this->productStockInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
-			this->productStockInput->Name = L"productStockInput";
-			this->productStockInput->Size = System::Drawing::Size(84, 22);
-			this->productStockInput->TabIndex = 14;
-			this->productStockInput->ThousandsSeparator = true;
-			// 
-			// productPurchasePriceInput
-			// 
-			this->productPurchasePriceInput->DecimalPlaces = 3;
-			this->productPurchasePriceInput->Location = System::Drawing::Point(237, 134);
-			this->productPurchasePriceInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
-			this->productPurchasePriceInput->Name = L"productPurchasePriceInput";
-			this->productPurchasePriceInput->Size = System::Drawing::Size(120, 22);
-			this->productPurchasePriceInput->TabIndex = 13;
-			this->productPurchasePriceInput->ThousandsSeparator = true;
-			// 
-			// productUHTPriceInput
-			// 
-			this->productUHTPriceInput->DecimalPlaces = 3;
-			this->productUHTPriceInput->Location = System::Drawing::Point(237, 82);
-			this->productUHTPriceInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
-			this->productUHTPriceInput->Name = L"productUHTPriceInput";
-			this->productUHTPriceInput->Size = System::Drawing::Size(120, 22);
-			this->productUHTPriceInput->TabIndex = 12;
-			this->productUHTPriceInput->ThousandsSeparator = true;
-			// 
-			// productPurchasePriceCurrencySelector
-			// 
-			this->productPurchasePriceCurrencySelector->FormattingEnabled = true;
-			this->productPurchasePriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productPurchasePriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"", L"$" });
-			this->productPurchasePriceCurrencySelector->Location = System::Drawing::Point(366, 134);
-			this->productPurchasePriceCurrencySelector->Name = L"productPurchasePriceCurrencySelector";
-			this->productPurchasePriceCurrencySelector->Size = System::Drawing::Size(55, 24);
-			this->productPurchasePriceCurrencySelector->TabIndex = 11;
-			this->productPurchasePriceCurrencySelector->Text = L"";
-			// 
-			// productPurchasePriceLabel
-			// 
-			this->productPurchasePriceLabel->AutoSize = true;
-			this->productPurchasePriceLabel->Location = System::Drawing::Point(59, 136);
-			this->productPurchasePriceLabel->Name = L"productPurchasePriceLabel";
-			this->productPurchasePriceLabel->Size = System::Drawing::Size(125, 16);
-			this->productPurchasePriceLabel->TabIndex = 9;
-			this->productPurchasePriceLabel->Text = L"Prix unitaire d\'achat:";
-			// 
-			// productUHTPriceCurrencySelector
-			// 
-			this->productUHTPriceCurrencySelector->FormattingEnabled = true;
-			this->productUHTPriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productUHTPriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"", L"$" });
-			this->productUHTPriceCurrencySelector->Location = System::Drawing::Point(366, 81);
-			this->productUHTPriceCurrencySelector->Name = L"productUHTPriceCurrencySelector";
-			this->productUHTPriceCurrencySelector->Size = System::Drawing::Size(55, 24);
-			this->productUHTPriceCurrencySelector->TabIndex = 8;
-			this->productUHTPriceCurrencySelector->Text = L"";
-			// 
-			// productUHTPriceLabel
-			// 
-			this->productUHTPriceLabel->AutoSize = true;
-			this->productUHTPriceLabel->Location = System::Drawing::Point(56, 83);
-			this->productUHTPriceLabel->Name = L"productUHTPriceLabel";
-			this->productUHTPriceLabel->Size = System::Drawing::Size(142, 16);
-			this->productUHTPriceLabel->TabIndex = 6;
-			this->productUHTPriceLabel->Text = L"Prix unitaire hors taxes:";
-			// 
-			// productNameInput
-			// 
-			this->productNameInput->Location = System::Drawing::Point(105, 31);
-			this->productNameInput->Name = L"productNameInput";
-			this->productNameInput->Size = System::Drawing::Size(372, 22);
-			this->productNameInput->TabIndex = 5;
-			// 
-			// productNameLabel
-			// 
-			this->productNameLabel->AutoSize = true;
-			this->productNameLabel->Location = System::Drawing::Point(59, 34);
-			this->productNameLabel->Name = L"productNameLabel";
-			this->productNameLabel->Size = System::Drawing::Size(39, 16);
-			this->productNameLabel->TabIndex = 4;
-			this->productNameLabel->Text = L"Nom:";
-			// 
-			// groupBox19
-			// 
-			this->groupBox19->Location = System::Drawing::Point(0, 431);
-			this->groupBox19->Name = L"groupBox19";
-			this->groupBox19->Size = System::Drawing::Size(390, 49);
-			this->groupBox19->TabIndex = 3;
-			this->groupBox19->TabStop = false;
-			// 
-			// visualizeGroup
-			// 
-			this->visualizeGroup->Controls->Add(this->visualizeDeleteButton);
-			this->visualizeGroup->Controls->Add(this->visualizeGrid);
-			this->visualizeGroup->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->visualizeGroup->Location = System::Drawing::Point(538, 8);
-			this->visualizeGroup->Name = L"visualizeGroup";
-			this->visualizeGroup->Size = System::Drawing::Size(390, 487);
-			this->visualizeGroup->TabIndex = 2;
-			this->visualizeGroup->TabStop = false;
-			this->visualizeGroup->Text = L"Visualisation des données";
-			// 
-			// productRestockThresholdInput
-			// 
-			this->visualizeDeleteButton->Location = System::Drawing::Point(136, 449);
-			this->visualizeDeleteButton->Name = L"visualizeDeleteButton";
-			this->visualizeDeleteButton->Size = System::Drawing::Size(114, 23);
-			this->visualizeDeleteButton->TabIndex = 10;
-			this->visualizeDeleteButton->Text = L"Supprimer";
-			this->visualizeDeleteButton->UseVisualStyleBackColor = true;
-			this->productRestockThresholdInput->Location = System::Drawing::Point(308, 300);
-			this->productRestockThresholdInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->productRestockThresholdInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
-			this->productRestockThresholdInput->Name = L"productRestockThresholdInput";
-			this->productRestockThresholdInput->Size = System::Drawing::Size(94, 26);
-			this->productRestockThresholdInput->TabIndex = 21;
-			this->productRestockThresholdInput->ThousandsSeparator = true;
-      
-			this->visualizeGrid->AllowUserToAddRows = false;
-			this->visualizeGrid->AllowUserToDeleteRows = false;
-			this->visualizeGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->visualizeGrid->Location = System::Drawing::Point(6, 21);
-			this->visualizeGrid->Name = L"visualizeGrid";
-			this->visualizeGrid->RowHeadersWidth = 51;
-			this->visualizeGrid->RowTemplate->Height = 24;
-			this->visualizeGrid->Size = System::Drawing::Size(378, 424);
-			this->visualizeGrid->TabIndex = 9;
-			// 
-			// productRestockThresholdLabel
-			// 
-			this->productRestockThresholdLabel->AutoSize = true;
-			this->productRestockThresholdLabel->Location = System::Drawing::Point(66, 306);
-			this->productRestockThresholdLabel->Name = L"productRestockThresholdLabel";
-			this->productRestockThresholdLabel->Size = System::Drawing::Size(222, 20);
-			this->productRestockThresholdLabel->TabIndex = 20;
-			this->productRestockThresholdLabel->Text = L"Seuil de réapprovisionnement:";
-			// 
-			// productDiscountGroup
-			// 
-      this->productDiscountGroup->Controls->Add(this->productBaseDiscountPercent);
-			this->productDiscountGroup->Controls->Add(this->productCountWeightInput);
-			this->productDiscountGroup->Controls->Add(this->productBaseDiscountInput);
-			this->productDiscountGroup->Controls->Add(this->productCountWeightLabel);
-			this->productDiscountGroup->Controls->Add(this->productBaseDiscountLabel);
-			this->productDiscountGroup->Location = System::Drawing::Point(70, 415);
-			this->productDiscountGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->productDiscountGroup->Name = L"productDiscountGroup";
-			this->productDiscountGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->productDiscountGroup->Size = System::Drawing::Size(466, 90);
-			this->productDiscountGroup->TabIndex = 19;
-			this->productDiscountGroup->TabStop = false;
-			this->productDiscountGroup->Text = L"Remise";
-      
-			this->staffGroup->Controls->Add(this->staffHiredYearInput);
-			this->staffGroup->Controls->Add(this->staffHiredMonthInput);
-			this->staffGroup->Controls->Add(this->staffHiredDayInput);
-			this->staffGroup->Controls->Add(this->staffHiredSlash2);
-			this->staffGroup->Controls->Add(this->staffHiredSlash1);
-			this->staffGroup->Controls->Add(this->staffSuperiorLabel);
-			this->staffGroup->Controls->Add(this->staffSuperiorSelector);
-			this->staffGroup->Controls->Add(this->staffAddressGroup);
-			this->staffGroup->Controls->Add(this->staffHiredLabel);
-			this->staffGroup->Controls->Add(this->staffFNameLabel);
-			this->staffGroup->Controls->Add(this->staffLNameLabel);
-			this->staffGroup->Controls->Add(this->staffFNameInput);
-			this->staffGroup->Controls->Add(this->staffLNameInput);
-			this->staffGroup->Controls->Add(this->groupBox16);
-			this->staffGroup->Location = System::Drawing::Point(12, 518);
-			this->staffGroup->Name = L"staffGroup";
-			this->staffGroup->Size = System::Drawing::Size(520, 425);
-			this->staffGroup->TabIndex = 6;
-			this->staffGroup->TabStop = false;
-			this->staffGroup->Text = L"Edition du personnel";
-			// 
-			// productBaseDiscountPercent
-			// 
-      this->productBaseDiscountPercent->AutoSize = true;
-			this->productBaseDiscountPercent->Location = System::Drawing::Point(304, 22);
-			this->productBaseDiscountPercent->Name = L"productBaseDiscountPercent";
-			this->productBaseDiscountPercent->Size = System::Drawing::Size(23, 20);
-			this->productBaseDiscountPercent->TabIndex = 20;
-			this->productBaseDiscountPercent->Text = L"%";
-      
-      this->staffHiredYearInput->Location = System::Drawing::Point(394, 112);
-			this->staffHiredYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
-			this->staffHiredYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
-			this->staffHiredYearInput->Name = L"staffHiredYearInput";
-			this->staffHiredYearInput->Size = System::Drawing::Size(70, 22);
-			this->staffHiredYearInput->TabIndex = 33;
-			this->staffHiredYearInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
-			// 
-			// productCountWeightInput
-			// 
-			this->productCountWeightInput->DecimalPlaces = 2;
-			this->productCountWeightInput->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 131072 });
-			this->productCountWeightInput->Location = System::Drawing::Point(318, 55);
-			this->productCountWeightInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->productCountWeightInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->productCountWeightInput->Name = L"productCountWeightInput";
-			this->productCountWeightInput->Size = System::Drawing::Size(66, 26);
-			this->productCountWeightInput->TabIndex = 19;
-      
-			this->staffHiredMonthInput->Location = System::Drawing::Point(321, 112);
-			this->staffHiredMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
-			this->staffHiredMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->staffHiredMonthInput->Name = L"staffHiredMonthInput";
-			this->staffHiredMonthInput->Size = System::Drawing::Size(50, 22);
-			this->staffHiredMonthInput->TabIndex = 32;
-			this->staffHiredMonthInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			// 
-			// productBaseDiscountInput
-			// 
-			this->productBaseDiscountInput->Location = System::Drawing::Point(238, 20);
-			this->productBaseDiscountInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-			this->productBaseDiscountInput->Name = L"productBaseDiscountInput";
-			this->productBaseDiscountInput->Size = System::Drawing::Size(63, 26);
-			this->productBaseDiscountInput->TabIndex = 18;
-			this->productBaseDiscountInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
-      
-			this->staffHiredDayInput->Location = System::Drawing::Point(248, 112);
-			this->staffHiredDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
-			this->staffHiredDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->staffHiredDayInput->Name = L"staffHiredDayInput";
-			this->staffHiredDayInput->Size = System::Drawing::Size(50, 22);
-			this->staffHiredDayInput->TabIndex = 31;
-			this->staffHiredDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-      
-			// 
-			// productCountWeightLabel
-			// 
-			this->productCountWeightLabel->AutoSize = true;
-			this->productCountWeightLabel->Location = System::Drawing::Point(18, 55);
-			this->productCountWeightLabel->Name = L"productCountWeightLabel";
-			this->productCountWeightLabel->Size = System::Drawing::Size(259, 20);
-			this->productCountWeightLabel->TabIndex = 1;
-			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetés:";
-			this->staffHiredSlash2->AutoSize = true;
-			this->staffHiredSlash2->Location = System::Drawing::Point(377, 115);
-			this->staffHiredSlash2->Name = L"staffHiredSlash2";
-			this->staffHiredSlash2->Size = System::Drawing::Size(11, 16);
-			this->staffHiredSlash2->TabIndex = 30;
-			this->staffHiredSlash2->Text = L"/";
-			// 
-			// productBaseDiscountLabel
-			// 
-			this->productBaseDiscountLabel->AutoSize = true;
-			this->productBaseDiscountLabel->Location = System::Drawing::Point(18, 22);
-			this->productBaseDiscountLabel->Name = L"productBaseDiscountLabel";
-			this->productBaseDiscountLabel->Size = System::Drawing::Size(108, 20);
-			this->productBaseDiscountLabel->TabIndex = 0;
-			this->productBaseDiscountLabel->Text = L"Taux de base:";
-			this->staffHiredSlash1->AutoSize = true;
-			this->staffHiredSlash1->Location = System::Drawing::Point(304, 115);
-			this->staffHiredSlash1->Name = L"staffHiredSlash1";
-			this->staffHiredSlash1->Size = System::Drawing::Size(11, 16);
-			this->staffHiredSlash1->TabIndex = 29;
-			this->staffHiredSlash1->Text = L"/";
-			// 
-			// productTaxesPercent
-			// 
-			this->productTaxesPercent->AutoSize = true;
 			this->productTaxesPercent->Location = System::Drawing::Point(374, 364);
 			this->productTaxesPercent->Name = L"productTaxesPercent";
-			this->productTaxesPercent->Size = System::Drawing::Size(23, 20);
+			this->productTaxesPercent->Size = System::Drawing::Size(19, 16);
 			this->productTaxesPercent->TabIndex = 18;
 			this->productTaxesPercent->Text = L"%";
 			// 
@@ -1093,7 +801,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productTaxesInput->Location = System::Drawing::Point(308, 362);
 			this->productTaxesInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productTaxesInput->Name = L"productTaxesInput";
-			this->productTaxesInput->Size = System::Drawing::Size(60, 26);
+			this->productTaxesInput->Size = System::Drawing::Size(60, 22);
 			this->productTaxesInput->TabIndex = 17;
 			this->productTaxesInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
 			// 
@@ -1102,7 +810,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productTaxesLabel->AutoSize = true;
 			this->productTaxesLabel->Location = System::Drawing::Point(66, 364);
 			this->productTaxesLabel->Name = L"productTaxesLabel";
-			this->productTaxesLabel->Size = System::Drawing::Size(104, 20);
+			this->productTaxesLabel->Size = System::Drawing::Size(89, 16);
 			this->productTaxesLabel->TabIndex = 16;
 			this->productTaxesLabel->Text = L"Taux de TVA:";
 			// 
@@ -1111,7 +819,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productStockLabel->AutoSize = true;
 			this->productStockLabel->Location = System::Drawing::Point(66, 235);
 			this->productStockLabel->Name = L"productStockLabel";
-			this->productStockLabel->Size = System::Drawing::Size(138, 20);
+			this->productStockLabel->Size = System::Drawing::Size(112, 16);
 			this->productStockLabel->TabIndex = 15;
 			this->productStockLabel->Text = L"Quantité en stock:";
 			// 
@@ -1121,7 +829,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productStockInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productStockInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
 			this->productStockInput->Name = L"productStockInput";
-			this->productStockInput->Size = System::Drawing::Size(94, 26);
+			this->productStockInput->Size = System::Drawing::Size(94, 22);
 			this->productStockInput->TabIndex = 14;
 			this->productStockInput->ThousandsSeparator = true;
 			// 
@@ -1132,7 +840,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productPurchasePriceInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productPurchasePriceInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
 			this->productPurchasePriceInput->Name = L"productPurchasePriceInput";
-			this->productPurchasePriceInput->Size = System::Drawing::Size(135, 26);
+			this->productPurchasePriceInput->Size = System::Drawing::Size(135, 22);
 			this->productPurchasePriceInput->TabIndex = 13;
 			this->productPurchasePriceInput->ThousandsSeparator = true;
 			// 
@@ -1143,7 +851,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productUHTPriceInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productUHTPriceInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
 			this->productUHTPriceInput->Name = L"productUHTPriceInput";
-			this->productUHTPriceInput->Size = System::Drawing::Size(135, 26);
+			this->productUHTPriceInput->Size = System::Drawing::Size(135, 22);
 			this->productUHTPriceInput->TabIndex = 12;
 			this->productUHTPriceInput->ThousandsSeparator = true;
 			// 
@@ -1151,11 +859,11 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productPurchasePriceCurrencySelector->FormattingEnabled = true;
 			this->productPurchasePriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productPurchasePriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"", L"$" });
+			this->productPurchasePriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"", L"$", L"", L"$" });
 			this->productPurchasePriceCurrencySelector->Location = System::Drawing::Point(412, 168);
 			this->productPurchasePriceCurrencySelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productPurchasePriceCurrencySelector->Name = L"productPurchasePriceCurrencySelector";
-			this->productPurchasePriceCurrencySelector->Size = System::Drawing::Size(61, 28);
+			this->productPurchasePriceCurrencySelector->Size = System::Drawing::Size(61, 24);
 			this->productPurchasePriceCurrencySelector->TabIndex = 11;
 			this->productPurchasePriceCurrencySelector->Text = L"";
 			// 
@@ -1164,7 +872,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productPurchasePriceLabel->AutoSize = true;
 			this->productPurchasePriceLabel->Location = System::Drawing::Point(66, 170);
 			this->productPurchasePriceLabel->Name = L"productPurchasePriceLabel";
-			this->productPurchasePriceLabel->Size = System::Drawing::Size(150, 20);
+			this->productPurchasePriceLabel->Size = System::Drawing::Size(125, 16);
 			this->productPurchasePriceLabel->TabIndex = 9;
 			this->productPurchasePriceLabel->Text = L"Prix unitaire d\'achat:";
 			// 
@@ -1172,11 +880,11 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productUHTPriceCurrencySelector->FormattingEnabled = true;
 			this->productUHTPriceCurrencySelector->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->productUHTPriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"", L"$" });
+			this->productUHTPriceCurrencySelector->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"", L"$", L"", L"$" });
 			this->productUHTPriceCurrencySelector->Location = System::Drawing::Point(412, 101);
 			this->productUHTPriceCurrencySelector->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productUHTPriceCurrencySelector->Name = L"productUHTPriceCurrencySelector";
-			this->productUHTPriceCurrencySelector->Size = System::Drawing::Size(61, 28);
+			this->productUHTPriceCurrencySelector->Size = System::Drawing::Size(61, 24);
 			this->productUHTPriceCurrencySelector->TabIndex = 8;
 			this->productUHTPriceCurrencySelector->Text = L"";
 			// 
@@ -1185,7 +893,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productUHTPriceLabel->AutoSize = true;
 			this->productUHTPriceLabel->Location = System::Drawing::Point(63, 104);
 			this->productUHTPriceLabel->Name = L"productUHTPriceLabel";
-			this->productUHTPriceLabel->Size = System::Drawing::Size(171, 20);
+			this->productUHTPriceLabel->Size = System::Drawing::Size(142, 16);
 			this->productUHTPriceLabel->TabIndex = 6;
 			this->productUHTPriceLabel->Text = L"Prix unitaire hors taxes:";
 			// 
@@ -1194,7 +902,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productNameInput->Location = System::Drawing::Point(118, 39);
 			this->productNameInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productNameInput->Name = L"productNameInput";
-			this->productNameInput->Size = System::Drawing::Size(418, 26);
+			this->productNameInput->Size = System::Drawing::Size(418, 22);
 			this->productNameInput->TabIndex = 5;
 			// 
 			// productNameLabel
@@ -1202,7 +910,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productNameLabel->AutoSize = true;
 			this->productNameLabel->Location = System::Drawing::Point(66, 42);
 			this->productNameLabel->Name = L"productNameLabel";
-			this->productNameLabel->Size = System::Drawing::Size(46, 20);
+			this->productNameLabel->Size = System::Drawing::Size(39, 16);
 			this->productNameLabel->TabIndex = 4;
 			this->productNameLabel->Text = L"Nom:";
 			// 
@@ -1280,61 +988,61 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// staffHiredYearInput
 			// 
-			this->staffHiredYearInput->Location = System::Drawing::Point(443, 140);
+			this->staffHiredYearInput->Location = System::Drawing::Point(399, 109);
 			this->staffHiredYearInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->staffHiredYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
 			this->staffHiredYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
 			this->staffHiredYearInput->Name = L"staffHiredYearInput";
-			this->staffHiredYearInput->Size = System::Drawing::Size(79, 26);
+			this->staffHiredYearInput->Size = System::Drawing::Size(79, 22);
 			this->staffHiredYearInput->TabIndex = 33;
 			this->staffHiredYearInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
 			// 
 			// staffHiredMonthInput
 			// 
-			this->staffHiredMonthInput->Location = System::Drawing::Point(361, 140);
+			this->staffHiredMonthInput->Location = System::Drawing::Point(324, 109);
 			this->staffHiredMonthInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->staffHiredMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
 			this->staffHiredMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->staffHiredMonthInput->Name = L"staffHiredMonthInput";
-			this->staffHiredMonthInput->Size = System::Drawing::Size(56, 26);
+			this->staffHiredMonthInput->Size = System::Drawing::Size(56, 22);
 			this->staffHiredMonthInput->TabIndex = 32;
 			this->staffHiredMonthInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// staffHiredDayInput
 			// 
-			this->staffHiredDayInput->Location = System::Drawing::Point(279, 140);
+			this->staffHiredDayInput->Location = System::Drawing::Point(245, 108);
 			this->staffHiredDayInput->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->staffHiredDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
 			this->staffHiredDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->staffHiredDayInput->Name = L"staffHiredDayInput";
-			this->staffHiredDayInput->Size = System::Drawing::Size(56, 26);
+			this->staffHiredDayInput->Size = System::Drawing::Size(56, 22);
 			this->staffHiredDayInput->TabIndex = 31;
 			this->staffHiredDayInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// staffHiredSlash2
 			// 
 			this->staffHiredSlash2->AutoSize = true;
-			this->staffHiredSlash2->Location = System::Drawing::Point(424, 144);
+			this->staffHiredSlash2->Location = System::Drawing::Point(385, 113);
 			this->staffHiredSlash2->Name = L"staffHiredSlash2";
-			this->staffHiredSlash2->Size = System::Drawing::Size(13, 20);
+			this->staffHiredSlash2->Size = System::Drawing::Size(11, 16);
 			this->staffHiredSlash2->TabIndex = 30;
 			this->staffHiredSlash2->Text = L"/";
 			// 
 			// staffHiredSlash1
 			// 
 			this->staffHiredSlash1->AutoSize = true;
-			this->staffHiredSlash1->Location = System::Drawing::Point(342, 144);
+			this->staffHiredSlash1->Location = System::Drawing::Point(307, 112);
 			this->staffHiredSlash1->Name = L"staffHiredSlash1";
-			this->staffHiredSlash1->Size = System::Drawing::Size(13, 20);
+			this->staffHiredSlash1->Size = System::Drawing::Size(11, 16);
 			this->staffHiredSlash1->TabIndex = 29;
 			this->staffHiredSlash1->Text = L"/";
 			// 
 			// staffSuperiorLabel
 			// 
 			this->staffSuperiorLabel->AutoSize = true;
-			this->staffSuperiorLabel->Location = System::Drawing::Point(66, 348);
+			this->staffSuperiorLabel->Location = System::Drawing::Point(63, 285);
 			this->staffSuperiorLabel->Name = L"staffSuperiorLabel";
-			this->staffSuperiorLabel->Size = System::Drawing::Size(173, 20);
+			this->staffSuperiorLabel->Size = System::Drawing::Size(145, 16);
 			this->staffSuperiorLabel->TabIndex = 26;
 			this->staffSuperiorLabel->Text = L"Superieur hierarchique:";
 			// 
@@ -1367,7 +1075,7 @@ private: System::Windows::Forms::Label^ label1;
 			// staffAddressCityInput
 			// 
 			this->staffAddressCityInput->FormattingEnabled = true;
-			this->staffAddressCityInput->Location = System::Drawing::Point(61, 57);
+			this->staffAddressCityInput->Location = System::Drawing::Point(68, 57);
 			this->staffAddressCityInput->Name = L"staffAddressCityInput";
 			this->staffAddressCityInput->Size = System::Drawing::Size(115, 24);
 			this->staffAddressCityInput->TabIndex = 8;
@@ -1377,7 +1085,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressCityCodeInput->Location = System::Drawing::Point(303, 57);
 			this->staffAddressCityCodeInput->MaxLength = 6;
 			this->staffAddressCityCodeInput->Name = L"staffAddressCityCodeInput";
-			this->staffAddressCityCodeInput->Size = System::Drawing::Size(106, 26);
+			this->staffAddressCityCodeInput->Size = System::Drawing::Size(106, 22);
 			this->staffAddressCityCodeInput->TabIndex = 7;
 			// 
 			// staffAddressCityCodeLabel
@@ -1418,7 +1126,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->staffAddressNumberInput->Location = System::Drawing::Point(121, 25);
 			this->staffAddressNumberInput->Name = L"staffAddressNumberInput";
-			this->staffAddressNumberInput->Size = System::Drawing::Size(62, 26);
+			this->staffAddressNumberInput->Size = System::Drawing::Size(62, 22);
 			this->staffAddressNumberInput->TabIndex = 1;
 			// 
 			// staffAddressNumberLabel
@@ -1442,7 +1150,7 @@ private: System::Windows::Forms::Label^ label1;
 			// staffFNameLabel
 			// 
 			this->staffFNameLabel->AutoSize = true;
-			this->staffFNameLabel->Location = System::Drawing::Point(312, 66);
+			this->staffFNameLabel->Location = System::Drawing::Point(277, 54);
 			this->staffFNameLabel->Name = L"staffFNameLabel";
 			this->staffFNameLabel->Size = System::Drawing::Size(57, 16);
 			this->staffFNameLabel->TabIndex = 11;
@@ -2117,7 +1825,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersDeliveryLabel->AutoSize = true;
 			this->ordersDeliveryLabel->Location = System::Drawing::Point(56, 327);
 			this->ordersDeliveryLabel->Name = L"ordersDeliveryLabel";
-			this->ordersDeliveryLabel->Size = System::Drawing::Size(130, 20);
+			this->ordersDeliveryLabel->Size = System::Drawing::Size(111, 16);
 			this->ordersDeliveryLabel->TabIndex = 16;
 			this->ordersDeliveryLabel->Text = L"Date de livraison:";
 			// 
@@ -2547,7 +2255,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(2462, 1208);
+			this->ClientSize = System::Drawing::Size(1924, 1055);
 			this->Controls->Add(this->categoriesGroup);
 			this->Controls->Add(this->backButton);
 			this->Controls->Add(this->validateGroup);
@@ -2777,8 +2485,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffGroup->Visible = true;
 			mode = 1;
 			for each(DataRow^ row in this->staff->getAllStaff()->Rows) {
-
-			this->staffSuperiorSelector->Items->Add("nomSup, prenomSup");
+				structure::StaffSelector_Row^ staff_row = gcnew structure::StaffSelector_Row();
+				staff_row->lname = Convert::ToString(row->ItemArray[0]);
+				staff_row->fname = Convert::ToString(row->ItemArray[1]);
+				
+				this->staffSuperiorSelector->Items->Add(staff_row);
 			}
 			this->refreshGrid();
 		}

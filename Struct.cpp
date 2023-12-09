@@ -42,6 +42,10 @@ namespace structure {
 		ConcatanedString += paymentDate;
 		return ConcatanedString;
 	}
+	String^ StaffSelector_Row::ToString()
+	{
+		return this->lname + " " + this->fname;
+	}
 }
 
 

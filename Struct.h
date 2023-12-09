@@ -89,4 +89,12 @@ namespace structure {
 		array<Payment>^ payments;
 		CustomerData customer;
 	};
+	
+	value struct StaffSelector_Row {
+		String^ lname;
+		String^ fname;
+		int id;
+
+		String^ ToString() override;
+	};
 };
