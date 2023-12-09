@@ -9,6 +9,10 @@ namespace Components {
     {
         String^ query = "INSERT INTO " + table + " " + columns + " VALUES (";
         for each (Object ^ obj in values) {
+            if (obj->GetType() == DateTime::typeid) {
+                auto dt = safe_cast<DateTime^>(obj);
+                obj = dt->Year + "-" + Convert::ToString(dt->Month)->PadLeft(2)->Replace(" ", "0") + "-" + Convert::ToString(dt->Day)->PadLeft(2)->Replace(" ", "0");
+            }
             query += "'" + obj->ToString()->Replace("'", "\\'") + "', ";
         };
 
