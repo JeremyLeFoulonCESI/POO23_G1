@@ -114,12 +114,12 @@ namespace Services {
 		return result;
 	}
 	float StatsProvider::computeStockCommercialValue() {
-		return this->computeForAllProducts(&StatsProvider::getProductCommercialValue);
+		return this->computeForAllProducts(gcnew ProductInfoProvider(&StatsProvider::getProductCommercialValue));
 	}
 	float StatsProvider::computeStockPurchaseValue() {
-		return this->computeForAllProducts(&StatsProvider::getProductPurchaseValue);
+		return this->computeForAllProducts(gcnew ProductInfoProvider(&StatsProvider::getProductPurchaseValue));
 	}
-	float StatsProvider::computeForAllProducts(float (*operation) (DataRow^)) {
+	float StatsProvider::computeForAllProducts(ProductInfoProvider^ operation) {
 		float total = 0;
 		this->dbOpenConnection();
 		for each (DataRow^ product_row in this->readAll(Components::Table::getProductTable())->Rows) {
