@@ -124,7 +124,7 @@ namespace Services {
 		this->dbOpenConnection();
 		for each (DataRow^ product_row in this->readAll(Components::Table::getProductTable())->Rows) {
 			if (operation) {
-				float value = (*operation)(product_row);
+				float value = operation(product_row);
 				total += value;
 			}
 		}
@@ -151,7 +151,7 @@ namespace Services {
 			float UHTprice = (float)Convert::ToDecimal(product_row->ItemArray[2]);
 			int count = Convert::ToInt32(product_row->ItemArray[4]);
 
-			int real_count = count * (1 - shrink);
+			float real_count = count * (1 - shrink);
 
 			float real_value = UHTprice * (1 + TVA) * (1 + commercialMargin) * (1 - commercialDiscount);
 			result += real_value;

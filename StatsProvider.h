@@ -20,7 +20,7 @@ namespace Services {
 		float simulateCommercialValue(float TVA, float commercialMargin, float commercialDiscount, float unknownMark);
 
 	private:
-		float computeForAllProducts(float (*operation) (DataRow^));
+		float computeForAllProducts(float (operation) (DataRow^));
 		static float getProductCommercialValue(DataRow^ product_row);
 		static float getProductPurchaseValue(DataRow^ product_row);
 	};
