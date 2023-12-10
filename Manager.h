@@ -7,10 +7,11 @@ using namespace System::Data;
 using namespace System::Collections::Generic;
 
 namespace Services {
-	ref class Manager
+	public ref class Manager
 	{
 	public:
 		Manager();
+		DataTable^ findCitiesByCode(String^ cityCode);
 
 	protected:
 		DataBaseWrapper^ db;

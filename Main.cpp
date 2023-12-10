@@ -29,7 +29,7 @@ void test_DataAccessor() {
 
 int main(array<System::String ^> ^args)
 {
-    Application::CurrentCulture = gcnew System::Globalization::CultureInfo("en-US");
+    Application::CurrentCulture = gcnew System::Globalization::CultureInfo("fr-FR");
     HMI::Root^ root = gcnew HMI::Root();
     Application::Run(root);
 }

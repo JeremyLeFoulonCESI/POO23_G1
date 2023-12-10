@@ -16,6 +16,7 @@ void DataBaseWrapper::open()
 MySqlCommand^ DataBaseWrapper::basicQuery(String^ query, ...array<Object^>^ parameters)
 {
     MySqlCommand^ command = this->connection->CreateCommand();
+    Console::WriteLine(query);
     command->CommandText = query;
     command->Prepare();
     return command;

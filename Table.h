@@ -5,7 +5,7 @@ using namespace System;
 
 namespace Components {
 
-	ref class Table
+	public ref class Table
 	{
 		String^ name;
 		array<String^>^ primary_keys;

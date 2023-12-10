@@ -5,7 +5,7 @@
 using namespace structure;
 
 namespace Services {
-	ref class StaffManager: public Manager {
+	public ref class StaffManager: public Manager {
 	public:
 		StaffManager();
 		StaffMemberData addStaff(StaffMemberData);
@@ -14,5 +14,5 @@ namespace Services {
 		void removeStaff(int id);
 		int count();
 		DataTable^ getAllStaff();
-};
+	};
 }

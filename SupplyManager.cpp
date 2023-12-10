@@ -76,8 +76,7 @@ namespace Services {
 
 		DataTable^ result = gcnew DataTable;
 		result->Columns->AddRange(gcnew array<DataColumn^>{
-			gcnew DataColumn("Référence"),
-			gcnew DataColumn("Nom"),
+			gcnew DataColumn("Nom", Object::typeid),
 			gcnew DataColumn("Prix UHT"),
 			gcnew DataColumn("Valeur d'achat"),
 			gcnew DataColumn("Quantité en stock"),
@@ -90,9 +89,12 @@ namespace Services {
 			if (Convert::ToInt32(row->ItemArray[4]) < 0)
 				continue;
 
+			SupplyView_FirstItem^ first = gcnew SupplyView_FirstItem();
+			first->product_name = Convert::ToString(row->ItemArray[1]);
+			first->product_id = Convert::ToInt32(row->ItemArray[0]);
+
 			result->Rows->Add(
-				row->ItemArray[0], 
-				row->ItemArray[1], 
+				first, 
 				row->ItemArray[2], 
 				row->ItemArray[3], 
 				row->ItemArray[4], 
