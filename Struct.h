@@ -5,13 +5,13 @@ using namespace MySql::Data::MySqlClient;
 using namespace MySql::Data::Types;
 
 namespace structure {
-	value struct Column {
+	public value struct Column {
 	public:
 		String^ name;
 		Object^ value;
 	};
 
-	value struct Address {
+	public value struct Address {
 	public:
 		String^ streetNum;
 		String^ streetName;
@@ -20,7 +20,7 @@ namespace structure {
 		String^ ToString() override;
 	};
 
-	value struct StaffMemberData {
+	public value struct StaffMemberData {
 	public:
 		int id;
 		String^ firstName;
@@ -30,7 +30,7 @@ namespace structure {
 		Address address;
 	};
 
-	value struct CustomerData {
+	public value struct CustomerData {
 	public:
 		int id;
 		String^ firstName;
@@ -43,7 +43,7 @@ namespace structure {
 		array<Address>^ deliveryAddresses;
 	};
 
-	value struct ProductData {
+	public value struct ProductData {
 	public:
 		int ref;
 		String^ name;
@@ -57,21 +57,22 @@ namespace structure {
 		String^ ToString() override;
 	};
 
-	value struct OrderItem {
+	public value struct OrderItem {
 	public:
 		ProductData product;
 		int productCount;
 		float discountRatio;
 		float TaxRatio;
 		float UHTPrice;
+		String^ ToString() override;
 	};
 
-	enum class PaymentMean {
+	public enum class PaymentMean {
 		CreditCard,
 		Cash
 	};
 
-	value struct Payment {
+	public value struct Payment {
 	public:
 		PaymentMean mean;
 		DateTime^ receptionDate;
@@ -79,7 +80,7 @@ namespace structure {
 		String^ ToString() override;
 	};
 
-	value struct OrderData {
+	public value struct OrderData {
 	public:
 		int id;
 		String^ ref;
@@ -88,5 +89,50 @@ namespace structure {
 		array<OrderItem>^ items;
 		array<Payment>^ payments;
 		CustomerData customer;
+	};
+	
+	public value struct StaffSelector_Row {
+		String^ lname;
+		String^ fname;
+		int id;
+
+		String^ ToString() override;
+	};
+
+	public value struct CustomerSelector_Row {
+		String^ lname;
+		String^ fname;
+		String^ phone;
+		int id;
+
+		String^ ToString() override;
+	};
+
+	public value struct SupplyView_FirstItem {
+		String^ product_name;
+		int product_id;
+
+		String^ ToString() override;
+	};
+
+	public value struct CustomerView_FirstItem {
+		String^ customer_lname;
+		int customer_id;
+
+		String^ ToString() override;
+	};
+
+	public value struct OrderView_FirstItem {
+		String^ order_customer_str;
+		int order_id;
+
+		String^ ToString() override;
+	};
+
+	public value struct StaffView_FirstItem {
+		String^ staff_lname;
+		int staff_id;
+
+		String^ ToString() override;
 	};
 };

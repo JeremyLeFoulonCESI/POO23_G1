@@ -12,10 +12,14 @@ namespace Services {
             gcnew array<String^>{ "NomVille", "CodePostal" },
             gcnew array<Object^>{ data.address.cityName, data.address.cityCode }
         );
+        if (!found_address->Rows->Count) {
+            data.id = 0;
+            return data;
+        }
         int city_id = Convert::ToInt32(found_address->Rows[0]->ItemArray[0]);
 
         array<Object^>^ address_array = gcnew array<Object^>{
-            data.address.streetNum, data.address.streetName, city_id, "NULL", "NULL"
+            data.address.streetNum, data.address.streetName, city_id, nullptr, nullptr
         };
 
         array<Object^>^ address_created_array = this->dbCreateRow(Components::Table::getAddressTable(), address_array);
@@ -69,7 +73,7 @@ namespace Services {
         int city_id = Convert::ToInt32(city_table->Rows[0]->ItemArray[0]);
 
         array<Object^>^ address_array = gcnew array<Object^>{
-            _new.address.streetNum, _new.address.streetName, city_id, "NULL", "NULL"
+            _new.address.streetNum, _new.address.streetName, city_id, nullptr, nullptr
         };
         array<Object^>^ address_data = this->dbCreateRow(Components::Table::getAddressTable(), address_array);
         int address_id = Convert::ToInt32(address_data[0]);
@@ -108,7 +112,7 @@ namespace Services {
         DataTable^ result = gcnew DataTable();
 
         result->Columns->AddRange(gcnew array<DataColumn^>{
-            gcnew DataColumn("Nom"),
+            gcnew DataColumn("Nom", Object::typeid),
             gcnew DataColumn("Prénom"),
             gcnew DataColumn("Date d'embauche"),
             gcnew DataColumn("Adresse"),
@@ -147,7 +151,17 @@ namespace Services {
             String^ lname = Convert::ToString(staff_row->ItemArray[1]);
             String^ fname = Convert::ToString(staff_row->ItemArray[2]);
 
-            result->Rows->Add(lname, fname, hire_date_str, address_str, superior_str);
+            StaffView_FirstItem^ first = gcnew StaffView_FirstItem();
+            first->staff_lname = lname;
+            first->staff_id = Convert::ToInt32(staff_row->ItemArray[0]);
+
+            result->Rows->Add(
+                first, 
+                fname, 
+                hire_date_str, 
+                address_str, 
+                superior_str
+            );
         }
         this->dbCloseConnection();
         return result;

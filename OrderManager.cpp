@@ -22,11 +22,13 @@ namespace Services {
 		data.id = Convert::ToInt32(result_array[0]);
 
 		for each (OrderItem item in data.items) {
-			DataTable^ found = this->dbSearchRows(
+			/*DataTable^ found = this->dbSearchRows(
 				Components::Table::getProductTable(), 
-				gcnew array<String^>{"Reference_Article"}, 
-				gcnew array<Object^>{data.id}
+				gcnew array<String^>{"Reference"}, 
+				gcnew array<Object^>{item.product.ref}
 			);
+			DataRow^ product_data = found->Rows[0];*/
+			
 
 			array<Object^>^ item_array = gcnew array<Object^> {
 				data.id,
@@ -210,9 +212,9 @@ namespace Services {
 			gcnew array<String^> { "ID_Commande" },
 			gcnew array<Object^> { id }
 		);
-		for each (DataRow ^ payment_row in found_items->Rows) {
+		for each (DataRow ^ payment_row in found_payments->Rows) {
 			int payment_id = Convert::ToInt32(payment_row->ItemArray[0]);
-			this->dbDeleteRow(Components::Table::getPaymentTable(), id);
+			this->dbDeleteRow(Components::Table::getPaymentTable(), payment_id);
 		}
 
 		this->dbDeleteRow(Components::Table::getOrderTable(), id);
@@ -227,7 +229,7 @@ namespace Services {
 	DataTable^ OrderManager::getAllOrders() {
 		DataTable^ result = gcnew DataTable;
 		result->Columns->AddRange(gcnew array<DataColumn^>{
-			gcnew DataColumn("Client (Nom Prénom - Tél.)"),
+			gcnew DataColumn("Client (Nom Prénom - Tél.)", Object::typeid),
 			gcnew DataColumn("Référence"),
 			gcnew DataColumn("Date de livraison"),
 			gcnew DataColumn("Date d'émission"),
@@ -313,7 +315,21 @@ namespace Services {
 
 			String^ customer_str = customer_lname + " " + customer_fname + " - " + customer_phone;
 
-			result->Rows->Add(customer_str, reference, dDate_str, eDate_str, payments_str, items_str, ht_total, tva_total, ttc_total);
+			OrderView_FirstItem^ first = gcnew OrderView_FirstItem();
+			first->order_customer_str = customer_str;
+			first->order_id = order_id;
+
+			result->Rows->Add(
+				first, 
+				reference, 
+				dDate_str, 
+				eDate_str, 
+				payments_str, 
+				items_str, 
+				ht_total, 
+				tva_total, 
+				ttc_total
+			);
 		}
 		this->dbCloseConnection();
 		return result;

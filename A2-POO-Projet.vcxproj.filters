@@ -50,10 +50,10 @@
     <ClInclude Include="OrderManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Adresse.h">
+    <ClInclude Include="AddressSelector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Paiement.h">
+    <ClInclude Include="PaymentSelector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StaffManager.h">
@@ -63,6 +63,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderItemSelector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SqlData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,6 +113,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Struct.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderItemSelector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SqlData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

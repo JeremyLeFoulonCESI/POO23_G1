@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DataAccessor.h"
+#include "SqlData.h"
 
 
 namespace Components {
@@ -8,15 +9,11 @@ namespace Components {
     String^ DataAccessor::insert(String^ table, String^ columns, ... array<Object^>^ values)
     {
         String^ query = "INSERT INTO " + table + " " + columns + " VALUES (";
-        for each (Object ^ obj in values) {
-            if (obj->GetType() == DateTime::typeid) {
-                auto dt = safe_cast<DateTime^>(obj);
-                obj = dt->Year + "-" + Convert::ToString(dt->Month)->PadLeft(2)->Replace(" ", "0") + "-" + Convert::ToString(dt->Day)->PadLeft(2)->Replace(" ", "0");
-            }
-            query += "'" + obj->ToString()->Replace("'", "\\'") + "', ";
+        for each (Object^ obj in values) {
+            query += SqlData::ObjectToSql(obj) + ", ";
         };
 
-        if (values->Length > 0) {
+        if (query->EndsWith(", ")) {
             query = query->Remove(query->Length - 2);
         };
 
@@ -45,7 +42,7 @@ namespace Components {
                 query += "`" + name + "`, ";
             };
 
-            if (keys->Length > 0) {
+            if (query->EndsWith(", ")) {
                 query = query->Remove(query->Length - 2);
             }
             query += " ";
