@@ -640,9 +640,10 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->Controls->Add(this->stockCategoryButton);
 			this->categoriesGroup->Controls->Add(this->staffCategoryButton);
 			this->categoriesGroup->Location = System::Drawing::Point(14, 10);
+			this->categoriesGroup->Margin = System::Windows::Forms::Padding(3, 5, 3, 5);
 			this->categoriesGroup->Name = L"categoriesGroup";
-			this->categoriesGroup->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->categoriesGroup->Size = System::Drawing::Size(1030, 609);
+			this->categoriesGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->categoriesGroup->Size = System::Drawing::Size(1161, 777);
 			this->categoriesGroup->TabIndex = 0;
 			this->categoriesGroup->TabStop = false;
 			this->categoriesGroup->Text = L"Menu principal";
@@ -652,17 +653,17 @@ private: System::Windows::Forms::Label^ label1;
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(307, 20);
+			this->label4->Location = System::Drawing::Point(390, 145);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(361, 75);
 			this->label4->TabIndex = 105;
-			this->label4->Text = L"Bienvenue dans votre centre de controle\r\n    Veuillez selectionner une catégorie "
+			this->label4->Text = L"Bienvenue dans votre centre de controle\r\n    Veuillez selectionner une categorie "
 				L":\r\n\r\n";
 			// 
 			// statsCategoryButton
 			// 
-			this->statsCategoryButton->Location = System::Drawing::Point(363, 410);
-			this->statsCategoryButton->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->statsCategoryButton->Location = System::Drawing::Point(453, 587);
+			this->statsCategoryButton->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->statsCategoryButton->Name = L"statsCategoryButton";
 			this->statsCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->statsCategoryButton->TabIndex = 104;
@@ -672,8 +673,8 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// ordersCategoryButton
 			// 
-			this->ordersCategoryButton->Location = System::Drawing::Point(363, 357);
-			this->ordersCategoryButton->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->ordersCategoryButton->Location = System::Drawing::Point(453, 505);
+			this->ordersCategoryButton->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->ordersCategoryButton->Name = L"ordersCategoryButton";
 			this->ordersCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->ordersCategoryButton->TabIndex = 103;
@@ -683,8 +684,8 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// customersCategoryButton
 			// 
-			this->customersCategoryButton->Location = System::Drawing::Point(363, 305);
-			this->customersCategoryButton->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->customersCategoryButton->Location = System::Drawing::Point(453, 423);
+			this->customersCategoryButton->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customersCategoryButton->Name = L"customersCategoryButton";
 			this->customersCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->customersCategoryButton->TabIndex = 102;
@@ -694,8 +695,8 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// stockCategoryButton
 			// 
-			this->stockCategoryButton->Location = System::Drawing::Point(363, 254);
-			this->stockCategoryButton->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->stockCategoryButton->Location = System::Drawing::Point(453, 345);
+			this->stockCategoryButton->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->stockCategoryButton->Name = L"stockCategoryButton";
 			this->stockCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->stockCategoryButton->TabIndex = 101;
@@ -705,8 +706,8 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// staffCategoryButton
 			// 
-			this->staffCategoryButton->Location = System::Drawing::Point(363, 207);
-			this->staffCategoryButton->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->staffCategoryButton->Location = System::Drawing::Point(453, 271);
+			this->staffCategoryButton->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->staffCategoryButton->Name = L"staffCategoryButton";
 			this->staffCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->staffCategoryButton->TabIndex = 100;
@@ -718,7 +719,6 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->productGroup->Controls->Add(this->productRestockThresholdInput);
 			this->productGroup->Controls->Add(this->productRestockThresholdLabel);
-			this->productGroup->Controls->Add(this->productDiscountGroup);
 			this->productGroup->Controls->Add(this->productTaxesPercent);
 			this->productGroup->Controls->Add(this->productTaxesInput);
 			this->productGroup->Controls->Add(this->productTaxesLabel);
@@ -734,7 +734,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productGroup->Controls->Add(this->productNameLabel);
 			this->productGroup->Controls->Add(this->groupBox19);
 			this->productGroup->Location = System::Drawing::Point(14, 10);
-			this->productGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->productGroup->Margin = System::Windows::Forms::Padding(3, 5, 3, 5);
 			this->productGroup->Name = L"productGroup";
 			this->productGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->productGroup->Size = System::Drawing::Size(585, 536);
@@ -1008,8 +1008,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffGroup->Controls->Add(this->staffLNameLabel);
 			this->staffGroup->Controls->Add(this->staffFNameInput);
 			this->staffGroup->Controls->Add(this->staffLNameInput);
+			this->staffGroup->Controls->Add(this->groupBox16);
 			this->staffGroup->Location = System::Drawing::Point(14, 10);
-			this->staffGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->staffGroup->Margin = System::Windows::Forms::Padding(3, 5, 3, 5);
 			this->staffGroup->Name = L"staffGroup";
 			this->staffGroup->Padding = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->staffGroup->Size = System::Drawing::Size(585, 531);
@@ -1220,8 +1221,8 @@ private: System::Windows::Forms::Label^ label1;
 			this->validateGroup->Controls->Add(this->EditRadioButton);
 			this->validateGroup->Controls->Add(this->addRadioButton);
 			this->validateGroup->Controls->Add(this->validateButton);
-			this->validateGroup->Location = System::Drawing::Point(146, 549);
-			this->validateGroup->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->validateGroup->Location = System::Drawing::Point(160, 691);
+			this->validateGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->validateGroup->Name = L"validateGroup";
 			this->validateGroup->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->validateGroup->Size = System::Drawing::Size(453, 70);
@@ -1267,6 +1268,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->customerGroup->Controls->Add(this->customerFPDayInput);
 			this->customerGroup->Controls->Add(this->customerFPYearInput);
+			this->customerGroup->Controls->Add(this->productDiscountGroup);
 			this->customerGroup->Controls->Add(this->customerFPMonthInput);
 			this->customerGroup->Controls->Add(this->label7);
 			this->customerGroup->Controls->Add(this->label8);
@@ -1291,7 +1293,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->Controls->Add(this->customerLNameLabel);
 			this->customerGroup->Controls->Add(this->customerFNameInput);
 			this->customerGroup->Controls->Add(this->customerLNameInput);
+			this->customerGroup->Controls->Add(this->groupBox7);
 			this->customerGroup->Location = System::Drawing::Point(14, 10);
+			this->customerGroup->Margin = System::Windows::Forms::Padding(3, 5, 3, 5);
 			this->customerGroup->Name = L"customerGroup";
 			this->customerGroup->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->customerGroup->Size = System::Drawing::Size(585, 536);
@@ -1635,7 +1639,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersGroup->Controls->Add(this->ordersEmitLabel);
 			this->ordersGroup->Controls->Add(this->ordersDeliveryLabel);
 			this->ordersGroup->Controls->Add(this->label23);
+			this->ordersGroup->Controls->Add(this->groupBox11);
 			this->ordersGroup->Location = System::Drawing::Point(14, 10);
+			this->ordersGroup->Margin = System::Windows::Forms::Padding(3, 5, 3, 5);
 			this->ordersGroup->Name = L"ordersGroup";
 			this->ordersGroup->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->ordersGroup->Size = System::Drawing::Size(592, 534);
@@ -2266,8 +2272,8 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// backButton
 			// 
-			this->backButton->Location = System::Drawing::Point(20, 561);
-			this->backButton->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->backButton->Location = System::Drawing::Point(17, 699);
+			this->backButton->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->backButton->Name = L"backButton";
 			this->backButton->Size = System::Drawing::Size(118, 49);
 			this->backButton->TabIndex = 8;
@@ -2282,12 +2288,12 @@ private: System::Windows::Forms::Label^ label1;
 			this->Controls->Add(this->categoriesGroup);
 			this->Controls->Add(this->backButton);
 			this->Controls->Add(this->visualizeGroup);
-			this->Controls->Add(this->validateGroup);
-			this->Controls->Add(this->productGroup);
-			this->Controls->Add(this->staffGroup);
-			this->Controls->Add(this->customerGroup);
 			this->Controls->Add(this->ordersGroup);
 			this->Controls->Add(this->statsGroup);
+			this->Controls->Add(this->customerGroup);
+			this->Controls->Add(this->productGroup);
+			this->Controls->Add(this->staffGroup);
+			this->Margin = System::Windows::Forms::Padding(3, 5, 3, 5);
 			this->Name = L"Root";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Root";
