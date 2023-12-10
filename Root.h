@@ -2375,9 +2375,19 @@ private: System::Windows::Forms::Label^ label1;
 		void validateButton_Click(Object^ sender, EventArgs^ e) {
 			if (mode == 2) {
 				ProductData product = ProductData();
+				float dollar_to_euro = 0.93f;  // 10 déc. 2023, 22:23 UTC
 				product.name = this->productNameInput->Text;
+				
 				product.priceNoTax = (float)this->productUHTPriceInput->Value;
+				if (this->productUHTPriceCurrencySelector->SelectedIndex) {
+					product.priceNoTax *= dollar_to_euro;
+				}
+
 				product.purchaseValue = (float)this->productPurchasePriceInput->Value;
+				if (this->productPurchasePriceCurrencySelector->SelectedIndex) {
+					product.purchaseValue *= dollar_to_euro;
+				}
+
 				product.amount = (int)this->productStockInput->Value;
 				product.TVARatio = (float)this->productTaxesInput->Value;  // TODO: change this to convert from % to in range [0, 1]
 				product.discountRatio = (float)this->productBaseDiscountInput->Value;  // TODO: same as above

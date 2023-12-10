@@ -14,5 +14,5 @@ namespace Services {
 		void removeStaff(int id);
 		int count();
 		DataTable^ getAllStaff();
-};
+	};
 }
