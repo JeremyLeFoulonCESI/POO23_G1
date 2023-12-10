@@ -6,7 +6,7 @@
 using namespace structure;
 
 namespace Services {
-	ref class SupplyManager : public Manager
+	public ref class SupplyManager : public Manager
 	{
 	public:
 		SupplyManager();

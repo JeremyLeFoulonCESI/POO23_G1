@@ -4,6 +4,9 @@
 #include "CustomerManager.h"
 #include "OrderManager.h"
 #include "Struct.h"
+#include "AddressSelector.h"
+#include "OrderItemSelector.h"
+#include "PaymentSelector.h"
 
 namespace HMI {
 
@@ -23,9 +26,12 @@ namespace HMI {
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::GroupBox^ groupBox9;
-	private: System::Windows::Forms::Button^ button1;
-	private: System::Windows::Forms::Button^ button2;
-	private: System::Windows::Forms::DataGridView^ dataGridView4;
+	private: System::Windows::Forms::Button^ ordersRemoveItemButton;
+
+	private: System::Windows::Forms::Button^ ordersNewItemButton;
+
+
+
 		   Services::SupplyManager^ supply;
 		   Services::StaffManager^ staff;
 		   Services::CustomerManager^ customer;
@@ -39,6 +45,10 @@ namespace HMI {
 
 
 
+	private: System::Windows::Forms::ListBox^ customerInvoiceDisplay;
+	private: System::Windows::Forms::ListBox^ customerDeliveryDisplay;
+	private: System::Windows::Forms::ListBox^ ordersItemsDisplay;
+	private: System::Windows::Forms::ListBox^ ordersPaymentDisplay;
 
 	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::Label^ label8;
@@ -48,6 +58,12 @@ namespace HMI {
 		   List <Address>^ selectDeliveryAddress;
 		   List <OrderItem>^ selectOrderItem;
 		   List <Payment>^ selectPayments;
+
+
+		   AddressSelector^ addressSelector;
+		   OrderItemSelector^ orderItemSelector;
+		   PaymentSelector^ paymentSelector;
+		   
 
 	public:
 		Root(void)
@@ -60,8 +76,13 @@ namespace HMI {
 			this->staff = gcnew Services::StaffManager();
 			this->customer = gcnew Services::CustomerManager();
 			this->order = gcnew Services::OrderManager();
+			
+			
 			this->productUHTPriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
 			this->productPurchasePriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
+			this->staffAddressCityInput->DropDownStyle = ComboBoxStyle::DropDownList;
+
+
 			this->statsGroup->Visible = false;
 			this->customerGroup->Visible = false;
 			this->ordersGroup->Visible = false;
@@ -85,10 +106,27 @@ namespace HMI {
 			this->ordersCategoryButton->Click += gcnew EventHandler(this, &Root::ordersManagerButton_click);
 			this->statsCategoryButton->Click += gcnew EventHandler(this, &Root::statsManagerButton_click);
 			this->backButton->Click += gcnew EventHandler(this, &Root::backButton_click);
+
+			this->customerNewDeliveryButton->Click += gcnew EventHandler(this, &Root::customerNewDeliveryButton_click);
+			this->CustomerRemoveDeliveryButton->Click += gcnew EventHandler(this, &Root::CustomerRemoveDeliveryButton_click);
+
+			this->CustomerNewInvoiceButton->Click += gcnew EventHandler(this, &Root::customerNewInvoiceButton_click);
+			this->customerRemoveInvoiceButton->Click += gcnew EventHandler(this, &Root::customerRemoveInvoiceButton_click);
+
+			this->ordersNewItemButton->Click += gcnew EventHandler(this, &Root::ordersNewItemButton_click);
+			this->ordersRemoveItemButton->Click += gcnew EventHandler(this, &Root::ordersRemoveItemButton_click);
+			
+			this->ordersNewPaymentButton->Click += gcnew EventHandler(this, &Root::ordersNewPaymentButton_click);
+			this->ordersRemovePaymentButton->Click += gcnew EventHandler(this, &Root::ordersRemovePaymentButton_click);
+
 			this->selectInvoiceAddress = gcnew List<Address>;
 			this->selectDeliveryAddress = gcnew List<Address>;
 			this->selectOrderItem = gcnew List<OrderItem>;
 			this->selectPayments = gcnew List<Payment>;
+
+			this->addressSelector = gcnew AddressSelector(this->staff);
+			this->orderItemSelector = gcnew OrderItemSelector(this->supply);
+			this->paymentSelector = gcnew PaymentSelector();
 		}
 
 		void refreshGrid() {
@@ -184,28 +222,30 @@ private: System::Windows::Forms::TextBox^ customerPhoneNumberInput;
 
 private: System::Windows::Forms::TextBox^ customerLNameInput;
 
-	private: System::Windows::Forms::GroupBox^ groupBox7;
+
 	private: System::Windows::Forms::GroupBox^ ordersGroup;
 private: System::Windows::Forms::ListBox^ ordersClientSelector;
 private: System::Windows::Forms::GroupBox^ ordersPaymentGroup;
-private: System::Windows::Forms::Button^ ordersRemovePayment;
+private: System::Windows::Forms::Button^ ordersRemovePaymentButton;
 
-private: System::Windows::Forms::Button^ ordersNewPayment;
+private: System::Windows::Forms::Button^ ordersNewPaymentButton;
 
-private: System::Windows::Forms::DataGridView^ ordersPaymentDisplay;
+
+
+
 private: System::Windows::Forms::Label^ ordersEmitLabel;
 
 
 private: System::Windows::Forms::Label^ ordersDeliveryLabel;
 
 	private: System::Windows::Forms::Label^ label23;
-	private: System::Windows::Forms::GroupBox^ groupBox11;
+
 private: System::Windows::Forms::GroupBox^ customerDeliveryGroup;
 private: System::Windows::Forms::Button^ CustomerRemoveDeliveryButton;
 
 private: System::Windows::Forms::Button^ customerNewDeliveryButton;
 
-private: System::Windows::Forms::DataGridView^ customerDeliveryDisplay;
+
 
 
 private: System::Windows::Forms::GroupBox^ customerInvoiceGroup;
@@ -214,7 +254,7 @@ private: System::Windows::Forms::Button^ customerRemoveInvoiceButton;
 
 private: System::Windows::Forms::Button^ CustomerNewInvoiceButton;
 
-private: System::Windows::Forms::DataGridView^ customerInvoiceDisplay;
+
 
 private: System::Windows::Forms::GroupBox^ staffGroup;
 private: System::Windows::Forms::Label^ staffSuperiorLabel;
@@ -452,16 +492,16 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthDayInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->customerBirthYearInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->customerBirthMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
-			this->customerBirthSlash2 = (gcnew System::Windows::Forms::Label());
-			this->customerBirthSlash1 = (gcnew System::Windows::Forms::Label());
 			this->customerInvoiceGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->customerInvoiceDisplay = (gcnew System::Windows::Forms::ListBox());
 			this->customerRemoveInvoiceButton = (gcnew System::Windows::Forms::Button());
 			this->CustomerNewInvoiceButton = (gcnew System::Windows::Forms::Button());
-			this->customerInvoiceDisplay = (gcnew System::Windows::Forms::DataGridView());
+			this->customerBirthSlash2 = (gcnew System::Windows::Forms::Label());
+			this->customerBirthSlash1 = (gcnew System::Windows::Forms::Label());
 			this->customerDeliveryGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->customerDeliveryDisplay = (gcnew System::Windows::Forms::ListBox());
 			this->CustomerRemoveDeliveryButton = (gcnew System::Windows::Forms::Button());
 			this->customerNewDeliveryButton = (gcnew System::Windows::Forms::Button());
-			this->customerDeliveryDisplay = (gcnew System::Windows::Forms::DataGridView());
 			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->customerPhoneNumberInput = (gcnew System::Windows::Forms::TextBox());
 			this->customerMailDotLabel = (gcnew System::Windows::Forms::Label());
@@ -475,12 +515,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerLNameLabel = (gcnew System::Windows::Forms::Label());
 			this->customerFNameInput = (gcnew System::Windows::Forms::TextBox());
 			this->customerLNameInput = (gcnew System::Windows::Forms::TextBox());
-			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
 			this->ordersGroup = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox9 = (gcnew System::Windows::Forms::GroupBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
-			this->dataGridView4 = (gcnew System::Windows::Forms::DataGridView());
+			this->ordersItemsDisplay = (gcnew System::Windows::Forms::ListBox());
+			this->ordersRemoveItemButton = (gcnew System::Windows::Forms::Button());
+			this->ordersNewItemButton = (gcnew System::Windows::Forms::Button());
 			this->ordersEmitYearInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->ordersEmitMonthInput = (gcnew System::Windows::Forms::NumericUpDown());
 			this->ordersEmitDayInput = (gcnew System::Windows::Forms::NumericUpDown());
@@ -493,13 +532,12 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersDeliverySlash1 = (gcnew System::Windows::Forms::Label());
 			this->ordersClientSelector = (gcnew System::Windows::Forms::ListBox());
 			this->ordersPaymentGroup = (gcnew System::Windows::Forms::GroupBox());
-			this->ordersRemovePayment = (gcnew System::Windows::Forms::Button());
-			this->ordersNewPayment = (gcnew System::Windows::Forms::Button());
-			this->ordersPaymentDisplay = (gcnew System::Windows::Forms::DataGridView());
+			this->ordersPaymentDisplay = (gcnew System::Windows::Forms::ListBox());
+			this->ordersRemovePaymentButton = (gcnew System::Windows::Forms::Button());
+			this->ordersNewPaymentButton = (gcnew System::Windows::Forms::Button());
 			this->ordersEmitLabel = (gcnew System::Windows::Forms::Label());
 			this->ordersDeliveryLabel = (gcnew System::Windows::Forms::Label());
 			this->label23 = (gcnew System::Windows::Forms::Label());
-			this->groupBox11 = (gcnew System::Windows::Forms::GroupBox());
 			this->statsAverageBasketButton = (gcnew System::Windows::Forms::Button());
 			this->statsTurnoverButton = (gcnew System::Windows::Forms::Button());
 			this->statsMonthLabel = (gcnew System::Windows::Forms::Label());
@@ -566,12 +604,9 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthYearInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthMonthInput))->BeginInit();
 			this->customerInvoiceGroup->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerInvoiceDisplay))->BeginInit();
 			this->customerDeliveryGroup->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerDeliveryDisplay))->BeginInit();
 			this->ordersGroup->SuspendLayout();
 			this->groupBox9->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView4))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitYearInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitMonthInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitDayInput))->BeginInit();
@@ -579,7 +614,6 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersDeliveryMonthInput))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersDeliveryDayInput))->BeginInit();
 			this->ordersPaymentGroup->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersPaymentDisplay))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsMonthChoiceTurnover))->BeginInit();
 			this->statsGroup->SuspendLayout();
 			this->groupBox6->SuspendLayout();
@@ -606,10 +640,10 @@ private: System::Windows::Forms::Label^ label1;
 			this->categoriesGroup->Controls->Add(this->customersCategoryButton);
 			this->categoriesGroup->Controls->Add(this->stockCategoryButton);
 			this->categoriesGroup->Controls->Add(this->staffCategoryButton);
-			this->categoriesGroup->Location = System::Drawing::Point(1125, 19);
+			this->categoriesGroup->Location = System::Drawing::Point(14, 10);
 			this->categoriesGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->categoriesGroup->Name = L"categoriesGroup";
-			this->categoriesGroup->Size = System::Drawing::Size(920, 480);
+			this->categoriesGroup->Size = System::Drawing::Size(1030, 609);
 			this->categoriesGroup->TabIndex = 0;
 			this->categoriesGroup->TabStop = false;
 			this->categoriesGroup->Text = L"Menu principal";
@@ -619,17 +653,16 @@ private: System::Windows::Forms::Label^ label1;
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(263, 40);
+			this->label4->Location = System::Drawing::Point(340, 46);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(361, 75);
 			this->label4->TabIndex = 105;
 			this->label4->Text = L"Bienvenue dans votre centre de controle\r\n    Veuillez selectionner une catégorie "
 				L":\r\n\r\n";
-			this->label4->Click += gcnew System::EventHandler(this, &Root::label4_Click_1);
 			// 
 			// statsCategoryButton
 			// 
-			this->statsCategoryButton->Location = System::Drawing::Point(331, 376);
+			this->statsCategoryButton->Location = System::Drawing::Point(408, 382);
 			this->statsCategoryButton->Name = L"statsCategoryButton";
 			this->statsCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->statsCategoryButton->TabIndex = 104;
@@ -639,7 +672,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// ordersCategoryButton
 			// 
-			this->ordersCategoryButton->Location = System::Drawing::Point(331, 310);
+			this->ordersCategoryButton->Location = System::Drawing::Point(408, 316);
 			this->ordersCategoryButton->Name = L"ordersCategoryButton";
 			this->ordersCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->ordersCategoryButton->TabIndex = 103;
@@ -649,7 +682,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// customersCategoryButton
 			// 
-			this->customersCategoryButton->Location = System::Drawing::Point(331, 245);
+			this->customersCategoryButton->Location = System::Drawing::Point(408, 251);
 			this->customersCategoryButton->Name = L"customersCategoryButton";
 			this->customersCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->customersCategoryButton->TabIndex = 102;
@@ -659,7 +692,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// stockCategoryButton
 			// 
-			this->stockCategoryButton->Location = System::Drawing::Point(331, 182);
+			this->stockCategoryButton->Location = System::Drawing::Point(408, 188);
 			this->stockCategoryButton->Name = L"stockCategoryButton";
 			this->stockCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->stockCategoryButton->TabIndex = 101;
@@ -669,7 +702,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// staffCategoryButton
 			// 
-			this->staffCategoryButton->Location = System::Drawing::Point(331, 123);
+			this->staffCategoryButton->Location = System::Drawing::Point(408, 129);
 			this->staffCategoryButton->Name = L"staffCategoryButton";
 			this->staffCategoryButton->Size = System::Drawing::Size(250, 35);
 			this->staffCategoryButton->TabIndex = 100;
@@ -1079,6 +1112,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressCityInput->Name = L"staffAddressCityInput";
 			this->staffAddressCityInput->Size = System::Drawing::Size(115, 24);
 			this->staffAddressCityInput->TabIndex = 8;
+			this->staffAddressCityInput->DropDown += gcnew System::EventHandler(this, &Root::staffAddressCityInput_DropDown);
 			// 
 			// staffAddressCityCodeInput
 			// 
@@ -1087,6 +1121,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffAddressCityCodeInput->Name = L"staffAddressCityCodeInput";
 			this->staffAddressCityCodeInput->Size = System::Drawing::Size(106, 22);
 			this->staffAddressCityCodeInput->TabIndex = 7;
+			this->staffAddressCityCodeInput->TextChanged += gcnew System::EventHandler(this, &Root::staffAddressCityCodeInput_TextChanged);
 			// 
 			// staffAddressCityCodeLabel
 			// 
@@ -1124,7 +1159,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// staffAddressNumberInput
 			// 
-			this->staffAddressNumberInput->Location = System::Drawing::Point(121, 25);
+			this->staffAddressNumberInput->Location = System::Drawing::Point(140, 25);
 			this->staffAddressNumberInput->Name = L"staffAddressNumberInput";
 			this->staffAddressNumberInput->Size = System::Drawing::Size(62, 22);
 			this->staffAddressNumberInput->TabIndex = 1;
@@ -1196,9 +1231,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->validateGroup->Controls->Add(this->EditRadioButton);
 			this->validateGroup->Controls->Add(this->addRadioButton);
 			this->validateGroup->Controls->Add(this->validateButton);
-			this->validateGroup->Location = System::Drawing::Point(136, 439);
+			this->validateGroup->Location = System::Drawing::Point(148, 548);
 			this->validateGroup->Name = L"validateGroup";
-			this->validateGroup->Size = System::Drawing::Size(396, 56);
+			this->validateGroup->Size = System::Drawing::Size(451, 71);
 			this->validateGroup->TabIndex = 3;
 			this->validateGroup->TabStop = false;
 			this->validateGroup->Text = L"Validation";
@@ -1206,7 +1241,7 @@ private: System::Windows::Forms::Label^ label1;
 			// EditRadioButton
 			// 
 			this->EditRadioButton->AutoSize = true;
-			this->EditRadioButton->Location = System::Drawing::Point(283, 21);
+			this->EditRadioButton->Location = System::Drawing::Point(300, 29);
 			this->EditRadioButton->Name = L"EditRadioButton";
 			this->EditRadioButton->Size = System::Drawing::Size(76, 20);
 			this->EditRadioButton->TabIndex = 8;
@@ -1218,7 +1253,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->addRadioButton->AutoCheck = false;
 			this->addRadioButton->AutoSize = true;
 			this->addRadioButton->Checked = true;
-			this->addRadioButton->Location = System::Drawing::Point(152, 21);
+			this->addRadioButton->Location = System::Drawing::Point(169, 29);
 			this->addRadioButton->Name = L"addRadioButton";
 			this->addRadioButton->Size = System::Drawing::Size(70, 20);
 			this->addRadioButton->TabIndex = 7;
@@ -1227,7 +1262,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// validateButton
 			// 
-			this->validateButton->Location = System::Drawing::Point(39, 21);
+			this->validateButton->Location = System::Drawing::Point(56, 29);
 			this->validateButton->Name = L"validateButton";
 			this->validateButton->Size = System::Drawing::Size(75, 23);
 			this->validateButton->TabIndex = 6;
@@ -1245,9 +1280,9 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->Controls->Add(this->customerBirthDayInput);
 			this->customerGroup->Controls->Add(this->customerBirthYearInput);
 			this->customerGroup->Controls->Add(this->customerBirthMonthInput);
+			this->customerGroup->Controls->Add(this->customerInvoiceGroup);
 			this->customerGroup->Controls->Add(this->customerBirthSlash2);
 			this->customerGroup->Controls->Add(this->customerBirthSlash1);
-			this->customerGroup->Controls->Add(this->customerInvoiceGroup);
 			this->customerGroup->Controls->Add(this->customerDeliveryGroup);
 			this->customerGroup->Controls->Add(this->label10);
 			this->customerGroup->Controls->Add(this->customerPhoneNumberInput);
@@ -1262,15 +1297,13 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->Controls->Add(this->customerLNameLabel);
 			this->customerGroup->Controls->Add(this->customerFNameInput);
 			this->customerGroup->Controls->Add(this->customerLNameInput);
-			this->customerGroup->Controls->Add(this->groupBox7);
 			this->customerGroup->Location = System::Drawing::Point(14, 10);
 			this->customerGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->customerGroup->Name = L"customerGroup";
-			this->customerGroup->Size = System::Drawing::Size(520, 425);
+			this->customerGroup->Size = System::Drawing::Size(585, 536);
 			this->customerGroup->TabIndex = 4;
 			this->customerGroup->TabStop = false;
 			this->customerGroup->Text = L"Edition des données client";
-			this->customerGroup->Enter += gcnew System::EventHandler(this, &Root::customerGroup_Enter);
 			// 
 			// customerFPDayInput
 			// 
@@ -1328,7 +1361,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerFirstPurchaseDate->Size = System::Drawing::Size(100, 16);
 			this->customerFirstPurchaseDate->TabIndex = 43;
 			this->customerFirstPurchaseDate->Text = L"Date 1er achat :";
-			this->customerFirstPurchaseDate->Click += gcnew System::EventHandler(this, &Root::label6_Click);
 			// 
 			// customerBirthDayInput
 			// 
@@ -1363,6 +1395,45 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthMonthInput->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->customerBirthMonthInput->ValueChanged += gcnew System::EventHandler(this, &Root::customerBirthMonthInput_ValueChanged);
 			// 
+			// customerInvoiceGroup
+			// 
+			this->customerInvoiceGroup->Controls->Add(this->customerInvoiceDisplay);
+			this->customerInvoiceGroup->Controls->Add(this->customerRemoveInvoiceButton);
+			this->customerInvoiceGroup->Controls->Add(this->CustomerNewInvoiceButton);
+			this->customerInvoiceGroup->Location = System::Drawing::Point(114, 247);
+			this->customerInvoiceGroup->Name = L"customerInvoiceGroup";
+			this->customerInvoiceGroup->Size = System::Drawing::Size(364, 115);
+			this->customerInvoiceGroup->TabIndex = 25;
+			this->customerInvoiceGroup->TabStop = false;
+			this->customerInvoiceGroup->Text = L"Adresses de facturation";
+			// 
+			// customerInvoiceDisplay
+			// 
+			this->customerInvoiceDisplay->FormattingEnabled = true;
+			this->customerInvoiceDisplay->ItemHeight = 16;
+			this->customerInvoiceDisplay->Location = System::Drawing::Point(6, 16);
+			this->customerInvoiceDisplay->Name = L"customerInvoiceDisplay";
+			this->customerInvoiceDisplay->Size = System::Drawing::Size(354, 68);
+			this->customerInvoiceDisplay->TabIndex = 3;
+			// 
+			// customerRemoveInvoiceButton
+			// 
+			this->customerRemoveInvoiceButton->Location = System::Drawing::Point(190, 87);
+			this->customerRemoveInvoiceButton->Name = L"customerRemoveInvoiceButton";
+			this->customerRemoveInvoiceButton->Size = System::Drawing::Size(168, 23);
+			this->customerRemoveInvoiceButton->TabIndex = 2;
+			this->customerRemoveInvoiceButton->Text = L"Retirer";
+			this->customerRemoveInvoiceButton->UseVisualStyleBackColor = true;
+			// 
+			// CustomerNewInvoiceButton
+			// 
+			this->CustomerNewInvoiceButton->Location = System::Drawing::Point(6, 87);
+			this->CustomerNewInvoiceButton->Name = L"CustomerNewInvoiceButton";
+			this->CustomerNewInvoiceButton->Size = System::Drawing::Size(180, 23);
+			this->CustomerNewInvoiceButton->TabIndex = 1;
+			this->CustomerNewInvoiceButton->Text = L"Nouveau";
+			this->CustomerNewInvoiceButton->UseVisualStyleBackColor = true;
+			// 
 			// customerBirthSlash2
 			// 
 			this->customerBirthSlash2->AutoSize = true;
@@ -1371,7 +1442,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthSlash2->Size = System::Drawing::Size(11, 16);
 			this->customerBirthSlash2->TabIndex = 35;
 			this->customerBirthSlash2->Text = L"/";
-			this->customerBirthSlash2->Click += gcnew System::EventHandler(this, &Root::customerBirthSlash2_Click);
 			// 
 			// customerBirthSlash1
 			// 
@@ -1381,66 +1451,33 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerBirthSlash1->Size = System::Drawing::Size(11, 16);
 			this->customerBirthSlash1->TabIndex = 34;
 			this->customerBirthSlash1->Text = L"/";
-			this->customerBirthSlash1->Click += gcnew System::EventHandler(this, &Root::customerBirthSlash1_Click);
-			// 
-			// customerInvoiceGroup
-			// 
-			this->customerInvoiceGroup->Controls->Add(this->customerRemoveInvoiceButton);
-			this->customerInvoiceGroup->Controls->Add(this->CustomerNewInvoiceButton);
-			this->customerInvoiceGroup->Controls->Add(this->customerInvoiceDisplay);
-			this->customerInvoiceGroup->Location = System::Drawing::Point(6, 245);
-			this->customerInvoiceGroup->Name = L"customerInvoiceGroup";
-			this->customerInvoiceGroup->Size = System::Drawing::Size(249, 115);
-			this->customerInvoiceGroup->TabIndex = 25;
-			this->customerInvoiceGroup->TabStop = false;
-			this->customerInvoiceGroup->Text = L"Adresses de facturation";
-			// 
-			// customerRemoveInvoiceButton
-			// 
-			this->customerRemoveInvoiceButton->Location = System::Drawing::Point(128, 87);
-			this->customerRemoveInvoiceButton->Name = L"customerRemoveInvoiceButton";
-			this->customerRemoveInvoiceButton->Size = System::Drawing::Size(115, 23);
-			this->customerRemoveInvoiceButton->TabIndex = 2;
-			this->customerRemoveInvoiceButton->Text = L"Retirer";
-			this->customerRemoveInvoiceButton->UseVisualStyleBackColor = true;
-			// 
-			// CustomerNewInvoiceButton
-			// 
-			this->CustomerNewInvoiceButton->Location = System::Drawing::Point(6, 87);
-			this->CustomerNewInvoiceButton->Name = L"CustomerNewInvoiceButton";
-			this->CustomerNewInvoiceButton->Size = System::Drawing::Size(123, 23);
-			this->CustomerNewInvoiceButton->TabIndex = 1;
-			this->CustomerNewInvoiceButton->Text = L"Nouveau";
-			this->CustomerNewInvoiceButton->UseVisualStyleBackColor = true;
-			// 
-			// customerInvoiceDisplay
-			// 
-			this->customerInvoiceDisplay->BackgroundColor = System::Drawing::SystemColors::Control;
-			this->customerInvoiceDisplay->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->customerInvoiceDisplay->Location = System::Drawing::Point(6, 21);
-			this->customerInvoiceDisplay->Name = L"customerInvoiceDisplay";
-			this->customerInvoiceDisplay->RowHeadersWidth = 51;
-			this->customerInvoiceDisplay->RowTemplate->Height = 24;
-			this->customerInvoiceDisplay->Size = System::Drawing::Size(237, 66);
-			this->customerInvoiceDisplay->TabIndex = 0;
 			// 
 			// customerDeliveryGroup
 			// 
+			this->customerDeliveryGroup->Controls->Add(this->customerDeliveryDisplay);
 			this->customerDeliveryGroup->Controls->Add(this->CustomerRemoveDeliveryButton);
 			this->customerDeliveryGroup->Controls->Add(this->customerNewDeliveryButton);
-			this->customerDeliveryGroup->Controls->Add(this->customerDeliveryDisplay);
-			this->customerDeliveryGroup->Location = System::Drawing::Point(260, 245);
+			this->customerDeliveryGroup->Location = System::Drawing::Point(113, 383);
 			this->customerDeliveryGroup->Name = L"customerDeliveryGroup";
-			this->customerDeliveryGroup->Size = System::Drawing::Size(254, 115);
+			this->customerDeliveryGroup->Size = System::Drawing::Size(365, 115);
 			this->customerDeliveryGroup->TabIndex = 24;
 			this->customerDeliveryGroup->TabStop = false;
 			this->customerDeliveryGroup->Text = L"Adresses de livraison";
 			// 
+			// customerDeliveryDisplay
+			// 
+			this->customerDeliveryDisplay->FormattingEnabled = true;
+			this->customerDeliveryDisplay->ItemHeight = 16;
+			this->customerDeliveryDisplay->Location = System::Drawing::Point(7, 17);
+			this->customerDeliveryDisplay->Name = L"customerDeliveryDisplay";
+			this->customerDeliveryDisplay->Size = System::Drawing::Size(354, 68);
+			this->customerDeliveryDisplay->TabIndex = 3;
+			// 
 			// CustomerRemoveDeliveryButton
 			// 
-			this->CustomerRemoveDeliveryButton->Location = System::Drawing::Point(126, 87);
+			this->CustomerRemoveDeliveryButton->Location = System::Drawing::Point(190, 87);
 			this->CustomerRemoveDeliveryButton->Name = L"CustomerRemoveDeliveryButton";
-			this->CustomerRemoveDeliveryButton->Size = System::Drawing::Size(122, 23);
+			this->CustomerRemoveDeliveryButton->Size = System::Drawing::Size(170, 23);
 			this->CustomerRemoveDeliveryButton->TabIndex = 2;
 			this->CustomerRemoveDeliveryButton->Text = L"Retirer";
 			this->CustomerRemoveDeliveryButton->UseVisualStyleBackColor = true;
@@ -1449,21 +1486,10 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->customerNewDeliveryButton->Location = System::Drawing::Point(6, 87);
 			this->customerNewDeliveryButton->Name = L"customerNewDeliveryButton";
-			this->customerNewDeliveryButton->Size = System::Drawing::Size(121, 23);
+			this->customerNewDeliveryButton->Size = System::Drawing::Size(180, 23);
 			this->customerNewDeliveryButton->TabIndex = 1;
 			this->customerNewDeliveryButton->Text = L"Nouveau";
 			this->customerNewDeliveryButton->UseVisualStyleBackColor = true;
-			// 
-			// customerDeliveryDisplay
-			// 
-			this->customerDeliveryDisplay->BackgroundColor = System::Drawing::SystemColors::Control;
-			this->customerDeliveryDisplay->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->customerDeliveryDisplay->Location = System::Drawing::Point(6, 21);
-			this->customerDeliveryDisplay->Name = L"customerDeliveryDisplay";
-			this->customerDeliveryDisplay->RowHeadersWidth = 51;
-			this->customerDeliveryDisplay->RowTemplate->Height = 24;
-			this->customerDeliveryDisplay->Size = System::Drawing::Size(242, 66);
-			this->customerDeliveryDisplay->TabIndex = 0;
 			// 
 			// label10
 			// 
@@ -1589,14 +1615,6 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerLNameInput->TabIndex = 0;
 			this->customerLNameInput->TabStop = false;
 			// 
-			// groupBox7
-			// 
-			this->groupBox7->Location = System::Drawing::Point(0, 431);
-			this->groupBox7->Name = L"groupBox7";
-			this->groupBox7->Size = System::Drawing::Size(390, 49);
-			this->groupBox7->TabIndex = 3;
-			this->groupBox7->TabStop = false;
-			// 
 			// ordersGroup
 			// 
 			this->ordersGroup->Controls->Add(this->groupBox9);
@@ -1615,59 +1633,56 @@ private: System::Windows::Forms::Label^ label1;
 			this->ordersGroup->Controls->Add(this->ordersEmitLabel);
 			this->ordersGroup->Controls->Add(this->ordersDeliveryLabel);
 			this->ordersGroup->Controls->Add(this->label23);
-			this->ordersGroup->Controls->Add(this->groupBox11);
-			this->ordersGroup->Location = System::Drawing::Point(1545, 649);
+			this->ordersGroup->Location = System::Drawing::Point(14, 10);
 			this->ordersGroup->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->ordersGroup->Name = L"ordersGroup";
-			this->ordersGroup->Size = System::Drawing::Size(514, 425);
+			this->ordersGroup->Size = System::Drawing::Size(585, 536);
 			this->ordersGroup->TabIndex = 5;
 			this->ordersGroup->TabStop = false;
 			this->ordersGroup->Text = L"Edition de commandes";
 			// 
 			// groupBox9
 			// 
-			this->groupBox9->Controls->Add(this->button1);
-			this->groupBox9->Controls->Add(this->button2);
-			this->groupBox9->Controls->Add(this->dataGridView4);
-			this->groupBox9->Location = System::Drawing::Point(261, 133);
+			this->groupBox9->Controls->Add(this->ordersItemsDisplay);
+			this->groupBox9->Controls->Add(this->ordersRemoveItemButton);
+			this->groupBox9->Controls->Add(this->ordersNewItemButton);
+			this->groupBox9->Location = System::Drawing::Point(299, 177);
 			this->groupBox9->Name = L"groupBox9";
 			this->groupBox9->Size = System::Drawing::Size(211, 174);
 			this->groupBox9->TabIndex = 24;
 			this->groupBox9->TabStop = false;
 			this->groupBox9->Text = L"Articles";
 			// 
-			// button1
+			// ordersItemsDisplay
 			// 
-			this->button1->Location = System::Drawing::Point(104, 143);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(98, 23);
-			this->button1->TabIndex = 2;
-			this->button1->Text = L"Retirer";
-			this->button1->UseVisualStyleBackColor = true;
+			this->ordersItemsDisplay->FormattingEnabled = true;
+			this->ordersItemsDisplay->ItemHeight = 16;
+			this->ordersItemsDisplay->Location = System::Drawing::Point(6, 21);
+			this->ordersItemsDisplay->Name = L"ordersItemsDisplay";
+			this->ordersItemsDisplay->Size = System::Drawing::Size(199, 116);
+			this->ordersItemsDisplay->TabIndex = 3;
 			// 
-			// button2
+			// ordersRemoveItemButton
 			// 
-			this->button2->Location = System::Drawing::Point(6, 143);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(92, 23);
-			this->button2->TabIndex = 1;
-			this->button2->Text = L"Nouveau";
-			this->button2->UseVisualStyleBackColor = true;
+			this->ordersRemoveItemButton->Location = System::Drawing::Point(104, 143);
+			this->ordersRemoveItemButton->Name = L"ordersRemoveItemButton";
+			this->ordersRemoveItemButton->Size = System::Drawing::Size(98, 23);
+			this->ordersRemoveItemButton->TabIndex = 2;
+			this->ordersRemoveItemButton->Text = L"Retirer";
+			this->ordersRemoveItemButton->UseVisualStyleBackColor = true;
 			// 
-			// dataGridView4
+			// ordersNewItemButton
 			// 
-			this->dataGridView4->BackgroundColor = System::Drawing::SystemColors::Control;
-			this->dataGridView4->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView4->Location = System::Drawing::Point(6, 21);
-			this->dataGridView4->Name = L"dataGridView4";
-			this->dataGridView4->RowHeadersWidth = 51;
-			this->dataGridView4->RowTemplate->Height = 24;
-			this->dataGridView4->Size = System::Drawing::Size(196, 120);
-			this->dataGridView4->TabIndex = 0;
+			this->ordersNewItemButton->Location = System::Drawing::Point(6, 143);
+			this->ordersNewItemButton->Name = L"ordersNewItemButton";
+			this->ordersNewItemButton->Size = System::Drawing::Size(92, 23);
+			this->ordersNewItemButton->TabIndex = 1;
+			this->ordersNewItemButton->Text = L"Nouveau";
+			this->ordersNewItemButton->UseVisualStyleBackColor = true;
 			// 
 			// ordersEmitYearInput
 			// 
-			this->ordersEmitYearInput->Location = System::Drawing::Point(402, 368);
+			this->ordersEmitYearInput->Location = System::Drawing::Point(426, 445);
 			this->ordersEmitYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
 			this->ordersEmitYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
 			this->ordersEmitYearInput->Name = L"ordersEmitYearInput";
@@ -1677,7 +1692,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// ordersEmitMonthInput
 			// 
-			this->ordersEmitMonthInput->Location = System::Drawing::Point(329, 368);
+			this->ordersEmitMonthInput->Location = System::Drawing::Point(353, 445);
 			this->ordersEmitMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
 			this->ordersEmitMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->ordersEmitMonthInput->Name = L"ordersEmitMonthInput";
@@ -1687,7 +1702,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// ordersEmitDayInput
 			// 
-			this->ordersEmitDayInput->Location = System::Drawing::Point(256, 368);
+			this->ordersEmitDayInput->Location = System::Drawing::Point(280, 445);
 			this->ordersEmitDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
 			this->ordersEmitDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->ordersEmitDayInput->Name = L"ordersEmitDayInput";
@@ -1698,7 +1713,7 @@ private: System::Windows::Forms::Label^ label1;
 			// ordersEmitSlash2
 			// 
 			this->ordersEmitSlash2->AutoSize = true;
-			this->ordersEmitSlash2->Location = System::Drawing::Point(385, 371);
+			this->ordersEmitSlash2->Location = System::Drawing::Point(409, 448);
 			this->ordersEmitSlash2->Name = L"ordersEmitSlash2";
 			this->ordersEmitSlash2->Size = System::Drawing::Size(11, 16);
 			this->ordersEmitSlash2->TabIndex = 45;
@@ -1707,7 +1722,7 @@ private: System::Windows::Forms::Label^ label1;
 			// ordersEmitSlash1
 			// 
 			this->ordersEmitSlash1->AutoSize = true;
-			this->ordersEmitSlash1->Location = System::Drawing::Point(312, 371);
+			this->ordersEmitSlash1->Location = System::Drawing::Point(336, 448);
 			this->ordersEmitSlash1->Name = L"ordersEmitSlash1";
 			this->ordersEmitSlash1->Size = System::Drawing::Size(11, 16);
 			this->ordersEmitSlash1->TabIndex = 44;
@@ -1715,7 +1730,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// ordersDeliveryYearInput
 			// 
-			this->ordersDeliveryYearInput->Location = System::Drawing::Point(402, 326);
+			this->ordersDeliveryYearInput->Location = System::Drawing::Point(426, 403);
 			this->ordersDeliveryYearInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2100, 0, 0, 0 });
 			this->ordersDeliveryYearInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1900, 0, 0, 0 });
 			this->ordersDeliveryYearInput->Name = L"ordersDeliveryYearInput";
@@ -1725,7 +1740,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// ordersDeliveryMonthInput
 			// 
-			this->ordersDeliveryMonthInput->Location = System::Drawing::Point(329, 326);
+			this->ordersDeliveryMonthInput->Location = System::Drawing::Point(353, 403);
 			this->ordersDeliveryMonthInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
 			this->ordersDeliveryMonthInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->ordersDeliveryMonthInput->Name = L"ordersDeliveryMonthInput";
@@ -1735,7 +1750,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// ordersDeliveryDayInput
 			// 
-			this->ordersDeliveryDayInput->Location = System::Drawing::Point(257, 326);
+			this->ordersDeliveryDayInput->Location = System::Drawing::Point(281, 403);
 			this->ordersDeliveryDayInput->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 31, 0, 0, 0 });
 			this->ordersDeliveryDayInput->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->ordersDeliveryDayInput->Name = L"ordersDeliveryDayInput";
@@ -1746,7 +1761,7 @@ private: System::Windows::Forms::Label^ label1;
 			// ordersDdeliverySlash2
 			// 
 			this->ordersDdeliverySlash2->AutoSize = true;
-			this->ordersDdeliverySlash2->Location = System::Drawing::Point(385, 327);
+			this->ordersDdeliverySlash2->Location = System::Drawing::Point(409, 404);
 			this->ordersDdeliverySlash2->Name = L"ordersDdeliverySlash2";
 			this->ordersDdeliverySlash2->Size = System::Drawing::Size(11, 16);
 			this->ordersDdeliverySlash2->TabIndex = 40;
@@ -1755,7 +1770,7 @@ private: System::Windows::Forms::Label^ label1;
 			// ordersDeliverySlash1
 			// 
 			this->ordersDeliverySlash1->AutoSize = true;
-			this->ordersDeliverySlash1->Location = System::Drawing::Point(312, 329);
+			this->ordersDeliverySlash1->Location = System::Drawing::Point(336, 406);
 			this->ordersDeliverySlash1->Name = L"ordersDeliverySlash1";
 			this->ordersDeliverySlash1->Size = System::Drawing::Size(11, 16);
 			this->ordersDeliverySlash1->TabIndex = 39;
@@ -1765,56 +1780,54 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			this->ordersClientSelector->FormattingEnabled = true;
 			this->ordersClientSelector->ItemHeight = 16;
-			this->ordersClientSelector->Location = System::Drawing::Point(36, 40);
+			this->ordersClientSelector->Location = System::Drawing::Point(73, 41);
 			this->ordersClientSelector->Name = L"ordersClientSelector";
 			this->ordersClientSelector->Size = System::Drawing::Size(437, 84);
 			this->ordersClientSelector->TabIndex = 24;
 			// 
 			// ordersPaymentGroup
 			// 
-			this->ordersPaymentGroup->Controls->Add(this->ordersRemovePayment);
-			this->ordersPaymentGroup->Controls->Add(this->ordersNewPayment);
 			this->ordersPaymentGroup->Controls->Add(this->ordersPaymentDisplay);
-			this->ordersPaymentGroup->Location = System::Drawing::Point(36, 133);
+			this->ordersPaymentGroup->Controls->Add(this->ordersRemovePaymentButton);
+			this->ordersPaymentGroup->Controls->Add(this->ordersNewPaymentButton);
+			this->ordersPaymentGroup->Location = System::Drawing::Point(74, 177);
 			this->ordersPaymentGroup->Name = L"ordersPaymentGroup";
 			this->ordersPaymentGroup->Size = System::Drawing::Size(211, 174);
 			this->ordersPaymentGroup->TabIndex = 23;
 			this->ordersPaymentGroup->TabStop = false;
 			this->ordersPaymentGroup->Text = L"Paiements";
 			// 
-			// ordersRemovePayment
-			// 
-			this->ordersRemovePayment->Location = System::Drawing::Point(104, 143);
-			this->ordersRemovePayment->Name = L"ordersRemovePayment";
-			this->ordersRemovePayment->Size = System::Drawing::Size(98, 23);
-			this->ordersRemovePayment->TabIndex = 2;
-			this->ordersRemovePayment->Text = L"Retirer";
-			this->ordersRemovePayment->UseVisualStyleBackColor = true;
-			// 
-			// ordersNewPayment
-			// 
-			this->ordersNewPayment->Location = System::Drawing::Point(6, 143);
-			this->ordersNewPayment->Name = L"ordersNewPayment";
-			this->ordersNewPayment->Size = System::Drawing::Size(92, 23);
-			this->ordersNewPayment->TabIndex = 1;
-			this->ordersNewPayment->Text = L"Nouveau";
-			this->ordersNewPayment->UseVisualStyleBackColor = true;
-			// 
 			// ordersPaymentDisplay
 			// 
-			this->ordersPaymentDisplay->BackgroundColor = System::Drawing::SystemColors::Control;
-			this->ordersPaymentDisplay->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->ordersPaymentDisplay->FormattingEnabled = true;
+			this->ordersPaymentDisplay->ItemHeight = 16;
 			this->ordersPaymentDisplay->Location = System::Drawing::Point(6, 21);
 			this->ordersPaymentDisplay->Name = L"ordersPaymentDisplay";
-			this->ordersPaymentDisplay->RowHeadersWidth = 51;
-			this->ordersPaymentDisplay->RowTemplate->Height = 24;
-			this->ordersPaymentDisplay->Size = System::Drawing::Size(196, 120);
-			this->ordersPaymentDisplay->TabIndex = 0;
+			this->ordersPaymentDisplay->Size = System::Drawing::Size(199, 116);
+			this->ordersPaymentDisplay->TabIndex = 3;
+			// 
+			// ordersRemovePaymentButton
+			// 
+			this->ordersRemovePaymentButton->Location = System::Drawing::Point(104, 143);
+			this->ordersRemovePaymentButton->Name = L"ordersRemovePaymentButton";
+			this->ordersRemovePaymentButton->Size = System::Drawing::Size(98, 23);
+			this->ordersRemovePaymentButton->TabIndex = 2;
+			this->ordersRemovePaymentButton->Text = L"Retirer";
+			this->ordersRemovePaymentButton->UseVisualStyleBackColor = true;
+			// 
+			// ordersNewPaymentButton
+			// 
+			this->ordersNewPaymentButton->Location = System::Drawing::Point(6, 143);
+			this->ordersNewPaymentButton->Name = L"ordersNewPaymentButton";
+			this->ordersNewPaymentButton->Size = System::Drawing::Size(92, 23);
+			this->ordersNewPaymentButton->TabIndex = 1;
+			this->ordersNewPaymentButton->Text = L"Nouveau";
+			this->ordersNewPaymentButton->UseVisualStyleBackColor = true;
 			// 
 			// ordersEmitLabel
 			// 
 			this->ordersEmitLabel->AutoSize = true;
-			this->ordersEmitLabel->Location = System::Drawing::Point(56, 371);
+			this->ordersEmitLabel->Location = System::Drawing::Point(80, 448);
 			this->ordersEmitLabel->Name = L"ordersEmitLabel";
 			this->ordersEmitLabel->Size = System::Drawing::Size(107, 16);
 			this->ordersEmitLabel->TabIndex = 22;
@@ -1823,7 +1836,7 @@ private: System::Windows::Forms::Label^ label1;
 			// ordersDeliveryLabel
 			// 
 			this->ordersDeliveryLabel->AutoSize = true;
-			this->ordersDeliveryLabel->Location = System::Drawing::Point(56, 327);
+			this->ordersDeliveryLabel->Location = System::Drawing::Point(80, 404);
 			this->ordersDeliveryLabel->Name = L"ordersDeliveryLabel";
 			this->ordersDeliveryLabel->Size = System::Drawing::Size(111, 16);
 			this->ordersDeliveryLabel->TabIndex = 16;
@@ -1832,19 +1845,11 @@ private: System::Windows::Forms::Label^ label1;
 			// label23
 			// 
 			this->label23->AutoSize = true;
-			this->label23->Location = System::Drawing::Point(33, 21);
+			this->label23->Location = System::Drawing::Point(70, 22);
 			this->label23->Name = L"label23";
 			this->label23->Size = System::Drawing::Size(95, 16);
 			this->label23->TabIndex = 5;
 			this->label23->Text = L"Choix du client:";
-			// 
-			// groupBox11
-			// 
-			this->groupBox11->Location = System::Drawing::Point(0, 431);
-			this->groupBox11->Name = L"groupBox11";
-			this->groupBox11->Size = System::Drawing::Size(390, 49);
-			this->groupBox11->TabIndex = 3;
-			this->groupBox11->TabStop = false;
 			// 
 			// statsAverageBasketButton
 			// 
@@ -2244,7 +2249,7 @@ private: System::Windows::Forms::Label^ label1;
 			// 
 			// backButton
 			// 
-			this->backButton->Location = System::Drawing::Point(12, 446);
+			this->backButton->Location = System::Drawing::Point(15, 564);
 			this->backButton->Name = L"backButton";
 			this->backButton->Size = System::Drawing::Size(118, 49);
 			this->backButton->TabIndex = 8;
@@ -2260,11 +2265,11 @@ private: System::Windows::Forms::Label^ label1;
 			this->Controls->Add(this->backButton);
 			this->Controls->Add(this->validateGroup);
 			this->Controls->Add(this->visualizeGroup);
-			this->Controls->Add(this->ordersGroup);
 			this->Controls->Add(this->staffGroup);
 			this->Controls->Add(this->customerGroup);
-			this->Controls->Add(this->productGroup);
 			this->Controls->Add(this->statsGroup);
+			this->Controls->Add(this->ordersGroup);
+			this->Controls->Add(this->productGroup);
 			this->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->Name = L"Root";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -2303,13 +2308,10 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthYearInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerBirthMonthInput))->EndInit();
 			this->customerInvoiceGroup->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerInvoiceDisplay))->EndInit();
 			this->customerDeliveryGroup->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->customerDeliveryDisplay))->EndInit();
 			this->ordersGroup->ResumeLayout(false);
 			this->ordersGroup->PerformLayout();
 			this->groupBox9->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView4))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitYearInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitMonthInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersEmitDayInput))->EndInit();
@@ -2317,7 +2319,6 @@ private: System::Windows::Forms::Label^ label1;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersDeliveryMonthInput))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersDeliveryDayInput))->EndInit();
 			this->ordersPaymentGroup->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ordersPaymentDisplay))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->statsMonthChoiceTurnover))->EndInit();
 			this->statsGroup->ResumeLayout(false);
 			this->groupBox6->ResumeLayout(false);
@@ -2365,12 +2366,9 @@ private: System::Windows::Forms::Label^ label1;
 				product.discountRatio = (float)this->productBaseDiscountInput->Value;  // TODO: same as above
 				product.restockThreshold = (int)this->productRestockThresholdInput->Value;
 
-				if (this->is_editing) {
-					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
-					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
-					int selected_id = Int32::Parse(selected_row[0]->ToString());
-					product = this->supply->editProduct(selected_id, product);
-
+				if (this->is_editing && (this->visualizeGrid->SelectedCells->Count > 0)) {
+					SupplyView_FirstItem^ selected_first = safe_cast<SupplyView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+					product = this->supply->editProduct(selected_first->product_id, product);
 				}
 				else {
 					product = this->supply->addProduct(product);
@@ -2383,23 +2381,29 @@ private: System::Windows::Forms::Label^ label1;
 				infos.firstName = this->staffFNameInput->Text;
 				infos.lastName = this->staffLNameInput->Text;
 				infos.hireDate = gcnew DateTime(Convert::ToInt32(this->staffHiredYearInput->Value), Convert::ToInt32(this->staffHiredMonthInput->Value), Convert::ToInt32(this->staffHiredDayInput->Value));
-				int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
-				auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
-				int selected_id = Int32::Parse(selected_row[0]->ToString());
-				infos.superior = selected_id;
+				infos.superior = 0;
+				if (!this->staffSuperiorSelector->SelectedIndices->Count)
+					return;
+				int index = this->staffSuperiorSelector->SelectedIndices[0];
+				StaffSelector_Row^ row = safe_cast<StaffSelector_Row^>(this->staffSuperiorSelector->Items[index]);
+				infos.superior = row->id;
+				Console::WriteLine("Superior's row is " + row);
+				Console::WriteLine("Superior's id is " + infos.superior);
 				infos.address.streetNum = this->staffAddressNumberInput->Text;
 				infos.address.streetName = this->staffAddressStreetInput->Text;
 				infos.address.cityName = this->staffAddressCityInput->Text;
 				infos.address.cityCode = this->staffAddressCityCodeInput->Text;
 
-				if (this->is_editing) {
-					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
-					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
-					int selected_id = Int32::Parse(selected_row[0]->ToString());
-					infos = this->staff->editStaff(selected_id, infos);
+				if (this->is_editing && (this->visualizeGrid->SelectedCells->Count > 0)) {
+					StaffView_FirstItem^ selected_first = safe_cast<StaffView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+					infos = this->staff->editStaff(selected_first->staff_id, infos);
+					if (!infos.id)
+						return;
 				}
 				else {
 					infos = this->staff->addStaff(infos);
+					if (!infos.id)
+						return;
 				}
 				this->refreshGrid();
 			}
@@ -2412,16 +2416,14 @@ private: System::Windows::Forms::Label^ label1;
 				data.email = this->customerMailNameInput->Text + "@" + this->customerMailDomainInput->Text + "." + this->customerMailExtInput->ValueMember;
 				data.phoneNumber = this->customerPhoneNumberInput->Text;
 				data.firstPurchase = gcnew DateTime(Convert::ToInt32(this->customerFPYearInput->Value), Convert::ToInt32(this->customerFPMonthInput->Value), Convert::ToInt32(this->customerFPDayInput->Value));
-				data.invoiceAdresses = selectInvoiceAddress->ToArray();
-				selectInvoiceAddress->Clear();
-				data.deliveryAddresses = selectDeliveryAddress->ToArray();
-				selectDeliveryAddress->Clear();
+				data.invoiceAdresses = this->selectInvoiceAddress->ToArray();
+				//this->selectInvoiceAddress->Clear();
+				data.deliveryAddresses = this->selectDeliveryAddress->ToArray();
+				//this->selectDeliveryAddress->Clear();
 
-				if (this->is_editing) {
-					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
-					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
-					int selected_id = Int32::Parse(selected_row[0]->ToString());
-					data = this->customer->editCustomer(selected_id, data);
+				if (this->is_editing && (this->visualizeGrid->SelectedCells->Count > 0)) {
+					CustomerView_FirstItem^ selected_first = safe_cast<CustomerView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+					data = this->customer->editCustomer(selected_first->customer_id, data);
 				}
 				else {
 					data = this->customer->addCustomer(data);
@@ -2438,19 +2440,22 @@ private: System::Windows::Forms::Label^ label1;
 				order.deliveryDate = gcnew DateTime(Convert::ToInt32(this->ordersDeliveryYearInput->Value), Convert::ToInt32(this->ordersDeliveryMonthInput->Value), Convert::ToInt32(this->ordersDeliveryDayInput->Value));
 				order.emissionDate = gcnew DateTime(Convert::ToInt32(this->ordersEmitYearInput->Value), Convert::ToInt32(this->ordersEmitMonthInput->Value), Convert::ToInt32(this->ordersEmitDayInput->Value));
 				order.items = selectOrderItem->ToArray();
-				selectOrderItem->Clear();
 				order.payments = selectPayments->ToArray();
-				selectPayments->Clear();
-				int row_index2 = this->visualizeGrid->SelectedCells[0]->RowIndex;
-				auto selected_customer = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index2]->ItemArray;
-				int customer_id = Int32::Parse(selected_customer[9]->ToString());
+				if (!this->ordersClientSelector->SelectedIndices->Count)
+					return;
+				int index = this->ordersClientSelector->SelectedIndices[0];
+				CustomerSelector_Row^ selector_row = safe_cast<CustomerSelector_Row^>(this->ordersClientSelector->Items[index]);
+				int customer_id = selector_row->id;
 				order.customer = this->customer->getCustomer(customer_id);
 
-				if (this->is_editing) {
-					int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
-					auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
-					int selected_id = Int32::Parse(selected_row[0]->ToString());
-					order = this->order->editOrder(selected_id, order);
+				this->selectPayments->Clear();
+				this->ordersItemsDisplay->Items->Clear();
+				this->selectOrderItem->Clear();
+				this->ordersPaymentDisplay->Items->Clear();
+
+				if (this->is_editing && (this->visualizeGrid->SelectedCells->Count > 0)) {
+					OrderView_FirstItem^ selected_first = safe_cast<OrderView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+					order = this->order->editOrder(selected_first->order_id, order);
 				}
 				else {
 					order = this->order->addOrder(order);
@@ -2460,10 +2465,25 @@ private: System::Windows::Forms::Label^ label1;
 		}
 
 		void visualizeDeleteButton_Click(Object^ sender, EventArgs^ e) {
-			int row_index = this->visualizeGrid->SelectedCells[0]->RowIndex;
-			auto selected_row = safe_cast<DataTable^>(this->visualizeGrid->DataSource)->Rows[row_index]->ItemArray;
-			int selected_id = Int32::Parse(selected_row[0]->ToString());
-			this->supply->removeProduct(selected_id);
+			if (this->visualizeGrid->SelectedCells->Count == 0)
+				return;
+
+			if (mode == 2) {
+				SupplyView_FirstItem^ selected_first = safe_cast<SupplyView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				this->supply->removeProduct(selected_first->product_id);
+			}
+			if (mode == 1) {
+				StaffView_FirstItem^ selected_first = safe_cast<StaffView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				this->staff->removeStaff(selected_first->staff_id);
+			}
+			if (mode == 3) {
+				CustomerView_FirstItem^ selected_first = safe_cast<CustomerView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				this->customer->removeCustomer(selected_first->customer_id);
+			}
+			if (mode == 4) {
+				OrderView_FirstItem^ selected_first = safe_cast<OrderView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				this->order->removeOrder(selected_first->order_id);
+			}
 			this->refreshGrid();
 		}
 		void addRadioButton_Selected(Object^ sender, EventArgs^ e) {
@@ -2485,10 +2505,12 @@ private: System::Windows::Forms::Label^ label1;
 			this->staffGroup->Visible = true;
 			mode = 1;
 			for each(DataRow^ row in this->staff->getAllStaff()->Rows) {
-				structure::StaffSelector_Row^ staff_row = gcnew structure::StaffSelector_Row();
-				staff_row->lname = Convert::ToString(row->ItemArray[0]);
+				StaffView_FirstItem^ first = safe_cast<StaffView_FirstItem^>(row->ItemArray[0]);
+				StaffSelector_Row^ staff_row = gcnew StaffSelector_Row();
+				staff_row->lname = first->staff_lname;
 				staff_row->fname = Convert::ToString(row->ItemArray[1]);
-				
+				staff_row->id = first->staff_id;
+
 				this->staffSuperiorSelector->Items->Add(staff_row);
 			}
 			this->refreshGrid();
@@ -2511,6 +2533,10 @@ private: System::Windows::Forms::Label^ label1;
 			this->validateGroup->Visible = true;
 			this->customerGroup->Visible = true;
 			mode = 3;
+			this->selectDeliveryAddress->Clear();
+			this->customerDeliveryDisplay->Items->Clear();
+			this->selectInvoiceAddress->Clear();
+			this->customerInvoiceDisplay->Items->Clear();
 			this->refreshGrid();
 		}
 
@@ -2520,6 +2546,24 @@ private: System::Windows::Forms::Label^ label1;
 			this->backButton->Visible = true;
 			this->validateGroup->Visible = true;
 			this->ordersGroup->Visible = true;
+			this->selectOrderItem->Clear();
+			this->ordersItemsDisplay->Items->Clear();
+			this->selectPayments->Clear();
+			this->ordersPaymentDisplay->Items->Clear();
+
+			this->ordersClientSelector->Items->Clear();
+			for each (DataRow^ customer_row in this->customer->getAllCustomers()->Rows) {
+				CustomerView_FirstItem^ first = safe_cast<CustomerView_FirstItem^>(customer_row->ItemArray[0]);
+
+				CustomerSelector_Row^ selector_row = gcnew CustomerSelector_Row();
+				selector_row->lname = first->customer_lname;
+				selector_row->fname = Convert::ToString(customer_row->ItemArray[1]);
+				selector_row->phone = Convert::ToString(customer_row->ItemArray[4]);
+				selector_row->id = first->customer_id;
+
+				this->ordersClientSelector->Items->Add(selector_row);
+			}
+
 			mode = 4;
 			this->refreshGrid();
 		}
@@ -2541,22 +2585,80 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsGroup->Visible = false;
 			this->categoriesGroup->Visible = true;
 		}
-	private: System::Void label4_Click_1(System::Object^ sender, System::EventArgs^ e) {
-	}
-private: System::Void customerGroup_Enter(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void customerBirthDayInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void label6_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void customerBirthSlash2_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void customerBirthSlash1_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void customerBirthMonthInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void customerBirthYearInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-}
+
+		void customerNewDeliveryButton_click(Object^ sender, EventArgs^ e) {
+			Address^ address = this->addressSelector->askAddress();
+			if (address == nullptr)
+				return;
+			this->customerDeliveryDisplay->Items->Add(address);
+			this->selectDeliveryAddress->Add(*address);
+		}
+		void customerNewInvoiceButton_click(Object^ sender, EventArgs^ e) {
+			Address^ address = this->addressSelector->askAddress();
+			if (address == nullptr)
+				return;
+			this->customerInvoiceDisplay->Items->Add(address);
+			this->selectInvoiceAddress->Add(*address);
+		}
+		void CustomerRemoveDeliveryButton_click(Object^ sender, EventArgs^ e) {
+			if (!this->customerDeliveryDisplay->SelectedIndices->Count)
+				return;
+			int index = this->customerDeliveryDisplay->SelectedIndices[0];
+			this->customerDeliveryDisplay->Items->RemoveAt(index);
+			this->selectDeliveryAddress->RemoveAt(index);
+		}
+		void customerRemoveInvoiceButton_click(Object^ sender, EventArgs^ e) {
+			if (!this->customerInvoiceDisplay->SelectedIndices->Count)
+				return;
+			int index = this->customerInvoiceDisplay->SelectedIndices[0];
+			this->customerInvoiceDisplay->Items->RemoveAt(index);
+			this->selectInvoiceAddress->RemoveAt(index);
+		}
+		void ordersNewItemButton_click(Object^ sender, EventArgs^ e) {
+			OrderItem^ item = this->orderItemSelector->askOrderItem();
+			if (item == nullptr)
+				return;
+			this->ordersItemsDisplay->Items->Add(item);
+			this->selectOrderItem->Add(*item);
+		}
+		void ordersRemoveItemButton_click(Object^ sender, EventArgs^ e) {
+			if (!this->ordersItemsDisplay->SelectedIndices->Count)
+				return;
+			int index = this->ordersItemsDisplay->SelectedIndices[0];
+			this->ordersItemsDisplay->Items->RemoveAt(index);
+			this->selectOrderItem->RemoveAt(index);
+		}
+		void ordersNewPaymentButton_click(Object^ sender, EventArgs^ e) {
+			Payment^ payment = this->paymentSelector->askPayment();
+			if (payment == nullptr)
+				return;
+			this->ordersPaymentDisplay->Items->Add(payment);
+			this->selectPayments->Add(*payment);
+		}
+		void ordersRemovePaymentButton_click(Object^ sender, EventArgs^ e) {
+			if (!this->ordersPaymentDisplay->SelectedIndices->Count)
+				return;
+			int index = this->ordersPaymentDisplay->SelectedIndices[0];
+			this->ordersPaymentDisplay->Items->RemoveAt(index);
+			this->selectPayments->RemoveAt(index);
+		}
+		void staffAddressCityInput_DropDown(System::Object^ sender, System::EventArgs^ e) {
+			String^ city_code = this->staffAddressCityCodeInput->Text;
+			this->staffAddressCityInput->Items->Clear();
+			
+			for each (DataRow ^ city_row in this->staff->findCitiesByCode(city_code)->Rows) {
+				this->staffAddressCityInput->Items->Add(city_row->ItemArray[0]->ToString());
+			}
+		}
+
+		private: System::Void customerBirthDayInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void customerBirthMonthInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void customerBirthYearInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		}
+		private: System::Void staffAddressCityCodeInput_TextChanged(System::Object^ sender, System::EventArgs^ e) {}
+		
 };
 		
 }

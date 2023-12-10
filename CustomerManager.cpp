@@ -26,8 +26,8 @@ namespace Services {
 				address.cityName,
 				address.cityCode,
 			};
-			DataTable^ found = this->dbSearchRows(Components::Table::getAddressTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
-			DataRow^ city_row = found->Rows[0];
+			DataTable^ city_found = this->dbSearchRows(Components::Table::getCityTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
+			DataRow^ city_row = city_found->Rows[0];
 			int id_city = Convert::ToInt32(city_row->ItemArray[0]);
 
 			array<Object^>^ address_array = gcnew array<Object^> {
@@ -35,7 +35,7 @@ namespace Services {
 				address.streetName, 
 				id_city, 
 				id_customer, 
-				gcnew String("NULL")
+				nullptr
 			};
 			this->dbCreateRow(Components::Table::getAddressTable(), address_array);
 		}
@@ -45,12 +45,12 @@ namespace Services {
 				address.cityName,
 					address.cityCode,
 			};
-			DataTable^ found = this->dbSearchRows(Components::Table::getAddressTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
-			DataRow^ city_row = found->Rows[0];
+			DataTable^ found_city = this->dbSearchRows(Components::Table::getCityTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
+			DataRow^ city_row = found_city->Rows[0];
 			int id_city = Convert::ToInt32(city_row->ItemArray[0]);
 
 			array<Object^>^ address_array = gcnew array<Object^> {
-				address.streetNum, address.streetName, id_city, gcnew String("NULL"), id_customer
+				address.streetNum, address.streetName, id_city, nullptr, id_customer
 			};
 			this->dbCreateRow(Components::Table::getAddressTable(), address_array);
 		}
@@ -77,8 +77,8 @@ namespace Services {
 			Address address = Address();
 			address.streetNum = Convert::ToString(row->ItemArray[1]);
 			address.streetName = Convert::ToString(row->ItemArray[2]);
-			address.cityName = Convert::ToString(array_city[1]);
-			address.cityCode = Convert::ToString(array_city[2]);
+			address.cityName = Convert::ToString(array_city[0]);
+			address.cityCode = Convert::ToString(array_city[1]);
 
 			delivery_addresses->Add(address);
 		}
@@ -98,8 +98,8 @@ namespace Services {
 			Address address = Address();
 			address.streetNum = Convert::ToString(row->ItemArray[1]);
 			address.streetName = Convert::ToString(row->ItemArray[2]);
-			address.cityName = Convert::ToString(array_city[1]);
-			address.cityCode = Convert::ToString(array_city[2]);
+			address.cityName = Convert::ToString(array_city[0]);
+			address.cityCode = Convert::ToString(array_city[1]);
 
 			invoice_addresses->Add(address);
 		}
@@ -109,12 +109,12 @@ namespace Services {
 
 		CustomerData result = CustomerData();
 		result.id = id;
-		result.lastName = Convert::ToString(array_customer[1]);
-		result.firstName = Convert::ToString(array_customer[2]);
-		result.birth = safe_cast<DateTime^>(array_customer[3]);
-		result.email = Convert::ToString(array_customer[4]);
-		result.phoneNumber = Convert::ToString(array_customer[5]);
-		result.firstPurchase = safe_cast<DateTime^>(array_customer[6]);
+		result.lastName = Convert::ToString(array_customer[0]);
+		result.firstName = Convert::ToString(array_customer[1]);
+		result.birth = safe_cast<DateTime^>(array_customer[2]);
+		result.email = Convert::ToString(array_customer[3]);
+		result.phoneNumber = Convert::ToString(array_customer[4]);
+		result.firstPurchase = safe_cast<DateTime^>(array_customer[5]);
 		result.deliveryAddresses = delivery_addresses->ToArray();
 		result.invoiceAdresses = invoice_addresses->ToArray();
 		return result;
@@ -149,7 +149,7 @@ namespace Services {
 				address.cityName,
 				address.cityCode
 			};
-			DataTable^ found = this->dbSearchRows(Components::Table::getAddressTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
+			DataTable^ found = this->dbSearchRows(Components::Table::getCityTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
 			DataRow^ city_row = found->Rows[0];
 			int id_city = Convert::ToInt32(city_row->ItemArray[0]);
 
@@ -158,7 +158,7 @@ namespace Services {
 				address.streetName,
 				id_city,
 				id,
-				gcnew String("NULL")
+				nullptr
 			};
 			this->dbCreateRow(Components::Table::getAddressTable(), address_array);
 		}
@@ -173,12 +173,12 @@ namespace Services {
 				address.cityName,
 				address.cityCode,
 			};
-			DataTable^ found = this->dbSearchRows(Components::Table::getAddressTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
+			DataTable^ found = this->dbSearchRows(Components::Table::getCityTable(), gcnew array<String^>{"NomVille", "CodePostal"}, city_array);
 			DataRow^ city_row = found->Rows[0];
 			int id_city = Convert::ToInt32(city_row->ItemArray[0]);
 
 			array<Object^>^ address_array = gcnew array<Object^> {
-				address.streetNum, address.streetName, id_city, gcnew String("NULL"), id
+				address.streetNum, address.streetName, id_city, nullptr, id
 			};
 			this->dbCreateRow(Components::Table::getAddressTable(), address_array);
 		}
@@ -220,8 +220,7 @@ namespace Services {
 	DataTable^ CustomerManager::getAllCustomers() {
 		DataTable^ result = gcnew DataTable;
 		result->Columns->AddRange(gcnew array<DataColumn^>{
-			gcnew DataColumn("Code client"),
-			gcnew DataColumn("Nom"),
+			gcnew DataColumn("Nom", Object::typeid),
 			gcnew DataColumn("Prénom"),
 			gcnew DataColumn("Date de naissance"),
 			gcnew DataColumn("Adresse email"),
@@ -287,9 +286,13 @@ namespace Services {
 			if (invoice_addresses_str->EndsWith(";")) {
 				invoice_addresses_str = invoice_addresses_str->Remove(invoice_addresses_str->Length - 1);
 			}
+
+			CustomerView_FirstItem^ first = gcnew CustomerView_FirstItem();
+			first->customer_lname = Convert::ToString(customer_row[1]);
+			first->customer_id = Convert::ToInt32(customer_row[0]);
+			
 			result->Rows->Add(
-				customer_row[0],
-				customer_row[1],
+				first,
 				customer_row[2],
 				customer_row[3],
 				customer_row[4],

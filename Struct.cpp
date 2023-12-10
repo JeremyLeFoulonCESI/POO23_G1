@@ -9,7 +9,7 @@ namespace structure {
 		ConcatanedString += streetNum;
 		ConcatanedString += " ";
 		ConcatanedString += streetName;
-		ConcatanedString += " ";
+		ConcatanedString += ", ";
 		ConcatanedString += cityCode;
 		ConcatanedString += " ";
 		ConcatanedString += cityName;
@@ -45,6 +45,30 @@ namespace structure {
 	String^ StaffSelector_Row::ToString()
 	{
 		return this->lname + " " + this->fname;
+	}
+	String^ SupplyView_FirstItem::ToString()
+	{
+		return this->product_name;
+	}
+	String^ CustomerView_FirstItem::ToString()
+	{
+		return this->customer_lname;
+	}
+	String^ OrderView_FirstItem::ToString()
+	{
+		return this->order_customer_str;
+	}
+	String^ StaffView_FirstItem::ToString()
+	{
+		return this->staff_lname;
+	}
+	String^ OrderItem::ToString()
+	{
+		return this->productCount + "x " + this->product.name + ": " + this->UHTPrice + "€/u brut";
+	}
+	String^ CustomerSelector_Row::ToString()
+	{
+		return this->lname + " " + this->fname + " - " + this->phone;
 	}
 }
 

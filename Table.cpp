@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Table.h"
+#include "SqlData.h"
 
 
 namespace Components {
@@ -18,7 +19,7 @@ namespace Components {
 		for (int i = 0; i < this->keys->Length; i++) {
 			String^ key = this->keys[i];
 			Object^ value = values[i];
-			result += "`" + key + "` = '" + value->ToString()->Replace("'", "\\'") + "',";
+			result += "`" + key + "` = " + SqlData::ObjectToSql(value) + ",";
 		}
 
 		if (keys->Length > 0 && result->EndsWith(",")) {
@@ -39,11 +40,11 @@ namespace Components {
 		for (int i = 0; i < key_names->Length; i++) {
 			String^ key_name = key_names[i];
 			Object^ key_value = key_values[i];
-
-			result += key_name + " = " + key_value + ",";
+			
+			result += key_name + " = " + SqlData::ObjectToSql(key_value) + " AND ";
 		}
-		if (result->Length > 0 && result->EndsWith(",")) {
-			result = result->Remove(result->Length - 1, 1);
+		if (result->EndsWith(" AND ")) {
+			result = result->Remove(result->Length - 4);
 		}
 		return result;
 	}
@@ -59,11 +60,10 @@ namespace Components {
 		for (int i = 0; i < this->primary_keys->Length; i++) {
 			String^ key = this->primary_keys[i];
 			Object^ value = values[i];
-			result += "`" + key + "` = '" + value->ToString()->Replace("'", "\\'") + "',";
+			result += "`" + key + "` = " + SqlData::ObjectToSql(value) + " AND ";
 		}
-
-		if (result->EndsWith(",")) {
-			result = result->Remove(result->Length - 1, 1);
+		if (result->EndsWith(" AND ")) {
+			result = result->Remove(result->Length - 5);
 		}
 
 		//result += ")";
@@ -71,7 +71,12 @@ namespace Components {
 	}
 	String^ Table::bundleForInsert() {
 		String^ result = "(";
-		for each (String ^ key in this->keys) {
+		if (this->primary_keys->Length > 1) {
+			for each (String ^ pkey in this->primary_keys) {
+				result += "`" + pkey + "`,";
+			}
+		}
+		for each (String^ key in this->keys) {
 			result += "`" + key + "`,";
 		}
 		if (result->EndsWith(",")) {

@@ -3,7 +3,7 @@
 using namespace System;
 using namespace MySql::Data::MySqlClient;
 
-ref class DataBaseWrapper
+public ref class DataBaseWrapper
 {
 private:
 	String^ connect_string;
