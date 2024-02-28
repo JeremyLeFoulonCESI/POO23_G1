@@ -7,9 +7,9 @@
 #include "AddressSelector.h"
 #include "OrderItemSelector.h"
 #include "PaymentSelector.h"
+#include "StatsProvider.h"
 
 namespace HMI {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -17,72 +17,53 @@ namespace HMI {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Summary for Root
-	/// </summary>
-	public ref class Root : public System::Windows::Forms::Form
-	{
+	public ref class Root : public System::Windows::Forms::Form{
 		bool is_editing;
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::GroupBox^ groupBox9;
 	private: System::Windows::Forms::Button^ ordersRemoveItemButton;
-
 	private: System::Windows::Forms::Button^ ordersNewItemButton;
-
-
-
 		   Services::SupplyManager^ supply;
 		   Services::StaffManager^ staff;
 		   Services::CustomerManager^ customer;
 		   Services::OrderManager^ order;
+		   Services::StatsProvider^ stats;
 	private: System::Windows::Forms::Label^ customerFirstPurchaseDate;
 	private: System::Windows::Forms::NumericUpDown^ customerFPDayInput;
 	private: System::Windows::Forms::NumericUpDown^ customerFPYearInput;
-
-
 	private: System::Windows::Forms::NumericUpDown^ customerFPMonthInput;
-
-
-
 	private: System::Windows::Forms::ListBox^ customerInvoiceDisplay;
 	private: System::Windows::Forms::ListBox^ customerDeliveryDisplay;
 	private: System::Windows::Forms::ListBox^ ordersItemsDisplay;
 	private: System::Windows::Forms::ListBox^ ordersPaymentDisplay;
-
 	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::Label^ label8;
-
 		   int mode = 0;
 		   List <Address>^ selectInvoiceAddress;
 		   List <Address>^ selectDeliveryAddress;
 		   List <OrderItem>^ selectOrderItem;
 		   List <Payment>^ selectPayments;
-
-
 		   AddressSelector^ addressSelector;
 		   OrderItemSelector^ orderItemSelector;
 		   PaymentSelector^ paymentSelector;
-		   
 
 	public:
-		Root(void)
-		{
+		Root(void) {
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			// Instanciation des gestionnaires de services
 			this->supply = gcnew Services::SupplyManager();
 			this->staff = gcnew Services::StaffManager();
 			this->customer = gcnew Services::CustomerManager();
 			this->order = gcnew Services::OrderManager();
-			
-			
+			this->stats = gcnew Services::StatsProvider();
+
+			// Configuration des styles de liste déroulante pour certains contrôles
 			this->productUHTPriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
 			this->productPurchasePriceCurrencySelector->DropDownStyle = ComboBoxStyle::DropDownList;
 			this->staffAddressCityInput->DropDownStyle = ComboBoxStyle::DropDownList;
 
-
+			// Initialisation de la visibilité des groupes de contrôles dans l'interface utilisateur
 			this->statsGroup->Visible = false;
 			this->customerGroup->Visible = false;
 			this->ordersGroup->Visible = false;
@@ -93,8 +74,10 @@ namespace HMI {
 			this->backButton->Visible = false;
 			this->validateGroup->Visible = false;
 
+			// Initialisation d'un indicateur pour le mode d'édition
 			this->is_editing = false;
 
+			// Liaison des événements de clic à leurs gestionnaires d'événements respectifs
 			this->validateButton->Click += gcnew EventHandler(this, &Root::validateButton_Click);
 			this->visualizeDeleteButton->Click += gcnew EventHandler(this, &Root::visualizeDeleteButton_Click);
 			this->addRadioButton->Click += gcnew EventHandler(this, &Root::addRadioButton_Selected);
@@ -115,40 +98,45 @@ namespace HMI {
 
 			this->ordersNewItemButton->Click += gcnew EventHandler(this, &Root::ordersNewItemButton_click);
 			this->ordersRemoveItemButton->Click += gcnew EventHandler(this, &Root::ordersRemoveItemButton_click);
-			
+
 			this->ordersNewPaymentButton->Click += gcnew EventHandler(this, &Root::ordersNewPaymentButton_click);
 			this->ordersRemovePaymentButton->Click += gcnew EventHandler(this, &Root::ordersRemovePaymentButton_click);
 
+			// Création des listes qui stockent les adresses, les éléments de commande et les paiements
 			this->selectInvoiceAddress = gcnew List<Address>;
 			this->selectDeliveryAddress = gcnew List<Address>;
 			this->selectOrderItem = gcnew List<OrderItem>;
 			this->selectPayments = gcnew List<Payment>;
 
+			// Instanciation des sélecteurs
 			this->addressSelector = gcnew AddressSelector(this->staff);
 			this->orderItemSelector = gcnew OrderItemSelector(this->supply);
 			this->paymentSelector = gcnew PaymentSelector();
 		}
 
+		// Cette fonction actualise la source de données de la grille de visualisation en fonction du mode actuel.
 		void refreshGrid() {
+			// Affiche un message de débogage indiquant que la fonction de rafraîchissement est appelée
 			Console::WriteLine("Refresh");
+			// Si le mode est égal à 1, la source de données de la grille est actualisée avec tous les employés.
 			if (mode == 1) {
 				this->visualizeGrid->DataSource = this->staff->getAllStaff();
 			}
+			// Si le mode est égal à 2, la source de données de la grille est actualisée avec tous les produits.
 			if (mode == 2) {
 				this->visualizeGrid->DataSource = this->supply->getAllProducts();
 			}
+			// Si le mode est égal à 3, la source de données de la grille est actualisée avec tous les clients.
 			if (mode == 3) {
 				this->visualizeGrid->DataSource = this->customer->getAllCustomers();
 			}
+			// Si le mode est égal à 4, la source de données de la grille est actualisée avec toutes les commandes.
 			if (mode == 4) {
 				this->visualizeGrid->DataSource = this->order->getAllOrders();
 			}
 		}
 
 	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
 		~Root()
 		{
 			if (components)
