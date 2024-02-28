@@ -154,7 +154,7 @@ namespace Services {
 			float real_count = count * (1 - shrink);
 
 			float real_value = UHTprice * (1 + TVA) * (1 + commercialMargin) * (1 - commercialDiscount);
-			result += real_value;
+			result += real_value * real_count;
 		}
 		this->dbCloseConnection();
 
