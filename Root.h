@@ -136,30 +136,21 @@ namespace HMI {
 			}
 		}
 
-	protected:
-		~Root()
+	// Destructeur de la classe Root.
+	protected: ~Root()
+	{
+		// Vérifie si des composants ont été initialisés.
+		if (components)
 		{
-			if (components)
-			{
-				delete components;
-			}
+			// Libère la mémoire occupée par les composants.
+			delete components;
 		}
+	}
+
+
 	private: System::Windows::Forms::GroupBox^ categoriesGroup;
 	private: System::Windows::Forms::Button^ staffCategoryButton;
 	private: System::Windows::Forms::Button^ statsCategoryButton;
-	protected:
-
-
-	protected:
-
-	protected:
-
-
-
-
-
-
-
 	private: System::Windows::Forms::Button^ ordersCategoryButton;
 
 	private: System::Windows::Forms::Button^ customersCategoryButton;
@@ -168,48 +159,36 @@ namespace HMI {
 	private: System::Windows::Forms::GroupBox^ visualizeGroup;
 	private: System::Windows::Forms::DataGridView^ visualizeGrid;
 
-
-
-
 	private: System::Windows::Forms::GroupBox^ validateGroup;
 	private: System::Windows::Forms::RadioButton^ EditRadioButton;
-
 
 	private: System::Windows::Forms::RadioButton^ addRadioButton;
 
 	private: System::Windows::Forms::Button^ validateButton;
 	private: System::Windows::Forms::GroupBox^ customerGroup;
 
-	private: System::Windows::Forms::Label^ label10;
-private: System::Windows::Forms::TextBox^ customerPhoneNumberInput;
+private: System::Windows::Forms::Label^ label10;
+
+	private: System::Windows::Forms::TextBox^ customerPhoneNumberInput;
 
 	private: System::Windows::Forms::Label^ customerMailDotLabel;
 
 	private: System::Windows::Forms::Label^ customerMailAtLabel;
 	private: System::Windows::Forms::ComboBox^ customerMailExtInput;
 
-
 	private: System::Windows::Forms::TextBox^ customerMailDomainInput;
-
-
 
 	private: System::Windows::Forms::TextBox^ customerMailNameInput;
 
-
 	private: System::Windows::Forms::Label^ customerMailLabel;
 
-
 	private: System::Windows::Forms::Label^ customerBirthLabel;
-
 
 	private: System::Windows::Forms::Label^ customerFNameLabel;
 	private: System::Windows::Forms::Label^ customerLNameLabel;
 	private: System::Windows::Forms::TextBox^ customerFNameInput;
 
-
-
 private: System::Windows::Forms::TextBox^ customerLNameInput;
-
 
 	private: System::Windows::Forms::GroupBox^ ordersGroup;
 private: System::Windows::Forms::ListBox^ ordersClientSelector;
@@ -218,14 +197,9 @@ private: System::Windows::Forms::Button^ ordersRemovePaymentButton;
 
 private: System::Windows::Forms::Button^ ordersNewPaymentButton;
 
-
-
-
 private: System::Windows::Forms::Label^ ordersEmitLabel;
 
-
 private: System::Windows::Forms::Label^ ordersDeliveryLabel;
-
 	private: System::Windows::Forms::Label^ label23;
 
 private: System::Windows::Forms::GroupBox^ customerDeliveryGroup;
@@ -233,16 +207,10 @@ private: System::Windows::Forms::Button^ CustomerRemoveDeliveryButton;
 
 private: System::Windows::Forms::Button^ customerNewDeliveryButton;
 
-
-
-
 private: System::Windows::Forms::GroupBox^ customerInvoiceGroup;
 private: System::Windows::Forms::Button^ customerRemoveInvoiceButton;
 
-
 private: System::Windows::Forms::Button^ CustomerNewInvoiceButton;
-
-
 
 private: System::Windows::Forms::GroupBox^ staffGroup;
 private: System::Windows::Forms::Label^ staffSuperiorLabel;
@@ -271,15 +239,12 @@ private: System::Windows::Forms::TextBox^ staffFNameInput;
 
 private: System::Windows::Forms::TextBox^ staffLNameInput;
 
-
-
 private: System::Windows::Forms::NumericUpDown^ staffHiredYearInput;
 
 private: System::Windows::Forms::NumericUpDown^ staffHiredMonthInput;
 
 private: System::Windows::Forms::NumericUpDown^ staffHiredDayInput;
 private: System::Windows::Forms::Label^ staffHiredSlash2;
-
 
 private: System::Windows::Forms::Label^ staffHiredSlash1;
 
@@ -289,8 +254,6 @@ private: System::Windows::Forms::NumericUpDown^ customerBirthMonthInput;
 
 private: System::Windows::Forms::Label^ customerBirthSlash2;
 
-
-
 private: System::Windows::Forms::Label^ customerBirthSlash1;
 private: System::Windows::Forms::NumericUpDown^ ordersEmitYearInput;
 
@@ -298,7 +261,6 @@ private: System::Windows::Forms::NumericUpDown^ ordersEmitMonthInput;
 
 private: System::Windows::Forms::NumericUpDown^ ordersEmitDayInput;
 private: System::Windows::Forms::Label^ ordersEmitSlash2;
-
 
 private: System::Windows::Forms::Label^ ordersEmitSlash1;
 
@@ -309,11 +271,8 @@ private: System::Windows::Forms::NumericUpDown^ ordersDeliveryMonthInput;
 private: System::Windows::Forms::NumericUpDown^ ordersDeliveryDayInput;
 private: System::Windows::Forms::Label^ ordersDdeliverySlash2;
 
-
-
 private: System::Windows::Forms::Label^ ordersDeliverySlash1;
 private: System::Windows::Forms::Button^ visualizeDeleteButton;
-
 
 private: System::Windows::Forms::Button^ statsAverageBasketButton;
 private: System::Windows::Forms::Button^ statsTurnoverButton;
@@ -2479,28 +2438,42 @@ private: System::Windows::Forms::Label^ label1;
 			}
 		}
 
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton de suppression dans la vue.
 		void visualizeDeleteButton_Click(Object^ sender, EventArgs^ e) {
+			// Vérifie s'il y a des cellules sélectionnées dans la grille.
 			if (this->visualizeGrid->SelectedCells->Count == 0)
 				return;
 
+			// En fonction du mode de gestion actuel, supprime l'élément correspondant à la cellule sélectionnée.
+			// Le type d'élément à supprimer dépend du mode : produit, personnel, client ou commande.
 			if (mode == 2) {
+				// Récupère la première cellule sélectionnée.
 				SupplyView_FirstItem^ selected_first = safe_cast<SupplyView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				// Supprime le produit de la base de données en utilisant son ID.
 				this->supply->removeProduct(selected_first->product_id);
 			}
 			if (mode == 1) {
+				// Récupère la première cellule sélectionnée.
 				StaffView_FirstItem^ selected_first = safe_cast<StaffView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				// Supprime le membre du personnel de la base de données en utilisant son ID.
 				this->staff->removeStaff(selected_first->staff_id);
 			}
 			if (mode == 3) {
+				// Récupère la première cellule sélectionnée.
 				CustomerView_FirstItem^ selected_first = safe_cast<CustomerView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				// Supprime le client de la base de données en utilisant son ID.
 				this->customer->removeCustomer(selected_first->customer_id);
 			}
 			if (mode == 4) {
+				// Récupère la première cellule sélectionnée.
 				OrderView_FirstItem^ selected_first = safe_cast<OrderView_FirstItem^>(this->visualizeGrid->SelectedCells[0]->Value);
+				// Supprime la commande de la base de données en utilisant son ID.
 				this->order->removeOrder(selected_first->order_id);
 			}
+			// Rafraîchit la grille de visualisation après la suppression.
 			this->refreshGrid();
 		}
+
 		void addRadioButton_Selected(Object^ sender, EventArgs^ e) {
 			this->EditRadioButton->Checked = false;
 			this->addRadioButton->Checked = true;
@@ -2541,17 +2514,26 @@ private: System::Windows::Forms::Label^ label1;
 			this->refreshGrid();
 		}
 
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton de gestion des clients.
 		void customerManagerButton_click(Object^ sender, EventArgs^ e) {
+			// Masque le groupe des catégories.
 			this->categoriesGroup->Visible = false;
+			// Affiche le groupe de visualisation.
 			this->visualizeGroup->Visible = true;
+			// Affiche le bouton de retour.
 			this->backButton->Visible = true;
+			// Affiche le groupe de validation.
 			this->validateGroup->Visible = true;
+			// Affiche le groupe de gestion des clients.
 			this->customerGroup->Visible = true;
+			// Mode défini sur la gestion des clients.
 			mode = 3;
+			// Réinitialisation des listes d'adresses et d'affichage des clients.
 			this->selectDeliveryAddress->Clear();
 			this->customerDeliveryDisplay->Items->Clear();
 			this->selectInvoiceAddress->Clear();
 			this->customerInvoiceDisplay->Items->Clear();
+			// Rafraîchit la grille de visualisation.
 			this->refreshGrid();
 		}
 
@@ -2583,10 +2565,29 @@ private: System::Windows::Forms::Label^ label1;
 			this->refreshGrid();
 		}
 
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton de gestion des statistiques.
 		void statsManagerButton_click(Object^ sender, EventArgs^ e) {
+			// Masque le groupe des catégories.
 			this->categoriesGroup->Visible = false;
+			// Affiche le bouton de retour.
 			this->backButton->Visible = true;
+			// Affiche le groupe de statistiques.
 			this->statsGroup->Visible = true;
+
+			// Appel de la fonction de StatsProvider pour obtenir les produits nécessitant un réapprovisionnement
+			DataTable^ restockData3 = stats->findProductsThatNeedRestock();  
+			// Assignation du résultat à la source de données du DataGridView3
+			dataGridView3->DataSource = restockData3;
+
+			// Appel de la fonction de StatsProvider pour obtenir les 10 produits les moins vendus
+			DataTable^ restockData1 = stats->find10WorstSellers();
+			// Assignation du résultat à la source de données du DataGridView1
+			dataGridView1->DataSource = restockData1;
+
+			// Appel de la fonction de StatsProvider pour obtenir les 10 produits les plus vendus
+			DataTable^ restockData2 = stats->find10BestSellers();
+			// Assignation du résultat à la source de données du DataGridView2
+			dataGridView2->DataSource = restockData2;
 		}
 
 		void backButton_click(Object^ sender, EventArgs^ e) {
@@ -2672,8 +2673,6 @@ private: System::Windows::Forms::Label^ label1;
 		}
 		private: System::Void customerBirthYearInput_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		}
-		private: System::Void staffAddressCityCodeInput_TextChanged(System::Object^ sender, System::EventArgs^ e) {}
-		
-};
-		
+		private: System::Void staffAddressCityCodeInput_TextChanged(System::Object^ sender, System::EventArgs^ e) {}	
+	};
 }
