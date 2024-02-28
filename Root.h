@@ -89,6 +89,9 @@ namespace HMI {
 			this->ordersCategoryButton->Click += gcnew EventHandler(this, &Root::ordersManagerButton_click);
 			this->statsCategoryButton->Click += gcnew EventHandler(this, &Root::statsManagerButton_click);
 			this->backButton->Click += gcnew EventHandler(this, &Root::backButton_click);
+			this->statsAverageBasketButton->Click +=gcnew EventHandler(this, &Root::statsAverageBasketButton_Click);
+			this->statsStockMarketingValueButton->Click += gcnew EventHandler(this, &Root::statsStockMarketingValueButton_Click);
+			this->statsStockPurchaseValueButton->Click += gcnew EventHandler(this, &Root::statsStockPurchaseValueButton_Click);
 
 			this->customerNewDeliveryButton->Click += gcnew EventHandler(this, &Root::customerNewDeliveryButton_click);
 			this->CustomerRemoveDeliveryButton->Click += gcnew EventHandler(this, &Root::CustomerRemoveDeliveryButton_click);
@@ -603,7 +606,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(361, 75);
 			this->label4->TabIndex = 105;
-			this->label4->Text = L"Bienvenue dans votre centre de controle\r\n    Veuillez selectionner une catégorie "
+			this->label4->Text = L"Bienvenue dans votre centre de controle\r\n    Veuillez selectionner une categorie "
 				L":\r\n\r\n";
 			// 
 			// statsCategoryButton
@@ -705,7 +708,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productRestockThresholdLabel->Name = L"productRestockThresholdLabel";
 			this->productRestockThresholdLabel->Size = System::Drawing::Size(189, 16);
 			this->productRestockThresholdLabel->TabIndex = 20;
-			this->productRestockThresholdLabel->Text = L"Seuil de réapprovisionnement:";
+			this->productRestockThresholdLabel->Text = L"Seuil de reapprovisionnement:";
 			// 
 			// productDiscountGroup
 			// 
@@ -757,7 +760,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productCountWeightLabel->Name = L"productCountWeightLabel";
 			this->productCountWeightLabel->Size = System::Drawing::Size(220, 16);
 			this->productCountWeightLabel->TabIndex = 1;
-			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetés:";
+			this->productCountWeightLabel->Text = L"Poids du nombre d\'articles achetes:";
 			// 
 			// productBaseDiscountLabel
 			// 
@@ -802,7 +805,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->productStockLabel->Name = L"productStockLabel";
 			this->productStockLabel->Size = System::Drawing::Size(112, 16);
 			this->productStockLabel->TabIndex = 15;
-			this->productStockLabel->Text = L"Quantité en stock:";
+			this->productStockLabel->Text = L"Quantite en stock:";
 			// 
 			// productStockInput
 			// 
@@ -915,7 +918,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->visualizeGroup->Size = System::Drawing::Size(439, 609);
 			this->visualizeGroup->TabIndex = 2;
 			this->visualizeGroup->TabStop = false;
-			this->visualizeGroup->Text = L"Visualisation des données";
+			this->visualizeGroup->Text = L"Visualisation des donnees";
 			// 
 			// visualizeDeleteButton
 			// 
@@ -1244,7 +1247,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->customerGroup->Size = System::Drawing::Size(585, 536);
 			this->customerGroup->TabIndex = 4;
 			this->customerGroup->TabStop = false;
-			this->customerGroup->Text = L"Edition des données client";
+			this->customerGroup->Text = L"Edition des donnees client";
 			// 
 			// customerFPDayInput
 			// 
@@ -2588,6 +2591,33 @@ private: System::Windows::Forms::Label^ label1;
 			DataTable^ restockData2 = stats->find10BestSellers();
 			// Assignation du résultat à la source de données du DataGridView2
 			dataGridView2->DataSource = restockData2;
+		}
+
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton pour afficher la moyenne du panier.
+		void statsAverageBasketButton_Click(Object^ sender, EventArgs^ e) { 
+			// Appel de la fonction ComputeAvgBasket pour obtenir la moyenne du panier
+			double avgBasket = stats->computeAvgBasket();
+
+			// Ajout du nombre renvoyé par la fonction ComputeAvgBasket à la fin du contenu actuel de label2.
+			label2->Text += " " + avgBasket.ToString();
+		}
+
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton pour afficher la valeur commerciale du stock.
+		void statsStockMarketingValueButton_Click(Object^ sender, EventArgs^ e) {
+			// Appel de la fonction computeStockCommercialValue pour obtenir la valeur commerciale du stock
+			double StockMarket = stats->computeStockCommercialValue();
+
+			// Ajout du nombre renvoyé par la fonction computeStockCommercialValue à la fin du contenu actuel de label1
+			label1->Text += " " + StockMarket.ToString();
+		}
+
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton pour afficher la valeur d'achat du stock.
+		void statsStockPurchaseValueButton_Click(Object^ sender, EventArgs^ e) {
+			// Appel de la fonction computeStockPurchaseValue pour obtenir la valeur d'achat du stock
+			double StockPurchase = stats->computeStockPurchaseValue();
+
+			// Ajout du nombre renvoyé par la fonction computeStockPurchaseValue à la fin du contenu actuel de label3
+			label3->Text += " " + StockPurchase.ToString();
 		}
 
 		void backButton_click(Object^ sender, EventArgs^ e) {
