@@ -92,6 +92,7 @@ namespace HMI {
 			this->statsAverageBasketButton->Click +=gcnew EventHandler(this, &Root::statsAverageBasketButton_Click);
 			this->statsStockMarketingValueButton->Click += gcnew EventHandler(this, &Root::statsStockMarketingValueButton_Click);
 			this->statsStockPurchaseValueButton->Click += gcnew EventHandler(this, &Root::statsStockPurchaseValueButton_Click);
+			this->statsSimulationButton->Click += gcnew EventHandler(this, &Root::statsSimulationButton_Click);
 
 			this->customerNewDeliveryButton->Click += gcnew EventHandler(this, &Root::customerNewDeliveryButton_click);
 			this->CustomerRemoveDeliveryButton->Click += gcnew EventHandler(this, &Root::CustomerRemoveDeliveryButton_click);
@@ -2079,7 +2080,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(59, 16);
 			this->label5->TabIndex = 20;
-			this->label5->Text = L"Résultat:";
+			this->label5->Text = L"Resultat:";
 			// 
 			// statsTVAValueLabel
 			// 
@@ -2126,7 +2127,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsUnknownMarkdownLabel->Name = L"statsUnknownMarkdownLabel";
 			this->statsUnknownMarkdownLabel->Size = System::Drawing::Size(131, 16);
 			this->statsUnknownMarkdownLabel->TabIndex = 25;
-			this->statsUnknownMarkdownLabel->Text = L"Démarque inconnue:";
+			this->statsUnknownMarkdownLabel->Text = L"Demarque inconnue:";
 			this->statsUnknownMarkdownLabel->Click += gcnew System::EventHandler(this, &Root::label4_Click);
 			// 
 			// statsComDiscountPercentLabel
@@ -2598,8 +2599,20 @@ private: System::Windows::Forms::Label^ label1;
 			// Appel de la fonction ComputeAvgBasket pour obtenir la moyenne du panier
 			double avgBasket = stats->computeAvgBasket();
 
-			// Ajout du nombre renvoyé par la fonction ComputeAvgBasket à la fin du contenu actuel de label2.
-			label2->Text += " " + avgBasket.ToString();
+			// Recherche de la position de "Résultat:" dans le texte de label5
+			int index = label1->Text->IndexOf("Resultat:");
+
+			// Si "Résultat:" est trouvé dans label5
+			if (index != 0) {
+				// Récupération du texte avant "Résultat:"
+				String^ beforeResult = label2->Text->Substring(0, index + 10);
+				// Remplacement du texte après "Résultat:" par le nouveau résultat
+				label2->Text = beforeResult + " " + avgBasket.ToString();
+			}
+			else {
+				// Si "Résultat:" n'est pas trouvé, ajouter "Résultat:" suivi du nouveau résultat
+				label2->Text = "Resultat: " + avgBasket.ToString();
+			}
 		}
 
 		// Méthode appelée lorsqu'un clic est détecté sur le bouton pour afficher la valeur commerciale du stock.
@@ -2607,8 +2620,20 @@ private: System::Windows::Forms::Label^ label1;
 			// Appel de la fonction computeStockCommercialValue pour obtenir la valeur commerciale du stock
 			double StockMarket = stats->computeStockCommercialValue();
 
-			// Ajout du nombre renvoyé par la fonction computeStockCommercialValue à la fin du contenu actuel de label1
-			label1->Text += " " + StockMarket.ToString();
+			// Recherche de la position de "Résultat:" dans le texte de label5
+			int index = label1->Text->IndexOf("Resultat:");
+
+			// Si "Résultat:" est trouvé dans label5
+			if (index != 0) {
+				// Récupération du texte avant "Résultat:"
+				String^ beforeResult = label1->Text->Substring(0, index + 10);
+				// Remplacement du texte après "Résultat:" par le nouveau résultat
+				label1->Text = beforeResult + " " + StockMarket.ToString();
+			}
+			else {
+				// Si "Résultat:" n'est pas trouvé, ajouter "Résultat:" suivi du nouveau résultat
+				label1->Text = "Resultat: " + StockMarket.ToString();
+			}
 		}
 
 		// Méthode appelée lorsqu'un clic est détecté sur le bouton pour afficher la valeur d'achat du stock.
@@ -2616,9 +2641,50 @@ private: System::Windows::Forms::Label^ label1;
 			// Appel de la fonction computeStockPurchaseValue pour obtenir la valeur d'achat du stock
 			double StockPurchase = stats->computeStockPurchaseValue();
 
-			// Ajout du nombre renvoyé par la fonction computeStockPurchaseValue à la fin du contenu actuel de label3
-			label3->Text += " " + StockPurchase.ToString();
+			// Recherche de la position de "Résultat:" dans le texte de label5
+			int index = label3->Text->IndexOf("Resultat:");
+
+			// Si "Résultat:" est trouvé dans label5
+			if (index != 0) {
+				// Récupération du texte avant "Résultat:"
+				String^ beforeResult = label3->Text->Substring(0, index + 10);
+				// Remplacement du texte après "Résultat:" par le nouveau résultat
+				label3->Text = beforeResult + " " + StockPurchase.ToString(); 
+			}
+			else {
+				// Si "Résultat:" n'est pas trouvé, ajouter "Résultat:" suivi du nouveau résultat
+				label3->Text = "Resultat: " + StockPurchase.ToString();
+			}
 		}
+
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton de simulation.
+		void statsSimulationButton_Click(Object^ sender, EventArgs^ e) {
+			// Récupération des valeurs des contrôles numériques
+			float TVA = (float)statsTVAValueNumericUpDown->Value;
+			float commercialMargin = (float)statsComMarginValueNumericUpDown->Value;
+			float commercialDiscount = (float)statsComDiscountValueNumericUpDown->Value;
+			float shrink = (float)statsUnknownMarkdownNumericUpDown->Value;
+
+			// Appel de la fonction de simulation de la valeur commerciale
+			float simulationResult = stats->simulateCommercialValue(TVA, commercialMargin, commercialDiscount, shrink);
+
+			// Recherche de la position de "Résultat:" dans le texte de label5
+			int index = label5->Text->IndexOf("Resultat:");
+
+			// Si "Résultat:" est trouvé dans label5
+			if (index != 0) {
+				// Récupération du texte avant "Résultat:"
+				String^ beforeResult = label5->Text->Substring(0, index + 10);
+				// Remplacement du texte après "Résultat:" par le nouveau résultat
+				label5->Text = beforeResult + " " + simulationResult.ToString();
+			}
+			else {
+				// Si "Résultat:" n'est pas trouvé, ajouter "Résultat:" suivi du nouveau résultat
+				label5->Text = "Resultat: " + simulationResult.ToString();
+			}
+		}
+
+
 
 		void backButton_click(Object^ sender, EventArgs^ e) {
 			this->visualizeGroup->Visible = false;
