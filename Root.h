@@ -2769,9 +2769,10 @@ private: System::Windows::Forms::Label^ label1;
 		void statsTurnoverButton_Click(Object^ sender, EventArgs^ e) {
 			// Récupération du mois sélectionné
 			int selectedMonth = (int)statsMonthChoiceTurnover->Value;
+			int count = 0;
 
 			// Calcul du chiffre d'affaires mensuel pour le mois sélectionné
-			float monthlySales = stats->computeMonthlySales(&selectedMonth);
+			float monthlySales = stats->computeMonthlySales(selectedMonth, &count);
 
 			// Recherche de la position de "Resultat: " dans le texte de monthlySales
 			int index = resultMonthlyCALabel->Text->IndexOf(":");
