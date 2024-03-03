@@ -8,16 +8,12 @@ namespace Services {
 
 	float StatsProvider::computeMonthlySales(int* count) {
 		float total_sales = 0;
-		int prev_month = DateTime::Now.AddMonths(-1).Month;
 		if (count) *count = 0;
 		
 		this->dbOpenConnection();
 		for each (DataRow^ order_row in this->readAll(Components::Table::getOrderTable())->Rows) {
 			int order_id = Convert::ToInt32(order_row->ItemArray[0]);
 			DateTime^ emitDate = safe_cast<DateTime^>(order_row->ItemArray[3]);
-
-			if (emitDate->Month != prev_month)
-				continue;
 
 			if (count) (*count)++;
 
@@ -91,7 +87,7 @@ namespace Services {
 		if (customer.id == -1) {
 			// Le client n'existe pas, retourner 0 pour les achats totaux
 			this->dbCloseConnection();
-			return 0;
+			return 5;
 		}
 
 		// Parcourir les commandes du client correspondant
