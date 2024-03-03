@@ -2768,7 +2768,7 @@ private: System::Windows::Forms::Label^ label1;
 		// Méthode appelée lorsqu'un clic est détecté sur le bouton de chiffre d'affaires mensuel.
 		void statsTurnoverButton_Click(Object^ sender, EventArgs^ e) {
 			// Récupération du mois sélectionné
-			int selectedMonth = Convert::ToInt32(statsMonthChoiceTurnover);
+			int selectedMonth = (int)statsMonthChoiceTurnover->Value;
 
 			// Calcul du chiffre d'affaires mensuel pour le mois sélectionné
 			float monthlySales = stats->computeMonthlySales(&selectedMonth);
