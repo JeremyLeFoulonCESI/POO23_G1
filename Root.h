@@ -2772,7 +2772,7 @@ private: System::Windows::Forms::Label^ label1;
 			int count = 0;
 
 			// Calcul du chiffre d'affaires mensuel pour le mois sélectionné
-			float monthlySales = stats->computeMonthlySales(selectedMonth, &count);
+			float monthlySales = stats->computeMonthlySales(&count);
 
 			// Recherche de la position de "Resultat: " dans le texte de monthlySales
 			int index = resultMonthlyCALabel->Text->IndexOf(":");

@@ -12,7 +12,7 @@ namespace Services {
 	public:
 		StatsProvider();
 		float computeAvgBasket();
-		float computeMonthlySales(int month,int* count);
+		float computeMonthlySales(int* count);
 		DataTable^ findProductsThatNeedRestock();
 		float computeClientTotalPurchase(CustomerData customer);
 		DataTable^ find10BestSellers();

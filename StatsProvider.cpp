@@ -6,7 +6,7 @@ namespace Services {
 	StatsProvider::StatsProvider()
 	{}
 
-	float StatsProvider::computeMonthlySales(int month, int* count) {
+	float StatsProvider::computeMonthlySales(int* count) {
 		float total_sales = 0;
 		if (count) *count = 0;
 
@@ -36,25 +36,9 @@ namespace Services {
 
 
 	float StatsProvider::computeAvgBasket() {
-		int totalOrders = 0;
-		float totalSales = 0;
-
-		// Calculer le panier moyen pour chaque mois de l'année (1 à 12)
-		for (int month = 1; month <= 12; ++month) {
-			int count = 0;
-			float monthlySales = this->computeMonthlySales(month, &count);
-			totalSales += monthlySales;
-			totalOrders += count;
-		}
-
-		// Vérifier si le nombre total de commandes est différent de zéro pour éviter une division par zéro
-		if (totalOrders != 0) {
-			return totalSales / totalOrders;
-		}
-		else {
-			// Si le nombre total de commandes est zéro, retourner zéro pour éviter une division par zéro
-			return 0;
-		}
+		int count = 0;
+		float total_sales = this->computeMonthlySales(&count);
+		return total_sales / count;
 	}
 
 	
