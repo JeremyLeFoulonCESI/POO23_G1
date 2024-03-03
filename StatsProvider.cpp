@@ -76,23 +76,42 @@ namespace Services {
 		float total_purchase = 0;
 
 		this->dbOpenConnection();
-		for each (DataRow^ order_row in this->dbSearchRows(
+		customer.id = -1; // Initialisation à une valeur impossible
+		// Recherche de l'ID du client à partir du nom et du prénom
+		for each (DataRow ^ customer_row in this->dbSearchRows(
+			Components::Table::getCustomerTable(),
+			gcnew array<String^>{"NomClient", "PrenomClient"},
+			gcnew array<Object^>{customer.lastName, customer.firstName}
+			)->Rows) {
+			customer.id = Convert::ToInt32(customer_row->ItemArray[0]);
+			break; // Nous ne voulons que la première correspondance, donc nous sortons de la boucle après avoir trouvé le client
+			}
+
+		// Vérification si le client existe
+		if (customer.id == -1) {
+			// Le client n'existe pas, retourner 0 pour les achats totaux
+			this->dbCloseConnection();
+			return 0;
+		}
+
+		// Parcourir les commandes du client correspondant
+		for each (DataRow ^ order_row in this->dbSearchRows(
 			Components::Table::getOrderTable(),
 			gcnew array<String^>{"CodeClient"},
 			gcnew array<Object^>{customer.id}
 		)->Rows) {
 			int order_id = Convert::ToInt32(order_row->ItemArray[0]);
 
-
-			for each (DataRow ^ order_row in this->dbSearchRows(
-				Components::Table::getOrderTable(),
+			// Calcul du montant total pour chaque commande
+			for each (DataRow ^ contains_row in this->dbSearchRows(
+				Components::Table::getContainsTable(),
 				gcnew array<String^>{"ID_Commande"},
 				gcnew array<Object^>{order_id}
 			)->Rows) {
-				float UHTprice = (float)Convert::ToDecimal(order_row->ItemArray[5]);
-				float TVA = (float)Convert::ToDecimal(order_row->ItemArray[4]);
-				float discount = (float)Convert::ToDecimal(order_row->ItemArray[3]);
-				int count = Convert::ToInt32(order_row->ItemArray[2]);
+				float UHTprice = (float)Convert::ToDecimal(contains_row->ItemArray[5]);
+				float TVA = (float)Convert::ToDecimal(contains_row->ItemArray[4]);
+				float discount = (float)Convert::ToDecimal(contains_row->ItemArray[3]);
+				int count = Convert::ToInt32(contains_row->ItemArray[2]);
 
 				total_purchase += (UHTprice * (1 + TVA) * (1 - discount)) * count;
 			}
@@ -100,6 +119,7 @@ namespace Services {
 		this->dbCloseConnection();
 		return total_purchase;
 	}
+
 
 	DataTable^ StatsProvider::find10BestSellers() {
 		this->dbOpenConnection();

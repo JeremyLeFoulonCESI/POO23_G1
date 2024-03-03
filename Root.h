@@ -96,6 +96,7 @@ namespace HMI {
 			this->statsStockPurchaseValueButton->Click += gcnew EventHandler(this, &Root::statsStockPurchaseValueButton_Click);
 			this->statsSimulationButton->Click += gcnew EventHandler(this, &Root::statsSimulationButton_Click);
 			this->statsTurnoverButton->Click += gcnew EventHandler(this, &Root::statsTurnoverButton_Click);
+			this->statsTotalAmountButton->Click += gcnew EventHandler(this, &Root::computeClientTotalPurchase_Click);
 
 			this->customerNewDeliveryButton->Click += gcnew EventHandler(this, &Root::customerNewDeliveryButton_click);
 			this->CustomerRemoveDeliveryButton->Click += gcnew EventHandler(this, &Root::CustomerRemoveDeliveryButton_click);
@@ -2764,11 +2765,59 @@ private: System::Windows::Forms::Label^ label1;
 			}
 		}
 
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton de chiffre d'affaires mensuel.
 		void statsTurnoverButton_Click(Object^ sender, EventArgs^ e) {
+			// Récupération du mois sélectionné
+			int selectedMonth = Convert::ToInt32(statsMonthChoiceTurnover);
 
+			// Calcul du chiffre d'affaires mensuel pour le mois sélectionné
+			float monthlySales = stats->computeMonthlySales(&selectedMonth);
+
+			// Recherche de la position de "Resultat: " dans le texte de monthlySales
+			int index = resultMonthlyCALabel->Text->IndexOf(":");
+
+			// Si "Resultat: " est trouvé dans monthlySales
+			if (index != 0) {
+				// Récupération du texte avant ":"
+				String^ beforeResult = resultMonthlyCALabel->Text->Substring(0, index + 1);
+				// Remplacement du texte après ":" par le nouveau résultat
+				resultMonthlyCALabel->Text = ":" + monthlySales.ToString();
+			}
+			else {
+				// Si "Résultat:" n'est pas trouvé, ajouter ":" suivi du nouveau résultat
+				resultMonthlyCALabel->Text = ":" + monthlySales.ToString();
+			}
 		}
 
+		// Méthode appelée lorsqu'un clic est détecté sur le bouton pour calculer le montant total des achats du client.
+		void computeClientTotalPurchase_Click(Object^ sender, EventArgs^ e) { 
+			// Récupération du nom et du prénom du client à partir des champs de texte
+			String^ lastName = statsCustomerNameTextbox->Text; 
+			String^ firstName = statsCustomerFirtsnameTextbox->Text; 
 
+			// Création d'une instance de CustomerData avec les informations du client
+			CustomerData customer; 
+			customer.lastName = lastName; 
+			customer.firstName = firstName; 
+			
+			// Calcul du montant total des achats du client
+			float totalPurchase = stats->computeClientTotalPurchase(customer);
+
+			// Recherche de la position de "Resultat: " dans le texte de resultTotalAmountCustomerPurchaseLabel
+			int index = resultTotalAmountCustomerPurchaseLabel->Text->IndexOf(":");
+
+			// Si ":" est trouvé dans resultTotalAmountCustomerPurchaseLabel
+			if (index != 0) {
+				// Récupération du texte avant ":"
+				String^ beforeResult = resultTotalAmountCustomerPurchaseLabel->Text->Substring(0, index + 1);
+				// Remplacement du texte après ":" par le nouveau résultat
+				resultTotalAmountCustomerPurchaseLabel->Text = ":" + totalPurchase.ToString();
+			}
+			else {
+				// Si "Résultat:" n'est pas trouvé, ajouter ":" suivi du nouveau résultat
+				resultTotalAmountCustomerPurchaseLabel->Text = ":" + totalPurchase.ToString();
+			}
+		}
 
 		void backButton_click(Object^ sender, EventArgs^ e) {
 			this->visualizeGroup->Visible = false;
