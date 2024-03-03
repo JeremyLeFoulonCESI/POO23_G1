@@ -6,18 +6,18 @@ namespace Services {
 	StatsProvider::StatsProvider()
 	{}
 
-	float StatsProvider::computeMonthlySales(int* count) {
+	float StatsProvider::computeMonthlySales(int month, int* count) {
 		float total_sales = 0;
 		if (count) *count = 0;
-		
+
 		this->dbOpenConnection();
-		for each (DataRow^ order_row in this->readAll(Components::Table::getOrderTable())->Rows) {
+		for each (DataRow ^ order_row in this->readAll(Components::Table::getOrderTable())->Rows) {
 			int order_id = Convert::ToInt32(order_row->ItemArray[0]);
 			DateTime^ emitDate = safe_cast<DateTime^>(order_row->ItemArray[3]);
 
 			if (count) (*count)++;
 
-			for each (DataRow^ contains_row in this->dbSearchRows(
+			for each (DataRow ^ contains_row in this->dbSearchRows(
 				Components::Table::getContainsTable(),
 				gcnew array<String^>{ "ID_Commande" },
 				gcnew array<Object^>{ order_id }
@@ -34,11 +34,29 @@ namespace Services {
 		return total_sales;
 	}
 
+
 	float StatsProvider::computeAvgBasket() {
-		int count = 0;
-		float total_sales = this->computeMonthlySales(&count);
-		return total_sales / count;
+		int totalOrders = 0;
+		float totalSales = 0;
+
+		// Calculer le panier moyen pour chaque mois de l'année (1 à 12)
+		for (int month = 1; month <= 12; ++month) {
+			int count = 0;
+			float monthlySales = this->computeMonthlySales(month, &count);
+			totalSales += monthlySales;
+			totalOrders += count;
+		}
+
+		// Vérifier si le nombre total de commandes est différent de zéro pour éviter une division par zéro
+		if (totalOrders != 0) {
+			return totalSales / totalOrders;
+		}
+		else {
+			// Si le nombre total de commandes est zéro, retourner zéro pour éviter une division par zéro
+			return 0;
+		}
 	}
+
 	
 	DataTable^ StatsProvider::findProductsThatNeedRestock() {
 		DataTable^ result = gcnew DataTable;
