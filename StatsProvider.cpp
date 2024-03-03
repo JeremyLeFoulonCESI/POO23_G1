@@ -80,7 +80,7 @@ namespace Services {
 		// Recherche de l'ID du client à partir du nom et du prénom
 		for each (DataRow ^ customer_row in this->dbSearchRows(
 			Components::Table::getCustomerTable(),
-			gcnew array<String^>{"NomClient", "PrenomClient"},
+			gcnew array<String^>{"Nom", "Prenom"},
 			gcnew array<Object^>{customer.lastName, customer.firstName}
 			)->Rows) {
 			customer.id = Convert::ToInt32(customer_row->ItemArray[0]);
