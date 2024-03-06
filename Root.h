@@ -1907,7 +1907,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsCustomerNameLabel->Name = L"statsCustomerNameLabel";
 			this->statsCustomerNameLabel->Size = System::Drawing::Size(91, 20);
 			this->statsCustomerNameLabel->TabIndex = 10;
-			this->statsCustomerNameLabel->Text = L"Nom client: ";
+			this->statsCustomerNameLabel->Text = L"Prenom client: ";
 			// 
 			// statsCustomerNameTextbox
 			// 
@@ -1924,20 +1924,21 @@ private: System::Windows::Forms::Label^ label1;
 			this->statsCustomerFirstnameLabel->Name = L"statsCustomerFirstnameLabel";
 			this->statsCustomerFirstnameLabel->Size = System::Drawing::Size(113, 20);
 			this->statsCustomerFirstnameLabel->TabIndex = 12;
-			this->statsCustomerFirstnameLabel->Text = L"Prenom client: ";
+			this->statsCustomerFirstnameLabel->Text = L"Nom client: ";
 			// 
 			// statsCustomerFirtsnameTextbox
 			// 
-			this->statsCustomerFirtsnameTextbox->Location = System::Drawing::Point(118, 51);
+			this->statsCustomerFirtsnameTextbox->Location = System::Drawing::Point(130, 51);
 			this->statsCustomerFirtsnameTextbox->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->statsCustomerFirtsnameTextbox->Name = L"statsCustomerFirtsnameTextbox";
-			this->statsCustomerFirtsnameTextbox->Size = System::Drawing::Size(136, 26);
+			this->statsCustomerFirtsnameTextbox->Size = System::Drawing::Size(124, 26);
 			this->statsCustomerFirtsnameTextbox->TabIndex = 13;
 			// 
 			// statsMonthChoiceTurnover
 			// 
 			this->statsMonthChoiceTurnover->Location = System::Drawing::Point(126, 25);
 			this->statsMonthChoiceTurnover->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->statsMonthChoiceTurnover->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->statsMonthChoiceTurnover->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 12, 0, 0, 0 });
 			this->statsMonthChoiceTurnover->Name = L"statsMonthChoiceTurnover";
 			this->statsMonthChoiceTurnover->Size = System::Drawing::Size(100, 26);
@@ -2024,7 +2025,7 @@ private: System::Windows::Forms::Label^ label1;
 			this->groupBox8->Size = System::Drawing::Size(501, 244);
 			this->groupBox8->TabIndex = 36;
 			this->groupBox8->TabStop = false;
-			this->groupBox8->Text = L"Produits sous leur seuil de réapprovisionnement";
+			this->groupBox8->Text = L"Produits sous leur seuil de reapprovisionnement";
 			// 
 			// dataGridView3
 			// 
@@ -2771,8 +2772,10 @@ private: System::Windows::Forms::Label^ label1;
 			int selectedMonth = (int)statsMonthChoiceTurnover->Value;
 			int count = 0;
 
+			int month = System::Int32(this->statsMonthChoiceTurnover->Value);
+
 			// Calcul du chiffre d'affaires mensuel pour le mois sélectionné
-			float monthlySales = stats->computeMonthlySales(&count);
+			float monthlySales = stats->computeMonthlySales(&count, month);
 
 			// Recherche de la position de "Resultat: " dans le texte de monthlySales
 			int index = resultMonthlyCALabel->Text->IndexOf(":");
